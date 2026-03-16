@@ -1,0 +1,112 @@
+{
+  "series_id": "GFDEGDQ188S",
+  "title": "Federal Debt: Total Public Debt as Percent of Gross Domestic Product",
+  "period": "1966-01-01 -> 2025-10-01",
+  "frequency": "Quarterly",
+  "units": "Percent of GDP",
+  "seasonal_adjustment": "Seasonally Adjusted",
+  "n_obs": 240,
+  "missing_share": 0.0,
+  "n_vintage_dates": 111,
+  "suggested_transform": {
+    "tcode": 2,
+    "label": "first_difference"
+  },
+  "user": {
+    "useful": "probably",
+    "comment": "should use",
+    "transformation_note": "tests suggest stationarity, but honestly I don't think so cause both should grow at the same inlfation rate",
+    "timing": "",
+    "tags": []
+  },
+  "release": "Debt to Gross Domestic Product Ratios",
+  "source_link": "",
+  "tcode_options": [
+    {
+      "tcode": 1,
+      "label": "level",
+      "can_apply": 1,
+      "stationary_ADF5pct": 0,
+      "suggested": 0
+    },
+    {
+      "tcode": 2,
+      "label": "first_difference",
+      "can_apply": 1,
+      "stationary_ADF5pct": 1,
+      "suggested": 1
+    },
+    {
+      "tcode": 3,
+      "label": "second_difference",
+      "can_apply": 1,
+      "stationary_ADF5pct": 1,
+      "suggested": 0
+    },
+    {
+      "tcode": 4,
+      "label": "log_level",
+      "can_apply": 1,
+      "stationary_ADF5pct": 0,
+      "suggested": 0
+    },
+    {
+      "tcode": 5,
+      "label": "log_first_diff",
+      "can_apply": 1,
+      "stationary_ADF5pct": 1,
+      "suggested": 0
+    },
+    {
+      "tcode": 6,
+      "label": "log_second_diff",
+      "can_apply": 1,
+      "stationary_ADF5pct": 1,
+      "suggested": 0
+    },
+    {
+      "tcode": 7,
+      "label": "change_in_growth",
+      "can_apply": 1,
+      "stationary_ADF5pct": 1,
+      "suggested": 0
+    }
+  ],
+  "fred_md_matches": [
+    {
+      "md_series": "PAYEMS",
+      "tcode": 5.0,
+      "combined_score": 0.253,
+      "corr": -0.843,
+      "appendix_preview": ""
+    },
+    {
+      "md_series": "SRVPRD",
+      "tcode": 5.0,
+      "combined_score": 0.252,
+      "corr": -0.84,
+      "appendix_preview": ""
+    },
+    {
+      "md_series": "USTPU",
+      "tcode": 5.0,
+      "combined_score": 0.249,
+      "corr": -0.831,
+      "appendix_preview": ""
+    },
+    {
+      "md_series": "UNRATE",
+      "tcode": 2.0,
+      "combined_score": 0.248,
+      "corr": 0.825,
+      "appendix_preview": ""
+    },
+    {
+      "md_series": "USTRADE",
+      "tcode": 5.0,
+      "combined_score": 0.247,
+      "corr": -0.822,
+      "appendix_preview": ""
+    }
+  ]
+}
