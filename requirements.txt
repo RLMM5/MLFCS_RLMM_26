@@ -1,0 +1,21 @@
+# Core notebook runtime
+ipykernel>=6.29
+jupyterlab>=4.2
+notebook>=7.2
+
+# Data stack
+numpy>=1.26
+pandas>=2.2
+pyarrow>=17.0
+openpyxl>=3.1
+requests>=2.32
+python-dotenv>=1.0
+
+# Statistics and ML
+scipy>=1.13
+scikit-learn>=1.5
+statsmodels>=0.14
+
+# Plotting
+matplotlib>=3.8
+seaborn>=0.13

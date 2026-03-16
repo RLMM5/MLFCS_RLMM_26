@@ -1,0 +1,14 @@
+# Normalize line endings for all text files to LF on commit,
+# and check out with native line endings on each platform.
+* text=auto
+
+# Notebooks — keep as LF everywhere to avoid spurious diffs
+*.ipynb text eol=lf
+
+# Shell scripts must be LF
+*.sh text eol=lf
+
+# Windows batch files must be CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
