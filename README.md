@@ -1,7 +1,6 @@
 # MLFCS_RLMM_26
 
-A workspace for manually exploring and curating FRED macroeconomic series. The main tool is a single notebook, `Data/00_manual_series_workbench.ipynb`, which lets you pull any FRED series, look at it visually and statistically, compare it against the local FRED-MD dataset, and save a tidy analysis package once you've decided it's worth keeping.
-
+`Data/`contains the data analysis pipeline of Roberto. There is a notebooke `analyse_series_workbench.ipynb` that is the main interface for analyzing and curating FRED series. It uses the local FRED-MD dataset as a reference and saves your analyzed series in a structured way for future use.
 The local FRED-MD files live in `Data/MD-dataset/`. When you save a series the notebook writes to `Data/analyzed/<series_id>/`.
 
 ## Getting started
