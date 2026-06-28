@@ -30,7 +30,7 @@ The Independent representation gives asset-level exposure signals. The Coupled r
 
 The first step is to check whether the realised labels describe economically different environments. The regime labels separate states with different return signs, Sharpe ratios, and stock--bond behaviour.
 
-[Independent teacher regime labels](Report/figs/teacher_regime_labels.pdf)
+![Independent teacher regime labels](Report/current_exports/teacher_regime_labels/teacher_regime_labels.png)
 
 ![Coupled joint-regime labels](Report/figs/COUPLED__labels.png)
 
@@ -38,15 +38,18 @@ _The Independent label figure marks favourable equity and bond regimes separatel
 
 ### Label-conditional economics
 
-| Representation     |       Regime | Share | Equity Sharpe | Bond Sharpe | Economic role                 |
-| ------------------ | -----------: | ----: | ------------: | ----------: | ----------------------------- |
-| Independent equity |   Favourable | 75.6% |         +1.14 |          -- | Positive equity state         |
-| Independent equity | Unfavourable | 24.4% |         -0.75 |          -- | Negative equity state         |
-| Independent bond   |   Favourable | 67.1% |            -- |       +1.81 | Positive bond state           |
-| Independent bond   | Unfavourable | 32.9% |            -- |       -0.81 | Negative bond state           |
-| Coupled            |         Calm | 13.8% |         +2.60 |       +0.22 | Strongest equity state        |
-| Coupled            |       Normal | 77.1% |         +0.67 |       +1.00 | Equity risk with bond support |
-| Coupled            |     Stressed |  9.0% |         -2.99 |       -1.69 | Joint stock--bond loss state  |
+| Representation | Asset | Regime | Share | Annualised return | Volatility | Sharpe | Economic role |
+|---|---|---:|---:|---:|---:|---:|---|
+| Independent | Equity | Favourable | 75.6% | +13.7% | 12.0% | +1.14 | Positive equity state |
+| Independent | Equity | Unfavourable | 24.4% | -14.5% | 19.4% | -0.75 | Negative equity state |
+| Independent | Bond | Favourable | 67.1% | +5.7% | 3.2% | +1.81 | Positive bond state |
+| Independent | Bond | Unfavourable | 32.9% | -4.1% | 5.0% | -0.81 | Negative bond state |
+| Coupled | Equity | Calm | 13.8% | +21.0% | 8.1% | +2.60 | Strongest equity state |
+| Coupled | Equity | Normal | 77.1% | +9.9% | 14.8% | +0.67 | Equity risk with bond support |
+| Coupled | Equity | Stressed | 9.0% | -40.9% | 13.7% | -2.99 | Joint stock--bond loss state |
+| Coupled | Bond | Calm | 13.8% | +0.8% | 3.5% | +0.22 | Bond return in calm state |
+| Coupled | Bond | Normal | 77.1% | +3.9% | 3.9% | +1.00 | Bond support in normal state |
+| Coupled | Bond | Stressed | 9.0% | -8.4% | 5.0% | -1.69 | Bond loss in stressed state |
 
 The key distinction is not only whether equity is weak. It is whether bonds remain a hedge when equity is weak. Normal coupled regimes describe equity weakness with bond support. Stressed coupled regimes describe a joint adverse state.
 
@@ -85,7 +88,7 @@ The allocation stage is the economic test of the regime forecasts. The selected 
 
 ![Independent allocation wealth and drawdown](Report/figs/allocation_wealth_drawdown_focused.jpg)
 
-[Coupled allocation wealth and drawdown](Report/figs/COUPLED__alloc_wealth_drawdown.pdf)
+![Coupled allocation wealth and drawdown](Regime-Aware%20Tactical%20Asset%20Allocation/paper/COUPLED__alloc_wealth_drawdown.png)
 
 _The wealth and drawdown figures show when the selected dynamic allocations earn their performance relative to 60/40._
 
@@ -110,7 +113,7 @@ The selected allocations differ in how forecast probabilities change equity, bon
 
 ![Independent allocation mechanics](Report/figs/allocation_mechanics_focused.jpg)
 
-[Coupled allocation mechanics](Report/figs/COUPLED__alloc_mechanics.pdf)
+![Coupled allocation mechanics](Regime-Aware%20Tactical%20Asset%20Allocation/paper/COUPLED__alloc_mechanics.png)
 
 _The allocation mechanics show how forecast probabilities translate into portfolio weights, turnover, wealth, and drawdown._
 
