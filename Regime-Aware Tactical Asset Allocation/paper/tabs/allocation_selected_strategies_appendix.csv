@@ -1,0 +1,4 @@
+Role,Model,Predictor set,Risk aversion,Turnover penalty,Transaction cost,Smoothing,Ann. return,Sharpe,Max. drawdown,Ann. turnover,Final wealth
+High-return dynamic,Logistic regression,smoothed z-score,0.5,0.0,0.001,0.0,0.0788624410897727,0.7405400548574606,-0.192501777480906,1.520695652173913,814.1814766411551
+Defensive dynamic,Random forest,smoothed z-score,3.0,0.001,0.001,0.0,0.044494227739861,0.7723886324058391,-0.1492067542223464,0.5982608695652174,341.89044683570893
+Low-turnover dynamic,Logistic regression,z-score + smoothed z-score,3.0,0.001,0.001,3.0,0.0496958252674243,0.6928394964649921,-0.1301006273391428,0.5140869565217392,386.5833919319732

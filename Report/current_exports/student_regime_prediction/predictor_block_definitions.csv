@@ -1,0 +1,9 @@
+block_name,article_definition,raw_feature_block_values_or_prefixes_used
+Equity cross-section,"Equity factor returns, size-value portfolio returns, and equity-market dispersion, correlation, concentration, and rotation measures.","feature_block=equity_cross_section; code rules: ff_, factor, small, value, industry"
+Treasury market,"Treasury maturity-segment returns, yield-curve and policy-rate changes, bond momentum, and bond-market dependence measures.","feature_block=treasury_rates; code rules: tsy, bond, curve, dgs, rate"
+Credit market,"Investment-grade and high-yield credit returns, credit spreads, credit return dispersion, and credit-market dependence measures.","feature_block=credit; code rules: credit, baa, aaa, hy, ig"
+Commodities,"Commodity returns, commodity momentum, commodity volatility, commodity Sharpe ratio, and commodity-related dependence measures.","feature_block=commodities; code rules: cmdty, commodity"
+Financial conditions,"NFCI and adjusted NFCI levels, changes, and spread.","feature_block=financial_conditions; code rules: nfci, anfci, financial"
+Macro-financial variables,"Activity, inflation, and sentiment predictors.","feature_block=macro; code rules: inflation, cfnai, sentiment, macro"
+Volatility and dependence,"Market volatility, realized volatility, equity-fixed-income correlation, and remaining correlation or concentration measures.","feature_block=volatility_dependence; code rules: vix, vol, rv_, rho, corr, lambda"
+Industry and style portfolios,Remaining industry portfolio returns and style-portfolio returns.,"feature_block=other; observed variables include crsp_ind12_*, smlo_vwret, smme_vwret, smhi_vwret, bilo_vwret, bime_vwret, bihi_vwret, growth_avg_ret, equity_market_level"

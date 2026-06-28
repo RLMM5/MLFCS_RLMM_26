@@ -1,0 +1,10 @@
+﻿object,path,shape
+equity_teacher,outputs/teacher_features/teacher_equity_daily_return_sortino_features.pkl,"(12668, 17)"
+bond_teacher,outputs/teacher_features/teacher_bond_monthly_return_downside_sharpe_vol_features.pkl,"(604, 21)"
+equity_monthly_returns,outputs/teacher_features/teacher_equity_monthly_excess_returns.pkl,"(604, 3)"
+teacher_daily_panels,outputs/teacher_features/teacher_daily_panels.pkl,1
+teacher_monthly_panels,outputs/teacher_features/teacher_monthly_panels.pkl,1
+daily_teacher_features,data/processed/teacher_daily_features_long.csv,"(12668, 17)"
+monthly_teacher_features,data/processed/teacher_monthly_features_long.csv,"(604, 21)"
+teacher_feature_inventory,data/processed/teacher_feature_inventory.csv,"(3, 13)"
+teacher_data_availability,data/processed/teacher_data_availability.csv,"(2, 13)"

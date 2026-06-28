@@ -1,0 +1,39 @@
+﻿\begin{table}[!htbp]
+\centering
+\caption{Transaction-cost and turnover-penalty sensitivity}
+\label{tab:allocation-cost-turnover-sensitivity}
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{adjustbox}{center,max width=\linewidth}
+\begin{tabular}{llrrr}
+\toprule
+Strategy & Turnover penalty & 5 bps & 10 bps & 25 bps \\
+\midrule
+High-return dynamic & 0.0000 & 0.77 & 0.74 & 0.67 \\
+High-return dynamic & 0.0005 & 0.75 & 0.74 & 0.62 \\
+High-return dynamic & 0.0010 & 0.75 & 0.72 & 0.53 \\
+High-return dynamic & 0.0025 & 0.64 & 0.55 & 0.44 \\
+High-return dynamic & 0.0050 & 0.59 & 0.56 & 0.47 \\
+High-return dynamic & 0.0100 & 0.15 & 0.17 &  \\
+Defensive dynamic & 0.0000 & 0.75 & 0.78 & 0.69 \\
+Defensive dynamic & 0.0005 & 0.79 & 0.81 & 0.61 \\
+Defensive dynamic & 0.0010 & 0.81 & 0.77 & 0.57 \\
+Defensive dynamic & 0.0025 & 0.63 & 0.58 & 0.43 \\
+Defensive dynamic & 0.0050 & 0.38 & 0.35 & 0.20 \\
+Defensive dynamic & 0.0100 & 0.15 & 0.35 &  \\
+Low-turnover dynamic & 0.0000 & 0.71 & 0.70 & 0.63 \\
+Low-turnover dynamic & 0.0005 & 0.71 & 0.73 & 0.61 \\
+Low-turnover dynamic & 0.0010 & 0.74 & 0.69 & 0.59 \\
+Low-turnover dynamic & 0.0025 & 0.62 & 0.60 & 0.50 \\
+Low-turnover dynamic & 0.0050 & 0.43 & 0.43 & 0.38 \\
+Low-turnover dynamic & 0.0100 & 0.23 & 0.33 &  \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\vspace{0.55em}
+\begin{minipage}{0.94\linewidth}
+\footnotesize
+\emph{Note.} Entries are Sharpe ratios. For each dynamic strategy, the model, predictor set, risk aversion, and smoothing half-life are fixed at the strategy-specific baseline values in Table~\ref{tab:allocation-selected-strategies}.
+\end{minipage}
+\end{table}

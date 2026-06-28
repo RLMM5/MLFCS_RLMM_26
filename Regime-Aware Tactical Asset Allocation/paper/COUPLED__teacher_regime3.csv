@@ -1,0 +1,4 @@
+Regime,Share,Eq ret,Eq vol,Eq Sharpe,Bd ret,Bd vol,Bd Sharpe,Avg dur,Spells
+calm,13.8%,+21.0%,8.1%,+2.60,+0.8%,3.5%,+0.22,4.7,13
+normal,77.1%,+9.9%,14.8%,+0.67,+3.9%,3.9%,+1.00,12.2,28
+stressed,9.0%,-40.9%,13.7%,-2.99,-8.4%,5.0%,-1.69,2.2,18

@@ -1,0 +1,832 @@
+\documentclass[10pt]{article}
+
+\usepackage{neuripsstyle}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{array,multirow}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{siunitx}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{pdflscape}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\captionsetup{font=small,labelfont=bf}
+\renewcommand{\arraystretch}{1.12}
+\graphicspath{{figs/}}
+
+% --- notation ---
+\newcommand{\zeq}{z^{\mathrm{eq}}_t}
+\newcommand{\zbd}{z^{\mathrm{bd}}_t}
+\newcommand{\Reg}{\mathcal{S}}
+\newcommand{\Path}{\mathcal{P}}
+\newcommand{\Acoup}{\textsc{coupled}}
+\newcommand{\Bindep}{\textsc{independent}}
+\sisetup{detect-weight=true,detect-family=true}
+
+\title{Regime-Aware Tactical Asset Allocation for Equities and Fixed Income:\\
+Independent and Coupled Jump-Model Labels}
+
+\author{%
+Team RLMM\\
+\normalsize Machine Learning for Finance and Complex Systems}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+
+\begin{abstract}
+    \noindent We study whether forecasted equity and bond return regimes improve monthly allocation across equities, bonds, and cash after transaction costs. The empirical design links realised regime estimation, next-month regime forecasting, and portfolio choice. Jump-model teachers label equity and bond return environments from realised return-based features. Supervised students then forecast the next-month teacher labels from lagged macro-financial predictors. The resulting forecast probabilities are converted into regime-conditional mean--variance allocations with transaction costs and turnover penalties.
+
+    \noindent We compare two regime representations. The \Bindep{} specification estimates separate two-state favourable and unfavourable labels for equities and bonds. The \Acoup{} specification estimates a three-state joint stock--bond label with calm, normal, and stressed regimes. Both representations distinguish the central portfolio mechanism: bonds support equity drawdowns in disinflationary episodes such as the dot-com bust and the global financial crisis, while inflation-driven sell-offs such as 1994 and 2022 weaken the bond hedge. In the student stage, regularised logistic regression and random forests produce informative next-month regime probabilities. In the allocation stage, selected dynamic strategies improve on the 60/40 benchmark along distinct margins, including lower drawdowns, higher Sharpe ratios, and higher terminal wealth, depending on risk aversion and turnover control.
+\end{abstract}
+
+
+\section{Introduction}
+
+Balanced portfolios depend on how equity and bond returns interact across market environments. In disinflationary equity sell-offs, bond returns often rise and reduce portfolio losses. In inflation-driven sell-offs, equities and bonds can both lose value. A tactical allocation rule therefore needs information about the prevailing stock--bond environment when choosing next-month equity, bond, and cash exposures.
+
+This paper studies monthly regime-aware allocation for a broad equity leg and a broad fixed-income leg. The empirical objects are asset-class return environments. The equity leg represents the stock component of a balanced portfolio, and the bond leg represents the fixed-income component. The allocation problem is whether information available at the end of month \(t\) supports a change in next-month exposure after transaction costs and turnover penalties.
+
+The empirical design has three stages. The teacher stage forms realised regime labels from equity and bond returns. The student stage forecasts the next-month teacher label from lagged macro-financial predictors. The allocation stage converts forecast probabilities into regime-conditional return moments and monthly portfolio weights. A regime label summarises a persistent return environment. The allocation test evaluates whether forecast probabilities add economic value once they are mapped into implementable portfolio rules.
+
+We compare two regime-label structures. The \Bindep{} approach estimates separate binary labels for the equity and bond legs. Each leg is classified as favourable or unfavourable. The \Acoup{} approach estimates a joint stock--bond label with calm, normal, and stressed states. The independent structure keeps the two asset-level signals separate. The coupled structure gives a direct label for the joint diversification environment.
+
+The empirical analysis is organised as follows. Section~\ref{sec:data} describes the return series, teacher features, and student predictors. Section~\ref{sec:teacher} defines the jump-model teachers and reports the label diagnostics. Section~\ref{sec:student} reports next-month prediction results. Section~\ref{sec:alloc} evaluates the regime-aware allocation rules against the 60/40 benchmark. The appendices report formulas, estimation details, diagnostic figures, and parameter-sensitivity checks.
+
+\section{Data}
+\label{sec:data}
+The empirical analysis uses monthly excess returns for a broad equity leg and a broad bond leg. The equity leg is based on the S\&P~500 total return. The bond leg is based on an aggregate bond-index return. A one-month risk-free rate defines excess returns,
+\[
+    r^{\mathrm{eq}}_t=\text{equity return}_t-rf_t,\qquad
+    r^{\mathrm{bd}}_t=\text{bond return}_t-rf_t .
+\]
+The bond leg contains both duration exposure and spread-sensitive components, so the student predictor panel includes Treasury-market variables and corporate-credit variables.
+
+The teacher and student stages use different information sets. The teacher stage uses realised return information from the equity and bond legs to form regime labels. The student stage uses lagged macro-financial predictors to forecast those labels out of sample. This separation defines realised labels before the supervised forecasting problem is estimated.
+
+\paragraph{Teacher features.}
+The teacher features describe recent return performance, downside risk, volatility, and risk-adjusted performance. In the \Bindep{} specification, the equity teacher is estimated from daily equity excess returns using exponentially weighted returns and Sortino ratios over 21, 63, 126, and 252 trading days. The bond teacher is estimated from monthly bond excess returns using exponentially weighted returns, downside-risk measures, rolling Sharpe ratios, and volatility over horizons from one to twelve months. Table~\ref{tab:teacher-features} summarizes the teacher feature blocks. Appendix~\ref{app:features} reports the formulas.
+
+\begin{table}[H]
+    \centering
+    \caption{Teacher features by approach. The \Bindep{} teacher uses daily equity features and monthly bond features. The \Acoup{} teacher uses a monthly joint stock--bond construction. Horizons are reported in trading days for daily equity features and in months for monthly features.}
+    \label{tab:teacher-features}
+    \small
+    \begin{adjustbox}{center,max width=1.08\textwidth}
+        \begin{tabular}{p{2.1cm}p{2.3cm}p{6.4cm}p{3.0cm}}
+            \toprule
+            Approach                & Feature                                                                & Definition                                                                                                                                         & Horizons                      \\
+            \midrule
+            \Bindep{} (equity)      & Exponentially weighted return; Sortino ratio                           & Daily equity excess-return features based on recent mean performance and downside-risk-adjusted performance                                        & 21, 63, 126, 252 trading days \\
+            \Bindep{} (bond)        & Exponentially weighted return; downside risk; Sharpe ratio; volatility & Monthly bond excess-return features based on recent mean performance, negative-return magnitude, rolling risk-adjusted performance, and volatility & 1, 3, 6, 12 months            \\
+            \midrule
+            \Acoup{} (equity, bond) & Sortino ratio                                                          & Recent average excess return over downside risk (EWMA of squared negative excess returns)                                                          & 1, 2, 4, 12 m                 \\
+            \Acoup{} (equity, bond) & Drawdown level / term structure                                        & Log downside deviation; short minus long log downside deviation                                                                                    & 6 m; 2 vs 12 m                \\
+            \Acoup{} (equity, bond) & MA crossover / trend                                                   & Short minus long average excess return, scaled by downside risk; EWMA-standardised trend                                                           & 3 vs 12 m; 12, 24 m           \\
+            \bottomrule
+        \end{tabular}
+    \end{adjustbox}
+\end{table}
+
+\paragraph{Student panel.}
+The \Bindep{} student panel is monthly and lagged. It combines equity factor returns, industry and size--value portfolio returns, Treasury returns, credit-fund returns, commodity returns, financial-condition indexes, interest-rate variables, inflation, volatility, macro activity, sentiment, and stock--bond correlation measures. The base panel contains 134 predictors. Each predictor is winsorised with past information, transformed into a causal rolling z-score, and smoothed with an exponentially weighted average. Appendix~\ref{app:features} gives the data sources, predictor definitions, and transformation formulas. The student models use these lagged predictors to forecast the next-month teacher label.
+
+The \Acoup{} student uses a separate monthly predictor construction with causal screening and current-regime context. Its predictors are described with the coupled results.
+
+\section{Teacher: regime labelling with statistical jump models}
+\label{sec:teacher}
+
+The teacher stage defines the realised regimes that the student models later forecast. A regime label must be persistent and must separate different return outcomes. Persistence measures whether a state represents a sustained environment. State-conditional returns show whether the states distinguish favourable from adverse outcomes. Crisis-window behaviour links the labels to known stock--bond episodes.
+
+
+\subsection{The jump model}
+
+A jump model assigns each observation to a finite set of states while penalising frequent state changes. For a standardised feature vector \(x_t\), state \(s_t\), and state centres \(\{c_k\}\), the state sequence solves
+\begin{equation}
+    \min_{s_1,\dots,s_T,\,\{c_k\}}\
+    \sum_{t=1}^{T} d(x_t,c_{s_t})
+    +
+    \lambda\sum_{t=2}^{T}\Lambda(s_{t-1},s_t),
+    \label{eq:jump-generic}
+\end{equation}
+where \(d(\cdot,c_k)\) measures distance from state centre \(c_k\), \(\Lambda\) penalises switches, and \(\lambda\) controls persistence. Higher values of \(\lambda\) produce longer spells. Given the centres, the state sequence is obtained by dynamic programming. Given the state sequence, the centres are updated. These two steps are repeated from several initialisations.
+
+\subsection{Two regime parameterisations}
+\label{sec:two-parameterisations}
+
+Both regime specifications use the jump-model penalty, but they define different state spaces.
+
+\paragraph{\Bindep{}: two independent binary labels.}
+The \Bindep{} teacher estimates separate two-state jump models for the equity and bond legs. For asset \(a\in\{\mathrm{eq},\mathrm{bd}\}\), feature vector \(x^a_i\), and teacher member \(p\), the state sequence solves
+\begin{equation}
+    \min_{s^a_1,\dots,s^a_{T_a},\,\{c^a_0,c^a_1\}}
+    \sum_{i=1}^{T_a} d_p\!\left(x^a_i,c^a_{s^a_i}\right)
+    +\lambda_p\sum_{i=2}^{T_a}\mathbf{1}\{s^a_i\neq s^a_{i-1}\}.
+    \label{eq:independent-teacher}
+\end{equation}
+The equity teacher uses daily observations. The bond teacher uses monthly observations. The equity model starts after a 12-year daily training window and is updated at month ends. The bond model starts after a 144-month training window and is updated monthly. At each update, the available training features are standardised before fitting.
+
+The teacher ensemble combines two distance choices with a grid of jump penalties. The \(L^2\) specification uses squared Euclidean loss and mean centres. The \(L^1\) specification uses absolute loss and medoid centres. The equity grid is $\lambda^{\mathrm{eq}}_p\in\{2,4,8,16,32,64,128\}$ and the bond grid is
+$\lambda^{\mathrm{bd}}_p\in
+    \{0,10^{-5},10^{-4},0.001,0.00390625,0.0078125,0.015625,
+    0.03125,0.0625,0.125,$ $0.25,0.5,1,2,4\}.$
+
+After each fit, states are ordered by realised in-sample Sharpe ratio. Let \(g^{a,p}\) denote the higher-Sharpe state for asset \(a\) and teacher member \(p\). This state is labelled favourable. The monthly label from member \(p\) is
+\begin{equation}
+    S^{\mathrm{eq},p}_m
+    =
+    \mathbf{1}\!\left\{
+    \frac{1}{n_m}\sum_{i\in m}\mathbf{1}\{s^{\mathrm{eq},p}_i=g^{\mathrm{eq},p}\}
+    \ge \frac{1}{2}
+    \right\},
+    \qquad
+    S^{\mathrm{bd},p}_m
+    =
+    \mathbf{1}\{s^{\mathrm{bd},p}_m=g^{\mathrm{bd},p}\}.
+    \label{eq:independent-monthly-label}
+\end{equation}
+The equity label is the majority daily state within the month. The bond label is the monthly state itself.
+
+
+\paragraph{\Acoup{}: three joint regimes with a coupling probability.}
+The \Acoup{} approach represents the stock--bond environment with three joint regimes. Each
+leg has a benign or adverse bit, and the admissible joint states are
+\[
+    \Reg=\{\,\text{calm}=(0,0),\ \ \text{normal}=(1,0),\ \ \text{stressed}=(1,1)\,\},
+\]
+where the pair is the equity bit and the bond bit. Calm means that both legs are benign,
+normal means that equity is adverse while bonds remain benign, and stressed means that both
+legs are adverse. The benign-equity/adverse-bond state is excluded in this specification.
+
+For a joint state $j$ with bits $(j_E,j_B)$, the per-month cost combines the two leg-specific
+distances with a coupling term:
+\begin{equation}
+    e_t(j)=d\!\left(\zeq,\mu^{\mathrm{eq}}_{j_E}\right)+d\!\left(\zbd,\mu^{\mathrm{bd}}_{j_B}\right)
+    +\eta\Big[\,\kappa_t\,\mathbf{1}\{j\in D\}+(1\kappa_t)\,\mathbf{1}\{j\in A\}\,\Big],
+    \label{eq:emission}
+\end{equation}
+where $A$ denotes the agree states, calm and stressed, and $D$ denotes the disagree state,
+normal. The scalar $\eta$ controls the strength of the coupling term. The variable
+$\kappa_t\in[0,1]$ is a learned coupling probability: low values favour the disagree state, while
+high values favour the agree states. Given the current state path, $\kappa_t$ is fitted by an
+$L^2$-penalised logistic regression of the leg-agreement indicator
+$y_t=\mathbf{1}\{s^{\mathrm{eq}}_t=s^{\mathrm{bd}}_t\}$ on equity--bond correlation, equity
+and bond trend, and equity and bond drawdown:
+\begin{equation}
+    \kappa_t=\sigma\!\left(\beta_0+\beta^{\top}x^{\mathrm{mkt}}_t\right),\qquad
+    x^{\mathrm{mkt}}_t=\big\{\rho^{\,\mathrm{eq,bd}}_{12,t},\ \mathrm{trend}^{\mathrm{eq}}_t,\
+    \mathrm{trend}^{\mathrm{bd}}_t,\ \mathrm{dd}^{\mathrm{eq}}_t,\ \mathrm{dd}^{\mathrm{bd}}_t\big\}.
+    \label{eq:wt}
+\end{equation}
+The transition penalty is applied separately to the equity and bond bits,
+$\Lambda(i,j)=\lambda\,\mathbf{1}\{i_E\neq j_E\}+\lambda\,\mathbf{1}\{i_B\neq j_B\}$.
+The coupling term acts as a soft bias in the state cost. It raises the cost of states that
+conflict with the fitted stock--bond dependence signal and lowers the cost of states
+supported by that signal.
+
+\paragraph{Relationship.}
+The two parameterisations define different regime objects. The \Bindep{} labels keep equity and bond regimes separate, so the final state can take any of the four favourable--unfavourable combinations. The \Acoup{} label is a single joint state. Calm corresponds to favourable equity and favourable bonds, normal to unfavourable equity and favourable bonds, and stressed to unfavourable equity and unfavourable bonds. The \Bindep{} representation gives two asset-level regime signals. The \Acoup{} representation gives one regime signal for the joint stock--bond environment.
+
+\subsection{Ensembling and voting}
+
+The \Bindep{} teacher combines fitted paths separately for each asset. For asset \(a\), the member vote share and final majority label are
+\begin{equation}
+    \pi^a_m
+    =
+    \frac{1}{|\Path_a|}
+    \sum_{p\in\Path_a}S^{a,p}_m,
+    \qquad
+    S^a_m
+    =
+    \mathbf{1}\{\pi^a_m\ge 1/2\}.
+    \label{eq:independent-vote}
+\end{equation}
+The final independent teacher label is \(S^a_m\). The vote share \(\pi^a_m\) measures agreement across teacher members and gives one favourable-state vote share for equities and one for bonds.
+
+The \Acoup{} teacher uses 22 members, formed from eleven feature families crossed with the \(L^1\) and \(L^2\) specifications. The final joint label is the equal-weight majority vote across these members. The coupled vote shares measure member agreement over the calm, normal, and stressed states.
+
+\subsection{Label results}
+\label{sec:teacher-results}
+
+The two teacher specifications produce persistent regimes with economically distinct return profiles. Figure~\ref{fig:labels} compares the resulting label histories. The \Bindep{} panel shows equity and bond excess-return indexes with favourable-regime months marked for each leg. The \Acoup{} panel shows the same stock--bond history using the calm, normal, and stressed joint regimes. Figure~\ref{fig:vote-wt} reports the coupled ensemble vote shares and the estimated coupling probability.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.46\textwidth}
+        \includegraphics[width=\linewidth]{teacher_regime_labels.pdf}
+    \end{minipage}\hfill
+    \begin{minipage}{0.52\textwidth}
+        \includegraphics[width=\linewidth]{COUPLED__labels.png}
+    \end{minipage}
+    \caption{Regime-label representations of the stock--bond history. Left (\Bindep{}): equity and bond excess-return indexes with favourable-regime months marked for each leg. Right (\Acoup{}): cumulative excess-return indexes shaded by calm, normal, and stressed joint regimes; inset numbers report within-span annualised Sharpe ratios.}
+    \label{fig:labels}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{COUPLED__vote_kappa.png}
+    \caption{\Acoup{} ensemble label construction. The top panel reports per-class vote shares across the 22 coupled members. The bottom panel reports the average coupling probability \(\kappa_t\), with regime shading and the \(0.5\) reference line.}
+    \label{fig:vote-wt}
+\end{figure}
+
+\paragraph{State economics.}
+Table~\ref{tab:state-economics} reports same-month excess-return statistics conditional on
+the teacher labels. These differences are needed for allocation because the student
+probabilities later enter the regime-conditional mean and variance estimates. In the
+\Bindep{} specification, the favourable and unfavourable labels separate positive and
+negative Sharpe-ratio states for both assets. In the \Acoup{} specification, the joint
+labels separate three stock--bond environments. Calm is the strongest equity state. Normal
+has weaker equity performance but positive bond performance. Stressed is negative for both
+legs. The implied allocation problem is different across states: favourable environments
+support risky exposure, normal supports bond use during equity weakness, and stressed
+supports lower risky exposure.
+
+\begin{table}[H]
+    \centering
+    \caption{Label-conditional economics. The table reports same-month annualised excess return,
+        annualised volatility, Sharpe ratio, sample share, and average spell duration. The
+        \Bindep{} panel conditions on each leg's binary label. The \Acoup{} panel conditions on the
+        three joint regimes.}
+    \label{tab:state-economics}
+    \small
+    \begin{adjustbox}{center,max width=\textwidth}
+        \begin{tabular}{@{}llrrrrr@{}}
+            \toprule
+            \multicolumn{7}{l}{\textbf{\Bindep{}: two binary labels (through Nov 2024)}}                  \\
+            \midrule
+            Class  & Regime       & Share            & Ann.\ ret. & Ann.\ vol. & Sharpe  & Avg.\ dur.     \\
+            \midrule
+            Equity & Favourable   & 75.6\%           & $+13.7\%$  & $12.0\%$   & $+1.14$ & 12.8           \\
+            Equity & Unfavourable & 24.4\%           & $-14.5\%$  & $19.4\%$   & $-0.75$ & \phantom{0}4.2 \\
+            Bond   & Favourable   & 67.1\%           & $+5.7\%$   & $3.2\%$    & $+1.81$ & 13.8           \\
+            Bond   & Unfavourable & 32.9\%           & $-4.1\%$   & $5.0\%$    & $-0.81$ & \phantom{0}6.8 \\
+            \midrule
+            \multicolumn{7}{l}{\textbf{\Acoup{}: three joint regimes (1988-02--Nov 2024)}}                \\
+            \midrule
+            Class  & Regime       & Share            & Ann.\ ret. & Ann.\ vol. & Sharpe  & Avg.\ dur.     \\
+            \midrule
+            Equity & Calm         & 13.8\%           & $+21.0\%$  & $8.1\%$    & $+2.60$ & \phantom{0}4.7 \\
+            Equity & Normal       & 77.1\%           & $+9.9\%$   & $14.8\%$   & $+0.67$ & 12.2           \\
+            Equity & Stressed     & \phantom{0}9.0\% & $-40.9\%$  & $13.7\%$   & $-2.99$ & \phantom{0}2.2 \\
+            Bond   & Calm         & 13.8\%           & $+0.8\%$   & $3.5\%$    & $+0.22$ & \phantom{0}4.7 \\
+            Bond   & Normal       & 77.1\%           & $+3.9\%$   & $3.9\%$    & $+1.00$ & 12.2           \\
+            Bond   & Stressed     & \phantom{0}9.0\% & $-8.4\%$   & $5.0\%$    & $-1.69$ & \phantom{0}2.2 \\
+            \bottomrule
+        \end{tabular}
+    \end{adjustbox}
+\end{table}
+
+\paragraph{Persistence.}
+The labels are persistent enough for a monthly allocation rule with transaction costs. A
+label that switches too often would mainly increase turnover. Through November 2024, the
+\Bindep{} labels switch 51 times for equities and 41 times for bonds. The favourable states
+last \(12.8\) months on average for equities and \(13.8\) months for bonds. In the \Acoup{}
+sample, the coupled ensemble records 58 regime switches across 442 months. Normal is the
+most persistent joint regime, with an average duration of \(12.2\) months. Stressed is
+shorter-lived, with an average duration of \(2.2\) months. The transition matrices are
+reported in Appendices~\ref{app:teacher-independent} and~\ref{app:teacher-coupled}.
+
+\paragraph{Crisis windows.}
+Table~\ref{tab:crisis} compares the labels across historical stress windows. The allocation
+question is whether bonds diversify equity losses or lose value together with equities.
+During the dot-com bust and the global financial crisis, the bond leg remains mostly
+favourable in the \Bindep{} specification, and the \Acoup{} specification assigns most
+months to normal. These windows correspond to equity weakness with bond support. In the
+1994 bond shock and the 2022 inflation sell-off, the bond label is mostly unfavourable in
+the \Bindep{} specification, and the \Acoup{} specification assigns a large share of months
+to stressed. These windows correspond to joint stock--bond losses. Forecasting this
+distinction is central for allocation because it separates equity drawdowns in which bonds
+remain useful from environments in which both risky legs should be reduced.
+
+\begin{table}[H]
+    \centering
+    \caption{Crisis-window behaviour under both labellings. The \Bindep{} columns report the bond
+        label's favourable share and Sharpe ratio. The \Acoup{} columns report the joint regime mix
+        within each window and the equity and bond Sharpe ratios. Sharpe ratios use same-month
+        annualised excess returns over each window.}
+    \label{tab:crisis}
+    \small
+    \begin{adjustbox}{center,max width=\textwidth}
+        \begin{tabular}{lrrrrrrr}
+            \toprule
+                                    & \multicolumn{2}{c}{\Bindep{} bond} & \multicolumn{3}{c}{\Acoup{} regime share} & \multicolumn{2}{c}{\Acoup{} Sharpe}                                               \\
+            \cmidrule(lr){2-3}\cmidrule(lr){4-6}\cmidrule(lr){7-8}
+            Window                  & Fav.                               & Sharpe                                    & Calm                                & Normal & Stress.        & Eq.     & Bd.     \\
+            \midrule
+            1990 recession          & 100.0\%                            & $+1.33$                                   & 0\%                                 & 100\%  & \phantom{0}0\% & $+0.05$ & $+1.41$ \\
+            1994 bond shock         & \phantom{0}8.3\%                   & $-1.55$                                   & 8\%                                 & 33\%   & 58\%           & $-0.48$ & $-1.61$ \\
+            Dot-com bust            & 87.5\%                             & $+1.81$                                   & 0\%                                 & 97\%   & \phantom{0}3\% & $-1.07$ & $+1.97$ \\
+            Global financial crisis & 72.2\%                             & $+0.74$                                   & 0\%                                 & 94\%   & \phantom{0}6\% & $-1.58$ & $+0.74$ \\
+            Euro sovereign 2011     & 100.0\%                            & $+3.46$                                   & 12\%                                & 88\%   & \phantom{0}0\% & $-0.61$ & $+3.69$ \\
+            Covid crash             & 100.0\%                            & $+2.25$                                   & 0\%                                 & 100\%  & \phantom{0}0\% & $-0.88$ & $+2.76$ \\
+            Inflation 2022          & \phantom{0}0.0\%                   & $-1.82$                                   & 0\%                                 & 33\%   & 67\%           & $-0.93$ & $-1.90$ \\
+            \bottomrule
+        \end{tabular}
+    \end{adjustbox}
+\end{table}
+
+
+
+\paragraph{Feature separation.}
+The feature-separation diagnostics rank inputs by how strongly their fitted state centres
+differ. In the \Bindep{} specification, the equity label is separated mainly by
+medium-horizon Sortino ratios and exponentially weighted returns. The bond label is separated
+mainly by 6- and 12-month Sharpe ratios and short-horizon downside-risk measures. In the
+\Acoup{} specification, equity trend and risk-adjusted performance separate calm from the
+other regimes, while bond trend and longer-horizon bond Sortino ratios distinguish stressed
+from the other states. Full rankings are reported in Appendices~\ref{app:teacher-independent}
+and \ref{app:teacher-coupled}.
+
+
+\section{Student: forecasting the next-month regime}
+\label{sec:student}
+
+The student stage estimates the conditional distribution of next-month regimes using information available at the end of the current month. For month \(t\), the target is the teacher label at \(t+1\), and the predictors are the lagged macro-financial variables described in Section~\ref{sec:data}. The \Bindep{} student estimates separate binary forecasts for the equity and bond favourable states. The \Acoup{} student estimates a three-class forecast for the joint calm, normal, and stressed regimes.
+
+For the independent student, let \(S^a_{t+1}\in\{0,1\}\) denote the next-month majority-vote label for asset \(a\in\{\mathrm{eq},\mathrm{bd}\}\), and let \(X_t\) denote the predictor vector observed at month \(t\). The student forecast is
+\begin{equation}
+    \hat p^a_{t+1|t}
+    =
+    \Pr\!\left(S^a_{t+1}=1\mid X_t\right),
+    \qquad a\in\{\mathrm{eq},\mathrm{bd}\}.
+    \label{eq:independent-student-probability}
+\end{equation}
+This probability is the forecasted likelihood that asset \(a\) is in its favourable regime next month. The allocation rule uses it to form regime-conditional return moments.
+
+The \Bindep{} student estimates the two favourable-state probabilities with regularised
+logistic regression and random forests. The comparison uses two predictor designs: smoothed
+z-scores alone, and z-scores combined with smoothed z-scores. The validation design is
+walk-forward: each out-of-sample forecast is based on a training window, a subsequent
+validation window used for hyperparameter selection, and a refit on the combined
+training--validation sample before the next-month forecast is recorded. The main text reports
+the forecast objects and headline out-of-sample results; Appendix~\ref{app:student} gives
+the model grids and validation protocol, and Appendix~\ref{app:student-regime-prediction-diagnostics}
+reports the full independent prediction diagnostics.
+
+The \Acoup{} student estimates the same forecasting problem for the joint three-state label.
+It uses multinomial logistic regression and random forests to produce a probability vector
+over calm, normal, and stressed regimes. The coupled forecast therefore gives one predicted
+distribution for the next-month stock--bond environment, while the independent forecast gives
+two asset-level favourable-state probabilities. Appendix~\ref{app:student-coupled} reports
+the coupled student specification and its forecast diagnostics.
+
+\paragraph{Forecast quality.}
+Table~\ref{tab:forecast} reports out-of-sample forecast performance for the student models.
+The purpose of this step is not only classification accuracy. The allocation rule uses
+forecast probabilities to form conditional means and variances, so the forecasts must contain
+information about next-month regimes and must assign useful probability mass across states.
+In the \Bindep{} panel, logistic regression is the strongest headline model for both
+asset-level labels. It has the highest AUC for the equity and bond favourable-state
+forecasts, and it also gives the best headline Brier and log-loss values. The full
+independent predictor-design comparison is reported in
+Table~\ref{tab:student-oos-prediction-summary}.
+
+The \Acoup{} panel evaluates the joint three-class forecast. Random forests give the better
+probabilistic scores, with lower Brier and log-loss values, while logistic regression gives
+the higher balanced accuracy. This difference matters because the coupled allocator uses the
+full probability vector over calm, normal, and stressed regimes. The allocation results in
+Section~\ref{sec:alloc} therefore test whether these statistical forecast differences
+translate into different portfolio outcomes.
+
+\begin{table}[H]
+\centering
+\caption{Out-of-sample student forecast quality. The \Bindep{} panel reports binary
+diagnostics for the equity and bond favourable-state forecasts. The full independent
+predictor-design results are in Table~\ref{tab:student-oos-prediction-summary}. The
+\Acoup{} panel reports diagnostics for the joint three-class forecast; AUC is the macro
+one-vs-rest average, and Brier and log loss are reported in their multiclass forms.}
+\label{tab:forecast}
+\small
+\begin{adjustbox}{center,max width=\textwidth}
+\begin{tabular}{llcccc}
+\toprule
+\multicolumn{6}{@{}l}{\textbf{\Bindep{}: per-leg binary forecast}}\\
+\multicolumn{6}{@{}l}{\footnotesize OOS to 2024-12; equity starts 1995-03, bond starts 1996-02}\\
+\midrule
+Label & Model & AUC & Bal.\ acc. & Brier & Log loss \\
+\midrule
+Equity & Logistic regression & 0.929 & 0.846 & 0.088 & 0.296 \\
+Equity & Random forest       & 0.903 & 0.831 & 0.107 & 0.361 \\
+Bond   & Logistic regression & 0.892 & 0.831 & 0.128 & 0.462 \\
+Bond   & Random forest       & 0.873 & 0.800 & 0.147 & 0.471 \\
+\midrule
+\multicolumn{6}{@{}l}{\textbf{\Acoup{}: three-class forecast}}\\
+\multicolumn{6}{@{}l}{\footnotesize OOS 1996-02 to 2024-10}\\
+\midrule
+\multicolumn{2}{l}{Model} & AUC & Bal.\ acc. & Brier & Log loss \\
+\midrule
+\multicolumn{2}{l}{Logistic regression} & 0.770 & 0.677 & 0.541 & 1.062 \\
+\multicolumn{2}{l}{Random forest}       & 0.776 & 0.595 & 0.383 & 0.686 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Figures~\ref{fig:student-probs} and~\ref{fig:c-student-probs} show the out-of-sample
+probability paths. These figures are important for the allocation exercise because the
+portfolio rule uses probabilities, not only hard class assignments.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{equity_prediction_probabilities.jpg}
+
+\vspace{0.6em}
+
+\includegraphics[width=0.92\linewidth]{bond_prediction_probabilities.jpg}
+
+\caption{\Bindep{} student out-of-sample probability paths. The top panel reports equity
+favourable-regime probabilities, and the bottom panel reports bond favourable-regime
+probabilities. Shading marks the realised teacher label, the black line reports the predicted
+favourable-regime probability, and the dashed line marks the \(0.5\) threshold.}
+\label{fig:student-probs}
+\label{fig:student-equity-probabilities}
+\label{fig:student-bond-probabilities}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{COUPLED__pred_probabilities.pdf}
+\caption{\Acoup{} student out-of-sample probability paths for the three joint regimes
+(calm, normal, stressed), shown for the logistic and random-forest students. Shading marks
+the realised teacher regime, the black lines report the predicted regime probabilities, and
+the dashed line marks the \(0.5\) threshold.}
+\label{fig:c-student-probs}
+\end{figure}
+
+The independent probability paths vary with the realised teacher labels. Equity
+favourable-state probabilities fall during the 2000--2003 and 2008--2009 equity drawdowns
+and rise during favourable equity periods. Bond favourable-state probabilities switch more
+often, consistent with the shorter bond-regime spells in Table~\ref{tab:state-economics}.
+For the coupled student, the probability paths show how forecast mass moves across calm,
+normal, and stressed regimes. These probabilities are the objects passed to the allocation
+rules in the next section.
+
+\paragraph{Predictor relevance.}
+Figure~\ref{fig:importance} reports feature importance aggregated by predictor block for the
+\Bindep{} forecasts. The block definitions and the underlying individual predictors are
+reported in Appendix~\ref{app:student-regime-prediction-diagnostics}. Equity-regime
+forecasts rely most on equity cross-section, industry, and style variables, which measure
+variation within the equity market. Bond-regime forecasts use a broader mix of equity,
+Treasury, and credit variables, which reflects the role of rates, credit conditions, and
+cross-asset risk pricing in bond-regime prediction. The difference between the two panels
+supports the separate asset-level forecasting design: the equity and bond labels are predicted
+from different combinations of macro-financial information.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{feature_block_importance.jpg}
+\caption{\Bindep{} student feature-block relevance. Logistic-regression relevance is measured
+by absolute coefficient magnitude. Random-forest relevance is measured by impurity-based
+feature importance. Values are aggregated within predictor blocks.}
+\label{fig:importance}
+\end{figure}
+
+Figure~\ref{fig:c-importance} reports the corresponding block relevance for the \Acoup{}
+three-class forecast. Because the target is a joint stock--bond regime, relevance is less
+concentrated in a single asset-specific block. The logistic student places the largest
+weights on regime-context and commodity variables, while the random forest relies more on
+Treasury-market and macro-financial variables. This pattern is consistent with the coupled
+target: predicting calm, normal, and stressed states requires information about both asset
+returns and the macro-financial environment that links the two legs.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{COUPLED__feature_block_importance.pdf}
+\caption{\Acoup{} student feature-block relevance for the three-class next-month regime
+forecast. Logistic-regression relevance is measured by absolute coefficient magnitude.
+Random-forest relevance is measured by impurity-based feature importance. Values are
+aggregated within predictor blocks.}
+\label{fig:c-importance}
+\end{figure}
+
+\section{Regime-aware allocation}
+\label{sec:alloc}
+
+The allocation stage tests whether forecasted regimes improve monthly portfolio choice after
+transaction costs. At the end of month \(t\), the student forecasts determine
+regime-conditional estimates of next-month return moments. The portfolio rule then chooses
+equity, bond, and cash weights. Realised returns are measured net of one-way transaction
+costs and compared with a monthly rebalanced 60/40 benchmark.
+
+For the independent allocator, let \(\hat p^{a}_{t+1|t}\) denote the probability, observed at
+the end of month \(t\), that asset \(a\in\{\mathrm{eq},\mathrm{bd}\}\) is in its favourable
+regime in month \(t+1\). For each asset and state \(s\in\{0,1\}\), the state-conditional mean
+and variance are estimated from past returns assigned to that state. These estimates use only
+information available before month \(t+1\). To reduce sampling error in small state samples,
+the state moments are shrunk toward pre-out-of-sample unconditional moments with weight
+\[
+    \frac{n^a_{s,t}}{n^a_{s,t}+36},
+\]
+where \(n^a_{s,t}\) is the number of past observations for asset \(a\) in state \(s\). The
+full probability-to-moment construction is given in Appendix~\ref{app:allocation}, and the
+sensitivity to the shrinkage constant is reported in
+Appendix~\ref{app:allocation-parameter-sensitivity}.
+
+The probability-mixture mean for asset \(a\) is
+\begin{equation}
+    \hat\mu^a_t
+    =
+    (1-\hat p^a_{t+1|t})\hat\mu^a_{0,t}
+    +
+    \hat p^a_{t+1|t}\hat\mu^a_{1,t}.
+    \label{eq:independent-allocation-mean}
+\end{equation}
+The corresponding variance uses the second moment of the two-state mixture,
+\begin{equation}
+    (\hat\sigma^a_t)^2
+    =
+    (1-\hat p^a_{t+1|t})
+    \left[(\hat\sigma^a_{0,t})^2+(\hat\mu^a_{0,t})^2\right]
+    +
+    \hat p^a_{t+1|t}
+    \left[(\hat\sigma^a_{1,t})^2+(\hat\mu^a_{1,t})^2\right]
+    -
+    (\hat\mu^a_t)^2 .
+    \label{eq:independent-allocation-variance}
+\end{equation}
+The covariance matrix combines these conditional variances with an expanding stock--bond
+correlation estimate.
+
+The independent strategies use the long-only set
+\[
+    \mathcal W
+    =
+    \left\{
+    (w^{\mathrm{eq}},w^{\mathrm{bd}}):
+    w^{\mathrm{eq}}\ge0,\ 
+    w^{\mathrm{bd}}\ge0,\ 
+    w^{\mathrm{eq}}+w^{\mathrm{bd}}\le1
+    \right\},
+\]
+with cash weight \(1-w^{\mathrm{eq}}-w^{\mathrm{bd}}\). The monthly portfolio is
+\begin{equation}
+    w_t
+    =
+    \arg\max_{w\in\mathcal W}
+    \left\{
+    w^{\top}\hat\mu_t
+    -
+    \gamma\,w^{\top}\hat\Sigma_t w
+    -
+    \tau c\,\lVert w-w_{t-1}\rVert_1
+    \right\},
+    \label{eq:mv}
+\end{equation}
+where \(\gamma\) is risk aversion, \(c\) is the one-way transaction cost, and \(\tau\) scales
+the turnover penalty. The realised net portfolio return is
+\[
+    r^{p}_{t+1}
+    =
+    w^{\mathrm{eq}}_t r^{\mathrm{eq}}_{t+1}
+    +
+    w^{\mathrm{bd}}_t r^{\mathrm{bd}}_{t+1}
+    -
+    c\,\lVert w_t-w_{t-1}\rVert_1 .
+\]
+The independent grid varies the student model, predictor design, risk aversion, turnover
+penalty, transaction cost, and probability-smoothing half-life. Appendix~\ref{app:alloc-independent}
+reports the grid, selected-strategy settings, additional benchmarks, and parameter sweeps.
+
+The \Acoup{} allocator applies the same portfolio objective to the joint-regime forecast. Its
+inputs are the predicted probabilities of calm, normal, and stressed regimes, and its moments
+are estimated from past returns assigned to those joint regimes. The coupled specification
+uses either the most likely joint regime or the probability mixture
+\[
+    \hat\mu_t
+    =
+    \sum_k p_{k,t}\hat\mu_{k,t}.
+\]
+The coupled portfolios are long-only in equity, bonds, and cash, rebalance monthly, and use
+the 10 bps one-way transaction-cost.
+Appendix~\ref{app:alloc-coupled} reports the coupled allocation details, benchmark rules,
+cost sensitivity, and parameter sweeps. The headline results for both approaches are
+evaluated against the 60/40 benchmark.
+
+\subsection{Allocation trade-off}
+\label{sec:alloc-results}
+\label{subsec:results-dynamic-allocation}
+
+The allocation results show that regime forecasts have different portfolio roles across the
+selected dynamic strategies. Table~\ref{tab:alloc-frontier} reports three representative
+roles from each allocation grid: a defensive allocation, an intermediate allocation, and a
+higher-return allocation. The selected rows summarise the main trade-off between drawdown
+control, trading intensity, and terminal wealth. Appendices~\ref{app:alloc-independent}
+and~\ref{app:alloc-coupled} report the selection protocol, full allocation tables, cost
+sensitivity, and parameter sweeps. Additional independent benchmarks, including equity-only,
+bond-only, and volatility-targeted 60/40 allocations, are reported in
+Appendix~\ref{app:independent-dynamic-benchmarks}.
+
+\begin{table}[H]
+\centering
+\caption{Selected allocation results, out of sample. Each panel reports three representative
+dynamic allocation roles and the corresponding 60/40 benchmark. Returns are annualised
+excess returns net of transaction costs. ``Final'' indexes wealth to \(100\) at the start of
+the evaluation sample. Both panels use long-only equity--bond--cash weights, monthly
+rebalancing, and 10~bps one-way transaction costs. The \Bindep{} allocation sample runs to
+2024-10; the independent student forecast diagnostics run to 2024-12. The \Acoup{} sample is
+1996-02 to 2024-10.}
+\label{tab:alloc-frontier}
+\small
+\begin{adjustbox}{center,max width=\textwidth}
+\begin{tabular}{@{}llrrrrr@{}}
+\toprule
+Role & Strategy & Ann.\ exc. & Vol. & Sharpe & Max DD & Final \\
+\midrule
+\multicolumn{7}{@{}l}{\textbf{\Bindep{}: selected dynamic allocations and benchmark}}\\
+\midrule
+Defensive    & Random forest, smoothed predictors       & $+4.4\%$  & 5.8\%  & 0.77  & $-14.9\%$ & 341.9 \\
+Low-turnover & Logistic, z-score + smoothed z-score     & $+5.0\%$  & 7.2\%  & 0.69  & $-13.0\%$ & 386.6 \\
+High-return  & Logistic, smoothed predictors            & $+7.9\%$  & 10.6\% & 0.74  & $-19.3\%$ & 814.2 \\
+Benchmark    & 60/40                                    & $+4.5\%$  & 9.6\%  & 0.47  & $-36.2\%$ & 359.4 \\
+\midrule
+\multicolumn{7}{@{}l}{\textbf{\Acoup{}: selected dynamic allocations and benchmark}}\\
+\midrule
+Defensive   & Minimum variance, probability mixture     & $+0.80\%$ & 1.24\% & 0.641 & $-2.0\%$  & 234.0 \\
+Balanced    & Mean--variance, probability mixture       & $+2.74\%$ & 4.36\% & 0.628 & $-9.6\%$  & 398.5 \\
+High-return & Mean--variance, probability mixture       & $+4.70\%$ & 7.57\% & 0.621 & $-21.9\%$ & 661.2 \\
+Benchmark   & 60/40                                    & $+4.92\%$ & 9.61\% & 0.512 & $-33.9\%$ & 668.9 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+The defensive rows show the drawdown-control role of the regime forecasts. In the \Bindep{}
+panel, the defensive allocation raises the Sharpe ratio from \(0.47\) to \(0.77\) and reduces
+maximum drawdown from \(-36.2\%\) to \(-14.9\%\). In the \Acoup{} panel, the defensive
+allocation raises the Sharpe ratio from \(0.512\) to \(0.641\) and reduces maximum drawdown
+from \(-33.9\%\) to \(-2.0\%\). These results show that forecast probabilities can reduce
+risky exposure in adverse regimes while preserving positive risk-adjusted returns.
+
+The intermediate rows describe the trade-off between risk control and participation in
+favourable regimes. The \Bindep{} low-turnover allocation has a Sharpe ratio of \(0.69\), a
+maximum drawdown of \(-13.0\%\), and final wealth of \(386.6\), with annual turnover reported
+in Table~\ref{tab:allocation-selected-strategies}. The \Acoup{} balanced allocation has a
+Sharpe ratio of \(0.628\), a maximum drawdown of \(-9.6\%\), and final wealth of \(398.5\).
+These rows use the regime forecasts to hold some risky exposure while reducing the depth of
+drawdowns relative to the benchmark.
+
+The high-return rows show the upside role of the allocation rule. In the \Bindep{} panel,
+the high-return allocation reaches final wealth of \(814.2\), compared with \(359.4\) for
+the benchmark, with a maximum drawdown of \(-19.3\%\). In the \Acoup{} panel, the high-return
+allocation reaches final wealth of \(661.2\), close to the benchmark value of \(668.9\), while
+raising the Sharpe ratio from \(0.512\) to \(0.621\) and reducing maximum drawdown from
+\(-33.9\%\) to \(-21.9\%\). The full metric set is reported in
+Tables~\ref{tab:c-headline}, \ref{tab:allocation-performance-summary},
+and~\ref{tab:allocation-selected-strategies}.
+
+Figure~\ref{fig:alloc-wealth} reports the corresponding wealth and drawdown paths.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\textwidth}
+\includegraphics[width=\linewidth]{allocation_wealth_drawdown_focused.jpg}\\[2pt]
+{\footnotesize\centering (a) \Bindep{}\par}
+\end{minipage}\hfill
+\begin{minipage}{0.50\textwidth}
+\includegraphics[width=\linewidth]{COUPLED__alloc_wealth_drawdown.pdf}\\[2pt]
+{\footnotesize\centering (b) \Acoup{}\par}
+\end{minipage}
+\caption{Dynamic allocation performance, out of sample. The panels report wealth indexes and
+drawdowns for the selected dynamic allocations and the 60/40 benchmark under the \Bindep{}
+and \Acoup{} approaches. Wealth is indexed to \(100\) at the start of each evaluation sample,
+and returns are net of 10~bps one-way transaction costs.}
+\label{fig:alloc-wealth}
+\end{figure}
+
+The wealth and drawdown paths show how the selected allocations produce the table results.
+The defensive allocations reduce losses during stress periods by moving more weight into
+cash or bonds when forecast probabilities indicate adverse regimes. The high-return
+allocations keep larger risky exposure during favourable forecasted regimes, which explains
+the higher terminal wealth in the \Bindep{} panel and the higher Sharpe ratio in the
+\Acoup{} panel. The allocation evidence therefore links the student forecasts to the central
+portfolio question: regime information changes exposure when the stock--bond environment
+changes.
+
+
+\subsection{Portfolio-weight behaviour}
+
+The selected allocations differ in how forecast probabilities change exposure to equity,
+bonds, and cash. Defensive allocations reduce equity and bond exposure when adverse regimes
+receive higher forecast probability. This lowers volatility and drawdowns, but it also limits
+participation during strong equity markets. Higher-return allocations keep larger risky
+positions during favourable forecasts and therefore compound more in sustained favourable
+periods. The intermediate allocations sit between these cases by reducing exposure less
+aggressively and trading less frequently.
+
+Figure~\ref{fig:alloc-mech} reports portfolio weights and turnover for the selected
+allocations. The \Bindep{} panel shows how equity and bond weights respond to the two
+asset-level favourable-state probabilities. The \Acoup{} panel shows how weights respond to
+the forecast distribution over calm, normal, and stressed joint regimes. Appendices
+\ref{app:alloc-independent} and~\ref{app:alloc-coupled} report the full allocation
+diagnostics, including selected-strategy settings, turnover statistics, cost sensitivity, and
+parameter sweeps.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\textwidth}
+\includegraphics[width=\linewidth]{allocation_mechanics_focused.jpg}\\[2pt]
+{\footnotesize\centering (a) \Bindep{}\par}
+\end{minipage}\hfill
+\begin{minipage}{0.50\textwidth}
+\includegraphics[width=\linewidth]{COUPLED__alloc_mechanics.pdf}\\[2pt]
+{\footnotesize\centering (b) \Acoup{}\par}
+\end{minipage}
+\caption{Portfolio weights and turnover, out of sample. The panels report equity, bond, and
+cash weights together with turnover for the selected dynamic allocations under the \Bindep{}
+and \Acoup{} approaches. The comparison shows how forecast probabilities change portfolio
+exposure across regimes.}
+\label{fig:alloc-mech}
+\end{figure}
+
+The weight paths explain the performance trade-off in Table~\ref{tab:alloc-frontier}. Lower
+risky exposure during adverse forecasts reduces drawdowns. Larger risky exposure during
+favourable forecasts raises terminal wealth when favourable regimes persist. Turnover measures
+the cost of moving between these exposures, so the low-turnover and balanced allocations
+represent the middle of the trade-off between drawdown control and return participation.
+
+
+\subsection{Sensitivity}
+
+The sensitivity checks test whether the selected allocation roles depend on narrow parameter
+choices. The main pattern is stable across the independent and coupled specifications:
+higher risk aversion reduces risky exposure, probability smoothing reduces trading, turnover
+penalties lower rebalancing, and higher transaction costs reduce net performance. The full
+independent and coupled sweeps are reported in Appendices~\ref{app:alloc-independent}
+and~\ref{app:alloc-coupled}. The independent selection protocol is reported in
+Appendix~\ref{app:independent-model-selection-protocol}, which separates fixed design
+choices, grid-selected choices, and diagnostic checks.
+
+In the \Bindep{} results, risk aversion and probability smoothing control different parts of
+the allocation behaviour. For the defensive allocation, raising risk aversion from
+\(\gamma=0.25\) to \(\gamma=5\) raises the Sharpe ratio from \(0.64\) to \(0.84\), reduces
+maximum drawdown from \(-19.3\%\) to \(-11.6\%\), and lowers annual turnover from
+\(113.7\%\) to \(54.8\%\). Probability smoothing mainly reduces trading: for the
+low-turnover allocation, increasing the smoothing half-life from \(0\) to \(6\) months lowers
+annual turnover from \(196.9\%\) to \(38.9\%\), with the Sharpe ratio falling from \(0.74\)
+to \(0.62\). Table~\ref{tab:allocation-cost-turnover-sensitivity} reports the independent
+transaction-cost and turnover-penalty sensitivity; at the 10 bps headline cost, the best
+reported Sharpe ratios are \(0.74\), \(0.81\), and \(0.73\) for the high-return, defensive,
+and low-turnover allocations.
+
+In the \Acoup{} results, the parameter sweeps show the same economic pattern. For the
+random-forest mean--variance allocation, increasing risk aversion from \(\gamma=0.25\) to
+\(\gamma=5\) raises the Sharpe ratio from \(0.37\) to \(0.60\) and lowers annual turnover
+from \(114\%\) to \(58\%\). The logistic mean--variance allocation is flatter over the same
+risk-aversion range, with Sharpe ratios near \(0.60\). A small positive turnover penalty gives
+the strongest net Sharpe ratio, while large penalties reduce performance by limiting the
+portfolio response to regime forecasts. Transaction costs reduce the probability-mixture
+mean--variance Sharpe ratio from \(0.62\) at 5 bps to \(0.57\) at 25 bps, as reported in
+Table~\ref{tab:c-cost}.
+
+\section{Discussion and conclusion}
+\label{sec:conclusion}
+
+The empirical question is whether regime forecasts improve the timing of equity, bond, and
+cash exposure after transaction costs. The results give a conditional answer. Regime
+probabilities improve portfolio outcomes when the allocation rule uses them to reduce risky
+exposure in adverse states, maintain exposure in favourable states, and control the trading
+needed to move between those positions.
+
+The main economic result is that the stock--bond hedge is state dependent. In the dot-com
+bust and the global financial crisis, equity weakness coincides with positive bond
+performance. In 1994 and 2022, bond losses occur together with equity losses. A monthly
+allocation rule that treats these environments alike misses the central difference between a
+diversifying drawdown and a joint stock--bond sell-off.
+
+The two regime representations use different information about this difference. The
+\Bindep{} specification gives separate equity and bond favourable-state probabilities, which
+lets the allocator adjust each leg separately. The \Acoup{} specification gives a joint
+probability distribution over calm, normal, and stressed regimes, which makes the
+diversification state explicit. The empirical results show gains under both representations,
+but along different margins: the independent allocation is strongest for terminal wealth in
+the high-return role, while the coupled allocation is strongest for drawdown control in the
+defensive role.
+
+The forecasting stage is necessary because the allocation is made before the next return is
+observed. The student models produce informative out-of-sample regime probabilities from
+lagged macro-financial predictors. The predictor evidence is consistent with the target
+definitions: equity regimes depend more on equity cross-section, industry, and style
+information, while bond regimes depend more on Treasury, credit, and cross-asset conditions.
+
+The portfolio results qualify the interpretation. Regime information has no single value
+independent of the allocation rule. Its effect depends on risk aversion, turnover penalties,
+transaction costs, probability smoothing, and moment shrinkage. The contribution of the
+framework is to connect realised regime labels, forecast probabilities, and net allocation
+performance in one monthly stock--bond decision. In that setting, forecasted regimes improve
+portfolio choice when they identify when bonds hedge equity risk, when both risky legs should
+be reduced, and when favourable states justify higher risky exposure.
+
+\appendix
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
+\input{appendix_body}
+
+\end{document}

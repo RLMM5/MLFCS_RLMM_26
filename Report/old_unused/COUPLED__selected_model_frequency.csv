@@ -1,0 +1,3 @@
+Model,Most frequent setting,Selection share,OOS windows
+Logistic regression,C=0.03,81.0%,58
+Random forest,"d=4,leaf=5,n=300",72.4%,58

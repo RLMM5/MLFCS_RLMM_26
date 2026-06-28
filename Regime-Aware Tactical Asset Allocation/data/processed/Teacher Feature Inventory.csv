@@ -1,0 +1,4 @@
+object,asset,teacher_panel,feature_group,source_frequency,label_source,feature_source,n_rows,n_features,complete_rows,first_date,last_date,avg_feature_missing_pct
+equity_teacher,equity,equity_daily_return_sortino,return_sortino,daily,daily_sjm,daily,12668,8,12668,1976-01-30,2026-04-30,0.0
+bond_teacher,bond,bond_monthly_return_downside_sharpe_vol,return_downside_sharpe_vol,monthly,monthly_sjm,monthly_only,604,11,591,1976-01-31,2026-04-30,0.012492474413004216
+equity_monthly_returns,equity,equity_monthly_return_alignment,monthly_return_alignment,monthly,return_alignment,daily_compounded,604,0,604,1976-01-31,2026-04-30,

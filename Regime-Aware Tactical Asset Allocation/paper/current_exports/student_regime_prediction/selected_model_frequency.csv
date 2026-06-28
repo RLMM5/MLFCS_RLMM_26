@@ -1,0 +1,9 @@
+Label,Predictor set,Model,Most frequent setting,Selection share,Number of OOS months
+Bond regime,z-score + smoothed z-score predictors,Logistic regression,"C=0.03, class weight=balanced",56.2%,347
+Bond regime,z-score + smoothed z-score predictors,Random forest,"trees=500, depth=3, leaf=10, max features=sqrt",32.3%,347
+Bond regime,smoothed z-score predictors,Logistic regression,"C=0.03, class weight=balanced",38.6%,347
+Bond regime,smoothed z-score predictors,Random forest,"trees=500, depth=2, leaf=10, max features=sqrt",30.8%,347
+Equity regime,z-score + smoothed z-score predictors,Logistic regression,"C=0.03, class weight=balanced",60.1%,358
+Equity regime,z-score + smoothed z-score predictors,Random forest,"trees=500, depth=3, leaf=10, max features=sqrt",67.6%,358
+Equity regime,smoothed z-score predictors,Logistic regression,"C=0.03, class weight=balanced",56.4%,358
+Equity regime,smoothed z-score predictors,Random forest,"trees=500, depth=3, leaf=10, max features=sqrt",70.7%,358

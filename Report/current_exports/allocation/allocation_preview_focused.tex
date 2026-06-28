@@ -1,0 +1,58 @@
+﻿\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{parskip}
+\usepackage{pdflscape}
+\captionsetup{font=small,labelfont=bf}
+\begin{document}
+\input{allocation_summary_focused.tex}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.90\textheight,keepaspectratio]{allocation_wealth_drawdown_focused.pdf}
+\caption{Dynamic allocation performance}
+\label{fig:allocation-wealth-drawdown-focused}
+\vspace{0.25em}
+\begin{minipage}{0.90\linewidth}\footnotesize
+\emph{Note.} High-return dynamic is the logistic-regression strategy with smoothed z-score predictors. Defensive dynamic is the random-forest strategy with smoothed z-score predictors. Low-turnover dynamic is the logistic-regression strategy with z-score and smoothed z-score predictors.
+\end{minipage}
+\end{figure}
+
+\begin{landscape}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.90\textheight,keepaspectratio]{allocation_mechanics_focused.pdf}
+\caption{Dynamic allocation mechanics}
+\label{fig:allocation-mechanics-focused}
+\vspace{0.25em}
+\begin{minipage}{0.90\linewidth}\footnotesize
+\emph{Note.} The columns show the high-return, defensive, and low-turnover dynamic strategies. Portfolio weights are monthly allocations to equity, bond, and cash. Turnover is the rolling 12-month average of monthly turnover.
+\end{minipage}
+\end{figure}
+\end{landscape}
+
+\clearpage
+\input{allocation_selected_strategies_appendix.tex}
+
+\begin{landscape}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.90\textheight,keepaspectratio]{allocation_mechanics_appendix.pdf}
+\caption{Allocation mechanics for selected dynamic strategies}
+\label{fig:allocation-mechanics-appendix}
+\vspace{0.25em}
+\begin{minipage}{0.90\linewidth}\footnotesize
+\emph{Note.} The panels report predicted favorable-regime probabilities, portfolio weights, rolling 12-month turnover, wealth, and drawdown for the three selected dynamic strategies.
+\end{minipage}
+\end{figure}
+\end{landscape}
+
+\input{allocation_parameter_sweep_appendix.tex}
+\end{document}
+

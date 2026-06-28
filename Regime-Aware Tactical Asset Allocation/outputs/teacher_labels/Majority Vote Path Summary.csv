@@ -1,0 +1,5 @@
+asset,feature_group,model_family,n_paths,lambdas,first_date,last_date,n_rows
+bond,return_downside_sharpe_vol,robust_l1_medoids_jump_model,15,"0, 1e-05, 0.0001, 0.001, 0.00390625, 0.0078125, 0.015625, 0.03125, 0.0625, 0.125, 0.25, 0.5, 1, 2, 4",1989-01-31,2026-04-30,6720
+bond,return_downside_sharpe_vol,standard_l2_jump_model,15,"0, 1e-05, 0.0001, 0.001, 0.00390625, 0.0078125, 0.015625, 0.03125, 0.0625, 0.125, 0.25, 0.5, 1, 2, 4",1989-01-31,2026-04-30,6720
+equity,return_sortino,robust_l1_medoids_jump_model,7,"2, 4, 8, 16, 32, 64, 128",1988-02-29,2026-04-30,3213
+equity,return_sortino,standard_l2_jump_model,7,"2, 4, 8, 16, 32, 64, 128",1988-02-29,2026-04-30,3213

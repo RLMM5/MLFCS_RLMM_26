@@ -1,0 +1,4 @@
+Transaction cost,Ann. return,Ann. vol.,Sharpe,Max. drawdown,Monthly CVaR 1%,Final wealth,Ann. turnover
+0.0005,+2.8%,7.8%,0.35,-27.6%,-10.7%,219.32,317.1%
+0.001,+2.6%,7.8%,0.33,-28.1%,-10.7%,209.58,317.1%
+0.0025,+2.1%,7.8%,0.27,-29.4%,-10.8%,182.82,317.1%

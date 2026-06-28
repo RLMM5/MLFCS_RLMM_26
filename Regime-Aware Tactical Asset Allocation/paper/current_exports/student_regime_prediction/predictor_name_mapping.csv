@@ -1,0 +1,269 @@
+feature,clean_base_predictor_name
+anfci_diff_z,Anfci Diff
+anfci_diff_z_smooth,Anfci Diff
+anfci_level_z,Anfci Level
+anfci_level_z_smooth,Anfci Level
+big_avg_ret_z,Average large-cap portfolio return
+big_avg_ret_z_smooth,Average large-cap portfolio return
+bihi_vwret_z,Large-value portfolio return
+bihi_vwret_z_smooth,Large-value portfolio return
+bilo_vwret_z,Bilo Vwret
+bilo_vwret_z_smooth,Bilo Vwret
+bime_vwret_z,Bime Vwret
+bime_vwret_z_smooth,Bime Vwret
+bond_10y_mom_diff_z,Change in 10-year Treasury momentum
+bond_10y_mom_diff_z_smooth,Change in 10-year Treasury momentum
+bond_10y_ret_level_z,Bond 10Y Ret Level
+bond_10y_ret_level_z_smooth,Bond 10Y Ret Level
+cfnai_level_z,Cfnai Level
+cfnai_level_z_smooth,Cfnai Level
+cmdty_broad_aqr_ret_z,Cmdty Broad Aqr Ret
+cmdty_broad_aqr_ret_z_smooth,Cmdty Broad Aqr Ret
+cmdty_ret_12m_z,Cmdty Ret 12M
+cmdty_ret_12m_z_smooth,Cmdty Ret 12M
+cmdty_ret_1m_z,Cmdty Ret 1M
+cmdty_ret_1m_z_smooth,Cmdty Ret 1M
+cmdty_ret_6m_z,Cmdty Ret 6M
+cmdty_ret_6m_z_smooth,Cmdty Ret 6M
+cmdty_sharpe_12m_z,Cmdty Sharpe 12M
+cmdty_sharpe_12m_z_smooth,Cmdty Sharpe 12M
+cmdty_vol_12m_z,"Commodity volatility, 12m"
+cmdty_vol_12m_z_smooth,"Commodity volatility, 12m"
+core_inflation_diff_z,Core-inflation change
+core_inflation_diff_z_smooth,Core-inflation change
+credit_hy_ig_corr_12m_fisher_diff_z,Credit High-yield Investment-grade Corr 12M Fisher Diff
+credit_hy_ig_corr_12m_fisher_diff_z_smooth,Credit High-yield Investment-grade Corr 12M Fisher Diff
+credit_hy_ig_corr_12m_fisher_z,Credit High-yield Investment-grade Corr 12M Fisher
+credit_hy_ig_corr_12m_fisher_z_smooth,Credit High-yield Investment-grade Corr 12M Fisher
+credit_hy_minus_ig_z,High-yield minus investment-grade credit return
+credit_hy_minus_ig_z_smooth,High-yield minus investment-grade credit return
+credit_hy_proxy_ret_z,High-yield credit proxy return
+credit_hy_proxy_ret_z_smooth,High-yield credit proxy return
+credit_hy_ret_6m_z,"High-yield credit return, 6m"
+credit_hy_ret_6m_z_smooth,"High-yield credit return, 6m"
+credit_ig_proxy_ret_z,Credit Investment-grade Proxy Ret
+credit_ig_proxy_ret_z_smooth,Credit Investment-grade Proxy Ret
+credit_ig_ret_6m_z,"Investment-grade credit return, 6m"
+credit_ig_ret_6m_z_smooth,"Investment-grade credit return, 6m"
+credit_lambda_cov_12m_z,Credit Lambda Cov 12M
+credit_lambda_cov_12m_z_smooth,Credit Lambda Cov 12M
+credit_lambda_cov_diff_z,Change in credit covariance concentration
+credit_lambda_cov_diff_z_smooth,Change in credit covariance concentration
+credit_ret_dispersion_1m_z,Credit Ret Dispersion 1M
+credit_ret_dispersion_1m_z_smooth,Credit Ret Dispersion 1M
+credit_ret_dispersion_6m_z,Credit Ret Dispersion 6M
+credit_ret_dispersion_6m_z_smooth,Credit Ret Dispersion 6M
+credit_spread_diff_z,Credit-spread change
+credit_spread_diff_z_smooth,Credit-spread change
+cross_bond_cmdty_corr_12m_fisher_diff_z,Cross Bond Cmdty Corr 12M Fisher Diff
+cross_bond_cmdty_corr_12m_fisher_diff_z_smooth,Cross Bond Cmdty Corr 12M Fisher Diff
+cross_bond_credit_ig_corr_12m_fisher_diff_z,Cross Bond Credit Investment-grade Corr 12M Fisher Diff
+cross_bond_credit_ig_corr_12m_fisher_diff_z_smooth,Cross Bond Credit Investment-grade Corr 12M Fisher Diff
+cross_bond_proxy_ret_z,Aggregate bond proxy return
+cross_bond_proxy_ret_z_smooth,Aggregate bond proxy return
+cross_eq_bond_corr_12m_fisher_diff_z,Cross Eq Bond Corr 12M Fisher Diff
+cross_eq_bond_corr_12m_fisher_diff_z_smooth,Cross Eq Bond Corr 12M Fisher Diff
+cross_eq_cmdty_corr_12m_fisher_diff_z,Cross Eq Cmdty Corr 12M Fisher Diff
+cross_eq_cmdty_corr_12m_fisher_diff_z_smooth,Cross Eq Cmdty Corr 12M Fisher Diff
+cross_eq_credit_hy_corr_12m_fisher_diff_z,"Change in equity--high-yield credit correlation, 12m"
+cross_eq_credit_hy_corr_12m_fisher_diff_z_smooth,"Change in equity--high-yield credit correlation, 12m"
+cross_eq_tsy20_corr_12m_fisher_diff_z,Cross Eq Tsy20 Corr 12M Fisher Diff
+cross_eq_tsy20_corr_12m_fisher_diff_z_smooth,Cross Eq Tsy20 Corr 12M Fisher Diff
+crsp_ind12_buseq_z,Business-equipment industry return
+crsp_ind12_buseq_z_smooth,Business-equipment industry return
+crsp_ind12_chems_z,Crsp Ind12 Chems
+crsp_ind12_chems_z_smooth,Crsp Ind12 Chems
+crsp_ind12_durbl_z,Crsp Ind12 Durbl
+crsp_ind12_durbl_z_smooth,Crsp Ind12 Durbl
+crsp_ind12_enrgy_z,Crsp Ind12 Enrgy
+crsp_ind12_enrgy_z_smooth,Crsp Ind12 Enrgy
+crsp_ind12_hlth_z,Crsp Ind12 Hlth
+crsp_ind12_hlth_z_smooth,Crsp Ind12 Hlth
+crsp_ind12_manuf_z,Crsp Ind12 Manuf
+crsp_ind12_manuf_z_smooth,Crsp Ind12 Manuf
+crsp_ind12_money_z,Financial industry return
+crsp_ind12_money_z_smooth,Financial industry return
+crsp_ind12_nodur_z,Crsp Ind12 Nodur
+crsp_ind12_nodur_z_smooth,Crsp Ind12 Nodur
+crsp_ind12_other_z,Crsp Ind12 Other
+crsp_ind12_other_z_smooth,Crsp Ind12 Other
+crsp_ind12_shops_z,Retail industry return
+crsp_ind12_shops_z_smooth,Retail industry return
+crsp_ind12_telcm_z,Crsp Ind12 Telcm
+crsp_ind12_telcm_z_smooth,Crsp Ind12 Telcm
+crsp_ind12_utils_z,Crsp Ind12 Utils
+crsp_ind12_utils_z_smooth,Crsp Ind12 Utils
+crsp_tsy_10_20y_z,10-to-20-year Treasury return
+crsp_tsy_10_20y_z_smooth,10-to-20-year Treasury return
+crsp_tsy_1_3y_z,Crsp Tsy 1 3Y
+crsp_tsy_1_3y_z_smooth,Crsp Tsy 1 3Y
+crsp_tsy_20y_plus_z,Crsp Tsy 20Y Plus
+crsp_tsy_20y_plus_z_smooth,Crsp Tsy 20Y Plus
+crsp_tsy_3_7y_z,3-to-7-year Treasury return
+crsp_tsy_3_7y_z_smooth,3-to-7-year Treasury return
+crsp_tsy_7_10y_z,7-to-10-year Treasury return
+crsp_tsy_7_10y_z_smooth,7-to-10-year Treasury return
+curve_10y_2y_diff_z,Curve 10Y 2Y Diff
+curve_10y_2y_diff_z_smooth,Curve 10Y 2Y Diff
+curve_belly_diff_z,Curve Belly Diff
+curve_belly_diff_z_smooth,Curve Belly Diff
+equity_market_level_z,Equity market level
+equity_market_level_z_smooth,Equity market level
+factor_corr_absavg_12m_z,Factor Corr Absavg 12M
+factor_corr_absavg_12m_z_smooth,Factor Corr Absavg 12M
+factor_corr_avg_12m_z,"Average factor correlation, 12m"
+factor_corr_avg_12m_z_smooth,"Average factor correlation, 12m"
+factor_lambda_corr_12m_z,Factor Lambda Corr 12M
+factor_lambda_corr_12m_z_smooth,Factor Lambda Corr 12M
+factor_lambda_corr_diff_z,Factor Lambda Corr Diff
+factor_lambda_corr_diff_z_smooth,Factor Lambda Corr Diff
+factor_lambda_cov_12m_z,Factor Lambda Cov 12M
+factor_lambda_cov_12m_z_smooth,Factor Lambda Cov 12M
+factor_lambda_cov_diff_z,Factor Lambda Cov Diff
+factor_lambda_cov_diff_z_smooth,Factor Lambda Cov Diff
+factor_pca1_share_12m_z,Factor Pca1 Share 12M
+factor_pca1_share_12m_z_smooth,Factor Pca1 Share 12M
+factor_pca1_share_diff_z,Factor Pca1 Share Diff
+factor_pca1_share_diff_z_smooth,Factor Pca1 Share Diff
+factor_ret_dispersion_1m_z,Factor Ret Dispersion 1M
+factor_ret_dispersion_1m_z_smooth,Factor Ret Dispersion 1M
+factor_ret_dispersion_6m_z,Factor Ret Dispersion 6M
+factor_ret_dispersion_6m_z_smooth,Factor Ret Dispersion 6M
+factor_rotation_speed_12m_z,"Factor rotation speed, 12m"
+factor_rotation_speed_12m_z_smooth,"Factor rotation speed, 12m"
+ff_cma_z,Investment factor return
+ff_cma_z_smooth,Investment factor return
+ff_hml_z,Ff Hml
+ff_hml_z_smooth,Ff Hml
+ff_mktrf_z,Equity market excess return
+ff_mktrf_z_smooth,Equity market excess return
+ff_mom_minus_hml_z,Ff Mom Minus Hml
+ff_mom_minus_hml_z_smooth,Ff Mom Minus Hml
+ff_mom_z,Ff Mom
+ff_mom_z_smooth,Ff Mom
+ff_rmw_minus_cma_z,Ff Rmw Minus Cma
+ff_rmw_minus_cma_z_smooth,Ff Rmw Minus Cma
+ff_rmw_z,Profitability factor return
+ff_rmw_z_smooth,Profitability factor return
+ff_smb_z,Ff Smb
+ff_smb_z_smooth,Ff Smb
+fred_anfci_z,Fred Anfci
+fred_anfci_z_smooth,Fred Anfci
+fred_nfci_z,Fred Nfci
+fred_nfci_z_smooth,Fred Nfci
+growth_avg_ret_z,Average growth-portfolio return
+growth_avg_ret_z_smooth,Average growth-portfolio return
+industry_best_minus_worst_1m_z,Industry Best Minus Worst 1M
+industry_best_minus_worst_1m_z_smooth,Industry Best Minus Worst 1M
+industry_best_minus_worst_6m_z,Industry Best Minus Worst 6M
+industry_best_minus_worst_6m_z_smooth,Industry Best Minus Worst 6M
+industry_corr_absavg_12m_z,Industry Corr Absavg 12M
+industry_corr_absavg_12m_z_smooth,Industry Corr Absavg 12M
+industry_corr_avg_12m_z,Industry Corr Avg 12M
+industry_corr_avg_12m_z_smooth,Industry Corr Avg 12M
+industry_lambda_corr_12m_z,Industry Lambda Corr 12M
+industry_lambda_corr_12m_z_smooth,Industry Lambda Corr 12M
+industry_lambda_corr_diff_z,Industry Lambda Corr Diff
+industry_lambda_corr_diff_z_smooth,Industry Lambda Corr Diff
+industry_lambda_cov_12m_z,Industry Lambda Cov 12M
+industry_lambda_cov_12m_z_smooth,Industry Lambda Cov 12M
+industry_lambda_cov_diff_z,Industry Lambda Cov Diff
+industry_lambda_cov_diff_z_smooth,Industry Lambda Cov Diff
+industry_pca1_share_12m_z,Industry Pca1 Share 12M
+industry_pca1_share_12m_z_smooth,Industry Pca1 Share 12M
+industry_pca1_share_diff_z,Industry Pca1 Share Diff
+industry_pca1_share_diff_z_smooth,Industry Pca1 Share Diff
+industry_ret_dispersion_1m_z,Industry Ret Dispersion 1M
+industry_ret_dispersion_1m_z_smooth,Industry Ret Dispersion 1M
+industry_ret_dispersion_6m_z,Industry Ret Dispersion 6M
+industry_ret_dispersion_6m_z_smooth,Industry Ret Dispersion 6M
+industry_rotation_speed_12m_z,Industry Rotation Speed 12M
+industry_rotation_speed_12m_z_smooth,Industry Rotation Speed 12M
+nfci_diff_z,Nfci Diff
+nfci_diff_z_smooth,Nfci Diff
+nfci_level_z,Nfci Level
+nfci_level_z_smooth,Nfci Level
+nfci_minus_anfci_z,Nfci Minus Anfci
+nfci_minus_anfci_z_smooth,Nfci Minus Anfci
+policy_rate_diff_z,Policy Rate Diff
+policy_rate_diff_z_smooth,Policy Rate Diff
+rho_12m_eq_fi_fisher_diff_z,Rho 12M Eq Fi Fisher Diff
+rho_12m_eq_fi_fisher_diff_z_smooth,Rho 12M Eq Fi Fisher Diff
+rv_60d_logdiff_z,Rv 60D Logdiff
+rv_60d_logdiff_z_smooth,Rv 60D Logdiff
+sentiment_logdiff_z,Sentiment Logdiff
+sentiment_logdiff_z_smooth,Sentiment Logdiff
+size_value_corr_absavg_12m_z,Size Value Corr Absavg 12M
+size_value_corr_absavg_12m_z_smooth,Size Value Corr Absavg 12M
+size_value_corr_avg_12m_z,Size Value Corr Avg 12M
+size_value_corr_avg_12m_z_smooth,Size Value Corr Avg 12M
+size_value_lambda_corr_12m_z,"Size-value correlation concentration, 12m"
+size_value_lambda_corr_12m_z_smooth,"Size-value correlation concentration, 12m"
+size_value_lambda_corr_diff_z,Size Value Lambda Corr Diff
+size_value_lambda_corr_diff_z_smooth,Size Value Lambda Corr Diff
+size_value_lambda_cov_12m_z,"Size-value covariance concentration, 12m"
+size_value_lambda_cov_12m_z_smooth,"Size-value covariance concentration, 12m"
+size_value_lambda_cov_diff_z,Change in size-value covariance concentration
+size_value_lambda_cov_diff_z_smooth,Change in size-value covariance concentration
+size_value_pca1_share_12m_z,Size Value Pca1 Share 12M
+size_value_pca1_share_12m_z_smooth,Size Value Pca1 Share 12M
+size_value_pca1_share_diff_z,Size Value Pca1 Share Diff
+size_value_pca1_share_diff_z_smooth,Size Value Pca1 Share Diff
+size_value_ret_dispersion_1m_z,Size Value Ret Dispersion 1M
+size_value_ret_dispersion_1m_z_smooth,Size Value Ret Dispersion 1M
+size_value_ret_dispersion_6m_z,Size Value Ret Dispersion 6M
+size_value_ret_dispersion_6m_z_smooth,Size Value Ret Dispersion 6M
+size_value_rotation_speed_12m_z,"Size-value rotation speed, 12m"
+size_value_rotation_speed_12m_z_smooth,"Size-value rotation speed, 12m"
+small_avg_ret_z,Small Avg Ret
+small_avg_ret_z_smooth,Small Avg Ret
+small_minus_big_z,Small Minus Big
+small_minus_big_z_smooth,Small Minus Big
+small_value_minus_big_growth_z,Small Value Minus Big Growth
+small_value_minus_big_growth_z_smooth,Small Value Minus Big Growth
+smhi_vwret_z,Smhi Vwret
+smhi_vwret_z_smooth,Smhi Vwret
+smlo_vwret_z,Small-growth portfolio return
+smlo_vwret_z_smooth,Small-growth portfolio return
+smme_vwret_z,Smme Vwret
+smme_vwret_z_smooth,Smme Vwret
+tsy_20y_minus_1_3y_z,Tsy 20Y Minus 1 3Y
+tsy_20y_minus_1_3y_z_smooth,Tsy 20Y Minus 1 3Y
+tsy_belly_minus_barbell_z,Tsy Belly Minus Barbell
+tsy_belly_minus_barbell_z_smooth,Tsy Belly Minus Barbell
+tsy_corr_absavg_12m_z,Tsy Corr Absavg 12M
+tsy_corr_absavg_12m_z_smooth,Tsy Corr Absavg 12M
+tsy_corr_avg_12m_z,Tsy Corr Avg 12M
+tsy_corr_avg_12m_z_smooth,Tsy Corr Avg 12M
+tsy_intermediate_ret_z,Intermediate Treasury return
+tsy_intermediate_ret_z_smooth,Intermediate Treasury return
+tsy_lambda_corr_12m_z,Tsy Lambda Corr 12M
+tsy_lambda_corr_12m_z_smooth,Tsy Lambda Corr 12M
+tsy_lambda_corr_diff_z,Tsy Lambda Corr Diff
+tsy_lambda_corr_diff_z_smooth,Tsy Lambda Corr Diff
+tsy_lambda_cov_12m_z,Tsy Lambda Cov 12M
+tsy_lambda_cov_12m_z_smooth,Tsy Lambda Cov 12M
+tsy_lambda_cov_diff_z,Tsy Lambda Cov Diff
+tsy_lambda_cov_diff_z_smooth,Tsy Lambda Cov Diff
+tsy_long_minus_short_z,Tsy Long Minus Short
+tsy_long_minus_short_z_smooth,Tsy Long Minus Short
+tsy_long_ret_z,Tsy Long Ret
+tsy_long_ret_z_smooth,Tsy Long Ret
+tsy_pca1_share_12m_z,Tsy Pca1 Share 12M
+tsy_pca1_share_12m_z_smooth,Tsy Pca1 Share 12M
+tsy_pca1_share_diff_z,Tsy Pca1 Share Diff
+tsy_pca1_share_diff_z_smooth,Tsy Pca1 Share Diff
+tsy_ret_dispersion_1m_z,Tsy Ret Dispersion 1M
+tsy_ret_dispersion_1m_z_smooth,Tsy Ret Dispersion 1M
+tsy_ret_dispersion_6m_z,Tsy Ret Dispersion 6M
+tsy_ret_dispersion_6m_z_smooth,Tsy Ret Dispersion 6M
+tsy_rotation_speed_12m_z,Tsy Rotation Speed 12M
+tsy_rotation_speed_12m_z_smooth,Tsy Rotation Speed 12M
+tsy_short_ret_z,Tsy Short Ret
+tsy_short_ret_z_smooth,Tsy Short Ret
+value_avg_ret_z,Value Avg Ret
+value_avg_ret_z_smooth,Value Avg Ret
+value_minus_growth_z,Value Minus Growth
+value_minus_growth_z_smooth,Value Minus Growth
+vix_logdiff_z,Vix Logdiff
+vix_logdiff_z_smooth,Vix Logdiff

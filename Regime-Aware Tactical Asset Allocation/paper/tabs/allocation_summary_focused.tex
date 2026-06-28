@@ -1,0 +1,25 @@
+\begin{table}[!htbp]
+\centering
+\caption{Allocation performance summary}
+\label{tab:allocation-performance-summary}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{adjustbox}{center,max width=\linewidth}
+\begin{tabular}{lllrrrrrr}
+\toprule
+Role & Model & Predictor set & Ann.\ ret. & Ann.\ vol. & Sharpe & Max DD & Ann.\ turn. & Final \\
+\midrule
+60/40 benchmark & \mbox{-{}-} & \mbox{-{}-} & 4.5\% & 9.6\% & 0.47 & -36.2\% & 19.7\% & 359.35 \\
+High-return dynamic & Logistic regression & smoothed z-score & 7.9\% & 10.6\% & 0.74 & -19.3\% & 152.1\% & 814.18 \\
+Defensive dynamic & Random forest & smoothed z-score & 4.4\% & 5.8\% & 0.77 & -14.9\% & 59.8\% & 341.89 \\
+Low-turnover dynamic & Logistic regression & z-score + smoothed z-score & 5.0\% & 7.2\% & 0.69 & -13.0\% & 51.4\% & 386.58 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\vspace{0.65em}
+\begin{minipage}{0.94\linewidth}
+\footnotesize
+\emph{Note.} Dynamic strategy returns are net of transaction costs. The 60/40 benchmark is rebalanced monthly and reported net of the same one-way transaction-cost convention. The benchmark and dynamic strategies are evaluated using the same monthly return, drawdown, turnover, and final-wealth definitions.
+\end{minipage}
+\end{table}

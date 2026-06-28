@@ -1,0 +1,25 @@
+\begin{table}[!htbp]
+\centering
+\caption{Out-of-sample student prediction summary}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllrrrrrrrr}
+\toprule
+Label & Predictor set & Model & OOS months & OOS sample & Favorable share & Mean predicted probability & AUC & Balanced accuracy & Brier score & Log loss \\
+\midrule
+Bond regime & z-score + smoothed z-score predictors & Logistic regression & 347 & 1996-02--2024-12 & 62.2\% & 0.594 & 0.879 & 0.841 & 0.125 & 0.515 \\
+Bond regime & z-score + smoothed z-score predictors & Random forest & 347 & 1996-02--2024-12 & 62.2\% & 0.601 & 0.873 & 0.8 & 0.147 & 0.471 \\
+Bond regime & smoothed z-score predictors & Logistic regression & 347 & 1996-02--2024-12 & 62.2\% & 0.574 & 0.892 & 0.831 & 0.128 & 0.462 \\
+Bond regime & smoothed z-score predictors & Random forest & 347 & 1996-02--2024-12 & 62.2\% & 0.59 & 0.849 & 0.784 & 0.153 & 0.484 \\
+Equity regime & z-score + smoothed z-score predictors & Logistic regression & 358 & 1995-03--2024-12 & 76.3\% & 0.707 & 0.929 & 0.846 & 0.088 & 0.296 \\
+Equity regime & z-score + smoothed z-score predictors & Random forest & 358 & 1995-03--2024-12 & 76.3\% & 0.658 & 0.903 & 0.831 & 0.107 & 0.361 \\
+Equity regime & smoothed z-score predictors & Logistic regression & 358 & 1995-03--2024-12 & 76.3\% & 0.7 & 0.918 & 0.862 & 0.086 & 0.307 \\
+Equity regime & smoothed z-score predictors & Random forest & 358 & 1995-03--2024-12 & 76.3\% & 0.66 & 0.902 & 0.837 & 0.105 & 0.355 \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{0.55em}
+\begin{minipage}{0.98\linewidth}\footnotesize\setlength{\parskip}{0.28em}\emph{Note.} The table reports out-of-sample diagnostics from the selected rolling student models. AUC is $\Pr(\hat p_i>\hat p_j\mid y_i=1,y_j=0)$. Balanced accuracy is $\frac{1}{2}\{TP/(TP+FN)+TN/(TN+FP)\}$. Brier score is $n^{-1}\sum_i(\hat p_i-y_i)^2$. Log loss is $-n^{-1}\sum_i[y_i\log(\hat p_i)+(1-y_i)\log(1-\hat p_i)]$.\end{minipage}
+\end{table}

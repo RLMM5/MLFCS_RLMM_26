@@ -1,0 +1,25 @@
+\begin{table}[!htbp]
+\centering
+\caption{Most frequent selected student-model specification}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llllrr}
+\toprule
+Label & Predictor set & Model & Most frequent setting & Selection share & Number of OOS months \\
+\midrule
+Bond regime & z-score + smoothed z-score predictors & Logistic regression & C=0.03, class weight=balanced & 56.2\% & 347 \\
+Bond regime & z-score + smoothed z-score predictors & Random forest & trees=500, depth=3, leaf=10, max features=sqrt & 32.3\% & 347 \\
+Bond regime & smoothed z-score predictors & Logistic regression & C=0.03, class weight=balanced & 38.6\% & 347 \\
+Bond regime & smoothed z-score predictors & Random forest & trees=500, depth=2, leaf=10, max features=sqrt & 30.8\% & 347 \\
+Equity regime & z-score + smoothed z-score predictors & Logistic regression & C=0.03, class weight=balanced & 60.1\% & 358 \\
+Equity regime & z-score + smoothed z-score predictors & Random forest & trees=500, depth=3, leaf=10, max features=sqrt & 67.6\% & 358 \\
+Equity regime & smoothed z-score predictors & Logistic regression & C=0.03, class weight=balanced & 56.4\% & 358 \\
+Equity regime & smoothed z-score predictors & Random forest & trees=500, depth=3, leaf=10, max features=sqrt & 70.7\% & 358 \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{0.55em}
+\begin{minipage}{0.98\linewidth}\footnotesize\setlength{\parskip}{0.28em}\emph{Note.} The table reports the most frequently selected hyperparameter setting across out-of-sample rolling test months.\end{minipage}
+\end{table}

@@ -1,0 +1,3 @@
+Label,Sample,Favorable share,Unfavorable share,Switches,Average duration,Average favorable duration,Average unfavorable duration,Favorable annual return,Favorable annual volatility,Favorable Sharpe,Unfavorable annual return,Unfavorable annual volatility,Unfavorable Sharpe
+Equity regime label,1988-02 to 2024-11,75.6%,24.4%,51,8.5,12.8,4.2,13.7%,12.1%,1.13,-14.5%,19.5%,-0.75
+Bond regime label,1989-01 to 2024-11,67.1%,32.9%,41,10.3,13.8,6.8,5.7%,3.2%,1.81,-4.1%,5.1%,-0.81

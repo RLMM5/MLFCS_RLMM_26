@@ -1,0 +1,25 @@
+﻿\begin{table}[!htbp]
+\centering
+\caption{Selected dynamic allocation specifications}
+\label{tab:allocation-selected-strategies}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llllllllllll}
+\toprule
+Role & Model & Predictor set & Risk aversion & Turnover penalty & Transaction cost & Smoothing & Ann. return & Sharpe & Max. drawdown & Ann. turnover & Final wealth \\
+\midrule
+High-return dynamic & Logistic regression & smoothed z-score predictors & 0.5 & 0 & 5 bps & 0 & 8.1\% & 0.77 & -16.3\% & 182.7\% & 867.20 \\
+Defensive dynamic & Random forest & smoothed z-score predictors & 3 & 0.001 & 5 bps & 0 & 4.7\% & 0.81 & -12.8\% & 73.9\% & 368.53 \\
+Low-turnover dynamic & Logistic regression & z-score + smoothed z-score predictors & 3 & 0.001 & 5 bps & 3 & 5.3\% & 0.74 & -12.2\% & 57.3\% & 426.74 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\vspace{0.65em}
+\begin{minipage}{0.94\linewidth}
+\footnotesize
+\emph{Note.} The table reports the parameter settings used for the three dynamic strategies shown in the main allocation figures.
+\end{minipage}
+\end{table}
+
