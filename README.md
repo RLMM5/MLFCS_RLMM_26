@@ -136,7 +136,6 @@ Source files:
 
 ## Repository layout
 
-The repository is organised around the final project folder and the compiled report.
 
 ```text
 Regime-Aware Tactical Asset Allocation/   Main notebook and project materials.
