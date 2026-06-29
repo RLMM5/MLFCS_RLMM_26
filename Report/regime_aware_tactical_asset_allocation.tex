@@ -489,44 +489,37 @@ Appendix~\ref{app:independent-dynamic-benchmarks}.
 
 \begin{table}[H]
     \centering
-    \caption{Selected allocation results, out of sample. Each panel reports three representative
-        dynamic allocation roles and the corresponding 60/40 benchmark. Returns are annualised
-        excess returns net of transaction costs. ``Final'' indexes wealth to \(100\) at the start of
-        the evaluation sample. Both panels use long-only equity--bond--cash weights, monthly
-        rebalancing, and 10~bps one-way transaction costs. The appendices report the
-        approach-specific moment estimates, grid choices, and turnover-penalty conventions. The \Bindep{} allocation sample runs to
-        2024-10; the independent student forecast diagnostics run to 2024-12. The \Acoup{} sample is
-        1996-02 to 2024-10.}
+    \caption{Selected allocation results, out of sample. The table reports representative dynamic
+        roles and 60/40 benchmarks. Returns are annualised excess returns net of 10~bps one-way
+        transaction costs; ``Final'' indexes wealth to \(100\) at sample start. Both approaches use
+        long-only equity--bond--cash weights and monthly rebalancing; the appendices report
+        approach-specific moment estimates, grids, and turnover-penalty conventions.}
     \label{tab:alloc-frontier}
     \small
-    \begin{adjustbox}{center,max width=\textwidth}
-        \begin{tabular}{@{}llrrrrr@{}}
+    \begin{adjustbox}{center,max width=1.12\textwidth}
+        \begin{tabular}{@{}lllrrrrr@{}}
             \toprule
-            Role         & Strategy                              & Ann.\ exc. & Vol.   & Sharpe & Max DD    & Final \\
+            Approach & Role & Strategy & Ann.\ exc. & Vol. & Sharpe & Max DD & Final \\
             \midrule
-            \multicolumn{7}{@{}l}{\textbf{\Bindep{}: selected dynamic allocations and benchmark}}                   \\
+            \Bindep{} & Defensive & Random forest, smoothed predictors & $+4.4\%$ & 5.8\% & 0.77 & $-14.9\%$ & 341.9 \\
+            \Bindep{} & Low-turnover & Logistic, z-score + smoothed z-score & $+5.0\%$ & 7.2\% & 0.69 & $-13.0\%$ & 386.6 \\
+            \Bindep{} & High-return & Logistic, smoothed predictors & $+7.9\%$ & 10.6\% & 0.74 & $-19.3\%$ & 814.2 \\
+            \Bindep{} & Benchmark & 60/40 & $+4.5\%$ & 9.6\% & 0.47 & $-36.2\%$ & 359.4 \\
             \midrule
-            Defensive    & Random forest, smoothed predictors    & $+4.4\%$   & 5.8\%  & 0.77   & $-14.9\%$ & 341.9 \\
-            Low-turnover & Logistic, z-score + smoothed z-score  & $+5.0\%$   & 7.2\%  & 0.69   & $-13.0\%$ & 386.6 \\
-            High-return  & Logistic, smoothed predictors         & $+7.9\%$   & 10.6\% & 0.74   & $-19.3\%$ & 814.2 \\
-            Benchmark    & 60/40                                 & $+4.5\%$   & 9.6\%  & 0.47   & $-36.2\%$ & 359.4 \\
-            \midrule
-            \multicolumn{7}{@{}l}{\textbf{\Acoup{}: selected dynamic allocations and benchmark}}                    \\
-            \midrule
-            Defensive    & Minimum variance, probability mixture & $+0.80\%$  & 1.2\% & 0.64   & $-2.0\%$  & 234.0 \\
-            Balanced     & Mean--variance, probability mixture   & $+2.74\%$  & 4.4\% & 0.63   & $-9.6\%$  & 398.5 \\
-            High-return  & Mean--variance, probability mixture   & $+4.70\%$  & 7.6\% & 0.62   & $-21.9\%$ & 661.2 \\
-            Benchmark    & 60/40                                 & $+4.92\%$  & 9.6\% & 0.47   & $-33.9\%$ & 668.9 \\
+            \Acoup{} & Defensive & Minimum variance, probability mixture & $+0.80\%$ & 1.2\% & 0.64 & $-2.0\%$ & 234.0 \\
+            \Acoup{} & Balanced & Mean--variance, probability mixture & $+2.74\%$ & 4.4\% & 0.63 & $-9.6\%$ & 398.5 \\
+            \Acoup{} & High-return & Mean--variance, probability mixture & $+4.70\%$ & 7.6\% & 0.62 & $-21.9\%$ & 661.2 \\
+            \Acoup{} & Benchmark & 60/40 & $+4.92\%$ & 9.6\% & 0.47 & $-33.9\%$ & 668.9 \\
             \bottomrule
         \end{tabular}
     \end{adjustbox}
 \end{table}
 
-Table~\ref{tab:alloc-frontier} shows that the selected strategies improve on the 60/40
-benchmark along different margins. Defensive allocations mainly reduce drawdowns and raise
-Sharpe ratios. Low-turnover and balanced allocations preserve part of this risk control with
-less aggressive rebalancing. High-return allocations accept larger drawdowns in exchange for
-greater participation in favourable regimes. The full metric set is reported in
+Table~\ref{tab:alloc-frontier} shows that selected strategies improve on the 60/40 benchmark
+along different margins. Defensive allocations reduce drawdowns and raise Sharpe ratios;
+low-turnover and balanced allocations preserve part of this risk control with less aggressive
+rebalancing; high-return allocations accept larger drawdowns for greater participation in
+favourable regimes. The full metric set is reported in
 Tables~\ref{tab:c-headline}, \ref{tab:allocation-performance-summary},
 and~\ref{tab:allocation-selected-strategies}.
 
@@ -535,89 +528,63 @@ Figure~\ref{fig:alloc-wealth} reports the corresponding wealth and drawdown path
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{allocation_wealth_drawdown_focused.jpg}\\[2pt]
-        {\footnotesize\centering (a) \Bindep{}\par}
+        \includegraphics[width=\linewidth]{allocation_wealth_drawdown_focused.jpg}
     \end{minipage}\hfill
     \begin{minipage}{0.50\textwidth}
-        \includegraphics[width=\linewidth]{COUPLED__alloc_wealth_drawdown.pdf}\\[2pt]
-        {\footnotesize\centering (b) \Acoup{}\par}
+        \includegraphics[width=\linewidth]{COUPLED__alloc_wealth_drawdown.pdf}
     \end{minipage}
-    \caption{Dynamic allocation performance, out of sample. The panels report wealth indexes and
-        drawdowns for the selected dynamic allocations and the 60/40 benchmark under the \Bindep{}
-        and \Acoup{} approaches. Wealth is indexed to \(100\) at the start of each evaluation sample,
-        and returns are net of 10~bps one-way transaction costs.}
+    \caption{Dynamic allocation performance, out of sample. The panels report net wealth indexes
+        and drawdowns for selected dynamic allocations and the 60/40 benchmark, with wealth indexed
+        to \(100\) at the start of each evaluation sample.}
     \label{fig:alloc-wealth}
 \end{figure}
 
-The wealth and drawdown paths show when the table results are earned. Defensive allocations
-cut losses during adverse forecast regimes. High-return allocations keep more risky exposure
-during favourable forecast regimes. The paths show when forecast-driven exposure changes coincide with drawdown control or faster
-compounding.
+The paths locate the table results over time: defensive allocations reduce losses in adverse
+forecast regimes, while high-return allocations keep larger risky exposure in favourable
+forecast regimes.
 
 
 \subsection{Portfolio-weight behaviour}
 
-Figure~\ref{fig:alloc-mech} reports how the selected forecasts change equity, bond, and cash
-weights. Defensive allocations reduce risky exposure when adverse regimes receive higher
-forecast probability. Higher-return allocations keep larger risky positions during favourable
-forecasts. Low-turnover and balanced allocations reduce the size or frequency of these
-changes. Full allocation diagnostics are reported in Appendices~\ref{app:alloc-independent}
+Figure~\ref{fig:alloc-mech} reports how forecast probabilities change equity, bond, and cash
+weights. Defensive, high-return, and low-turnover or balanced rules respectively reduce risky
+exposure, keep larger risky positions, and slow allocation changes. Full diagnostics are
+reported in Appendices~\ref{app:alloc-independent}
 and~\ref{app:alloc-coupled}.
 
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth,height=0.24\textheight,keepaspectratio]{allocation_mechanics_focused.jpg}\\[2pt]
-        {\footnotesize\centering (a) \Bindep{}\par}
+        \includegraphics[width=\linewidth,height=0.15\textheight,keepaspectratio]{allocation_mechanics_focused.jpg}
     \end{minipage}\hfill
     \begin{minipage}{0.50\textwidth}
-        \includegraphics[width=\linewidth,height=0.24\textheight,keepaspectratio]{COUPLED__alloc_mechanics.pdf}\\[2pt]
-        {\footnotesize\centering (b) \Acoup{}\par}
+        \includegraphics[width=\linewidth,height=0.15\textheight,keepaspectratio]{COUPLED__alloc_mechanics.pdf}
     \end{minipage}
     \caption{Portfolio weights and turnover, out of sample. The panels report equity, bond, and
-        cash weights together with turnover for the selected dynamic allocations under the \Bindep{}
-        and \Acoup{} approaches.}
+        cash weights and turnover for the selected dynamic allocations.}
     \label{fig:alloc-mech}
 \end{figure}
 
 \subsection{Sensitivity}
 
-The sensitivity checks evaluate whether the allocation roles depend on narrow parameter
-choices. Appendix~\ref{app:alloc-independent} and Appendix~\ref{app:alloc-coupled} report
-the full sweeps over risk aversion, turnover penalties, transaction costs, probability
-smoothing, and moment shrinkage. The main pattern is economically consistent: higher risk
-aversion reduces risky exposure, smoothing and turnover penalties reduce trading, and higher
-transaction costs lower net performance. The reported headline strategies are therefore
-selected from stable exposure--cost trade-offs, not from a single isolated parameter setting.
+Appendices~\ref{app:alloc-independent} and~\ref{app:alloc-coupled} vary risk aversion,
+turnover penalties, transaction costs, probability smoothing, and moment shrinkage; higher
+risk aversion lowers risky exposure, smoothing and turnover penalties reduce trading, and
+higher transaction costs lower net performance.
 
 \section{Discussion and conclusion}
 \label{sec:conclusion}
 
-The results support a benchmark-relative role for regime forecasts in monthly stock--bond
-allocation. The value of the forecasts is not a single performance number. It appears through
-the margin chosen by the allocator: lower drawdowns, higher risk-adjusted returns, lower
-trading intensity, or higher terminal wealth.
+Regime forecasts add benchmark-relative value through lower drawdowns, higher risk-adjusted
+returns, lower trading intensity, or higher terminal wealth. The teacher, student, and
+allocation stages provide the ordered empirical test: labels are economically separated,
+persistent enough for monthly trading, predictable from lagged information, and valuable in
+portfolio rules.
 
-The regime labels are statistical representations of market environments. The diagnostics
-evaluate whether they are economically separated, persistent enough for monthly trading,
-predictable from lagged information, and valuable when their forecast probabilities enter a
-portfolio rule. This sequence gives the teacher, student, and
-allocation stages their economic order.
-
-The central economic implication is that the bond leg changes role across states. In
-disinflationary equity drawdowns, bonds can still hedge equity risk. In inflation-led
-sell-offs, bond exposure can become part of the adverse state. This distinction explains why
-asset-level regime probabilities and joint stock--bond regime probabilities are both
-informative. The \Bindep{} representation gives separate signals for equity and bond
-exposure; the \Acoup{} representation gives a direct signal for the diversification
-environment.
-
-The allocation evidence is strongest when read as a set of trade-offs against 60/40.
-Defensive rules use regime probabilities to reduce losses in adverse states. Low-turnover
-and balanced rules preserve part of that risk control with less rebalancing. High-return
-rules use favourable forecasts to keep larger risky exposure. Regime information therefore
-adds value when it changes exposure in the states where the static benchmark is least suited
-to the stock--bond environment.
+Bond exposure can hedge disinflationary equity drawdowns and join adverse inflation-led
+sell-offs. The \Bindep{} representation gives separate equity and bond signals; the \Acoup{}
+representation gives a direct diversification-environment signal. Both add value when regime
+information moves exposure away from static 60/40 in poorly suited regimes.
 \appendix
 \renewcommand{\thefigure}{\thesection.\arabic{figure}}
 \renewcommand{\thetable}{\thesection.\arabic{table}}
@@ -625,4 +592,3 @@ to the stock--bond environment.
 \input{regime_aware_tactical_asset_allocation_appendix}
 
 \end{document}
-
