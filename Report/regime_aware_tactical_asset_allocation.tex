@@ -42,7 +42,7 @@ Team RLMM\\
 
 
 \begin{abstract}
-    \noindent We study whether forecasted equity and bond return regimes improve monthly allocation across equities, bonds, and cash after transaction costs. The empirical design links realised regime estimation, next-month regime forecasting, and portfolio choice. Jump-model teachers label equity and bond return environments from realised return-based features. Supervised students then forecast the next-month teacher labels from lagged macro-financial predictors. The resulting forecast probabilities are converted into regime-conditional mean--variance allocations with transaction costs and turnover penalties.
+    \noindent We study whether forecasted equity and bond return regimes improve monthly allocation across equities, bonds, and cash after transaction costs. The empirical design links realised regime estimation, next-month regime forecasting, and portfolio choice. Jump-model teachers label equity and bond return environments from realised return-based features. Supervised students then forecast the next-month teacher labels from lagged macro-financial predictors; the \Acoup{} student also uses current-regime indicators and regime run length. The resulting forecast probabilities are converted into regime-conditional mean--variance allocations with transaction costs and turnover penalties.
 
     \noindent We compare two regime representations. The \Bindep{} specification estimates separate two-state favourable and unfavourable labels for equities and bonds. The \Acoup{} specification estimates a three-state joint stock--bond label with calm, normal, and stressed regimes. Both representations distinguish the central portfolio mechanism: bonds support equity drawdowns in disinflationary episodes such as the dot-com bust and the global financial crisis, while inflation-driven sell-offs such as 1994 and 2022 weaken the bond hedge. In the student stage, regularised logistic regression and random forests produce informative next-month regime probabilities. In the allocation stage, selected dynamic strategies improve on the 60/40 benchmark along distinct margins, including lower drawdowns, higher Sharpe ratios, and higher terminal wealth, depending on risk aversion and turnover control.
 \end{abstract}
@@ -56,7 +56,8 @@ This paper studies monthly regime-aware allocation for a broad equity leg and a 
 
 The empirical design has three stages. First, the teacher stage
 estimates realised regime labels from equity and bond returns. Second, the student stage
-forecasts the next-month teacher labels from lagged macro-financial predictors. Third, the
+forecasts the next-month teacher labels from lagged macro-financial predictors; the
+\Acoup{} student also uses current-regime indicators and regime run length. Third, the
 allocation stage maps the forecast probabilities into regime-conditional return moments and
 monthly equity, bond, and cash weights. The out-of-sample test asks whether the forecast
 probabilities improve portfolio choice after transaction costs.
@@ -96,10 +97,10 @@ transformations.
 The student panels are monthly and lagged. The \Bindep{} panel combines equity, Treasury,
 credit, commodity, volatility, macro, sentiment, and stock--bond correlation predictors,
 with causal winsorisation, rolling z-scores, and exponential smoothing. The \Acoup{} panel
-uses a screened monthly predictor set for the joint stock--bond label: lagged macro-financial,
-Treasury, commodity, and regime-context variables, together with current-regime indicators
-and regime run length. Appendices~\ref{app:features} and~\ref{app:student-coupled} report
-the predictor definitions and transformations.
+uses lagged macro-financial, Treasury, commodity, and regime-context predictors for the joint
+stock--bond label, and also includes current-regime indicators and regime run length.
+Appendices~\ref{app:features} and~\ref{app:student-coupled} report the predictor definitions
+and transformations.
 
 \section{Teacher: regime labelling with statistical jump models}
 \label{sec:teacher}
@@ -217,7 +218,7 @@ The two teacher specifications produce persistent regimes with economically dist
     \begin{minipage}{0.52\textwidth}
         \includegraphics[width=\linewidth]{COUPLED__labels.png}
     \end{minipage}
-    \caption{Regime-label representations of the stock--bond history. Left (\Bindep{}): equity and bond excess-return indexes with favourable-regime months marked for each leg. Right (\Acoup{}): cumulative excess-return indexes shaded by calm, normal, and stressed joint regimes; inset numbers report within-span annualised Sharpe ratios.}
+    \caption{Regime-label representations of the stock--bond history. Left (\Bindep{}): equity and bond excess-return indexes with favourable-regime months marked for each leg. Right (\Acoup{}): cumulative excess-return indexes shaded by calm, normal, and stressed joint regimes.}
     \label{fig:labels}
 \end{figure}
 
@@ -410,9 +411,10 @@ probability-mixture mean is
     \hat p^a_{t+1|t}\hat\mu^a_{1,t}.
     \label{eq:independent-allocation-mean}
 \end{equation}
-The variance uses the corresponding second-moment mixture, and the covariance matrix uses an
-expanding stock--bond correlation estimate. Appendix~\ref{app:allocation} reports the full
-probability-to-moment and realised net-return formulas.
+The variance uses the corresponding second-moment mixture. The covariance matrix uses an
+expanding stock--bond correlation estimate shrunk toward the pre-prediction stock--bond
+correlation. Appendix~\ref{app:allocation} reports the full probability-to-moment and
+realised net-return formulas.
 
 The monthly portfolio is long-only in equity, bonds, and cash and solves
 \begin{equation}
@@ -434,11 +436,12 @@ Appendix~\ref{app:alloc-independent} reports the independent grid, selected-stra
 settings, additional benchmarks, and parameter sweeps.
 
 The \Acoup{} allocator uses the predicted probabilities of calm, normal, and stressed joint
-regimes in the same portfolio objective. Its conditional moments are estimated from past
-returns assigned to the corresponding joint regimes, using either the most likely regime or a
-probability mixture. Appendix~\ref{app:alloc-coupled} reports the coupled allocation details,
-benchmark rules, cost sensitivity, and parameter sweeps. The headline results for both
-approaches are evaluated against the 60/40 benchmark.
+regimes in the same portfolio objective. Its conditional return moments are estimated from
+past returns assigned to the corresponding joint regimes, using either the most likely regime
+or a probability mixture, and its covariance matrix is estimated with an exponentially
+weighted stock--bond covariance with a 12-month half-life. Appendix~\ref{app:alloc-coupled}
+reports the coupled allocation details, benchmark rules, cost sensitivity, and parameter
+sweeps. The headline results for both approaches are evaluated against the 60/40 benchmark.
 
 \subsection{Allocation trade-off}
 \label{sec:alloc-results}
