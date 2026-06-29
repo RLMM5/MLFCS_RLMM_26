@@ -229,12 +229,15 @@ The two teacher specifications produce persistent regimes with economically dist
 
 \begin{figure}[H]
     \centering
-    \begin{minipage}{0.46\textwidth}
+    \makebox[\textwidth][c]{%
+    \begin{minipage}[t]{0.56\textwidth}
+        \centering
         \includegraphics[width=\linewidth]{teacher_regime_labels.pdf}
-    \end{minipage}\hfill
-    \begin{minipage}{0.52\textwidth}
+    \end{minipage}\hspace{0.025\textwidth}%
+    \begin{minipage}[t]{0.64\textwidth}
+        \centering
         \includegraphics[width=\linewidth]{COUPLED__labels.png}
-    \end{minipage}
+    \end{minipage}}
     \caption{Causal teacher-label representations of the stock--bond history. Both panels report
 labels formed using information available through the labelled month. Left (\Bindep{}):
 equity and bond excess-return indexes with favourable-regime months marked for each leg.
