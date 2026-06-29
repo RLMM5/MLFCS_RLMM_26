@@ -88,7 +88,7 @@ The allocation stage is the economic test of the regime forecasts. The selected 
 
 ![Independent allocation wealth and drawdown](Report/figs/allocation_wealth_drawdown_focused.jpg)
 
-![Coupled allocation wealth and drawdown](Regime-Aware%20Tactical%20Asset%20Allocation/paper/COUPLED__alloc_wealth_drawdown.png)
+![Coupled allocation wealth and drawdown](Report/figs/COUPLED__alloc_wealth_drawdown.png)
 
 _The wealth and drawdown figures show when the selected dynamic allocations earn their performance relative to 60/40._
 
@@ -113,7 +113,7 @@ The selected allocations differ in how forecast probabilities change equity, bon
 
 ![Independent allocation mechanics](Report/figs/allocation_mechanics_focused.jpg)
 
-![Coupled allocation mechanics](Regime-Aware%20Tactical%20Asset%20Allocation/paper/COUPLED__alloc_mechanics.png)
+![Coupled allocation mechanics](Report/figs/COUPLED__alloc_mechanics.png)
 
 _The allocation mechanics show how forecast probabilities translate into portfolio weights, turnover, wealth, and drawdown._
 
