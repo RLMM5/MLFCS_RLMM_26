@@ -127,7 +127,13 @@ _The allocation mechanics show how forecast probabilities translate into portfol
 
 ## Full report
 
-[Read the full report](Report/regime_aware_tactical_asset_allocation.pdf?raw=1)
+- [Full report PDF](Report/regime_aware_tactical_asset_allocation.pdf)
+- [Compressed GitHub preview PDF](Report/regime_aware_tactical_asset_allocation_github_preview.pdf)
+
+## Notebook
+
+- [Full-output notebook](Regime-Aware%20Tactical%20Asset%20Allocation%20%28independant%29/notebooks/regime_aware_tactical_asset_allocation.ipynb)
+- [GitHub preview notebook](Regime-Aware%20Tactical%20Asset%20Allocation%20%28independant%29/notebooks/regime_aware_tactical_asset_allocation_github_preview.ipynb)
 
 Source files:
 
