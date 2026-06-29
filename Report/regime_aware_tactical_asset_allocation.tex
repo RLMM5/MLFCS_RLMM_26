@@ -77,7 +77,7 @@ sensitivity checks.
 \section{Data}
 \label{sec:data}
 
-The empirical analysis uses monthly excess returns for an equity leg, a bond leg, and cash.
+The empirical analysis uses monthly excess returns for the equity and bond legs; cash is the zero-excess-return asset in the allocation stage.
 The equity leg is the S\&P~500 total return. The bond leg is an aggregate bond-index return.
 The one-month risk-free rate defines excess returns,
 \[
@@ -416,7 +416,7 @@ expanding stock--bond correlation estimate shrunk toward the pre-prediction stoc
 correlation. Appendix~\ref{app:allocation} reports the full probability-to-moment and
 realised net-return formulas.
 
-The monthly portfolio is long-only in equity, bonds, and cash and solves
+For the \Bindep{} allocator, the monthly portfolio is long-only in equity, bonds, and cash and solves
 \begin{equation}
     w_t
     =
@@ -441,7 +441,10 @@ past returns assigned to the corresponding joint regimes, using either the most 
 or a probability mixture, and its covariance matrix is estimated with an exponentially
 weighted stock--bond covariance with a 12-month half-life. Appendix~\ref{app:alloc-coupled}
 reports the coupled allocation details, benchmark rules, cost sensitivity, and parameter
-sweeps. The headline results for both approaches are evaluated against the 60/40 benchmark.
+sweeps. The headline results for both approaches are evaluated against the 60/40 benchmark. The comparison is benchmark-relative
+within each approach; Appendices~\ref{app:alloc-independent} and~\ref{app:alloc-coupled}
+report the approach-specific allocation grids, covariance estimators, and turnover-penalty
+conventions.
 
 \subsection{Allocation trade-off}
 \label{sec:alloc-results}
@@ -463,7 +466,8 @@ Appendix~\ref{app:independent-dynamic-benchmarks}.
         dynamic allocation roles and the corresponding 60/40 benchmark. Returns are annualised
         excess returns net of transaction costs. ``Final'' indexes wealth to \(100\) at the start of
         the evaluation sample. Both panels use long-only equity--bond--cash weights, monthly
-        rebalancing, and 10~bps one-way transaction costs. The \Bindep{} allocation sample runs to
+        rebalancing, and 10~bps one-way transaction costs. The appendices report the
+        approach-specific moment estimates, grid choices, and turnover-penalty conventions. The \Bindep{} allocation sample runs to
         2024-10; the independent student forecast diagnostics run to 2024-12. The \Acoup{} sample is
         1996-02 to 2024-10.}
     \label{tab:alloc-frontier}
@@ -520,8 +524,8 @@ Figure~\ref{fig:alloc-wealth} reports the corresponding wealth and drawdown path
 
 The wealth and drawdown paths show when the table results are earned. Defensive allocations
 cut losses during adverse forecast regimes. High-return allocations keep more risky exposure
-during favourable forecast regimes. The figure therefore links the forecast probabilities to
-observable changes in portfolio performance over time.
+during favourable forecast regimes. The paths show when forecast-driven exposure changes coincide with drawdown control or faster
+compounding.
 
 
 \subsection{Portfolio-weight behaviour}
@@ -567,10 +571,10 @@ allocation. The value of the forecasts is not a single performance number. It ap
 the margin chosen by the allocator: lower drawdowns, higher risk-adjusted returns, lower
 trading intensity, or higher terminal wealth.
 
-The regime labels are statistical representations of market environments. Their validity is
-therefore evaluated indirectly. A useful label must be economically separated, persistent
-enough for monthly trading, predictable from lagged information, and valuable when its
-forecast probability enters a portfolio rule. This sequence gives the teacher, student, and
+The regime labels are statistical representations of market environments. The diagnostics
+evaluate whether they are economically separated, persistent enough for monthly trading,
+predictable from lagged information, and valuable when their forecast probabilities enter a
+portfolio rule. This sequence gives the teacher, student, and
 allocation stages their economic order.
 
 The central economic implication is that the bond leg changes role across states. In

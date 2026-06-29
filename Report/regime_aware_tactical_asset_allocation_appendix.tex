@@ -1229,7 +1229,7 @@ feature importance. Values are aggregated within predictor blocks.}
 \label{fig:importance}
 \end{figure}
 
-Table~\ref{tab:app-student-selected-model-frequency} reports the most frequently selected hyperparameter setting over the rolling out-of-sample test months. The table documents which specification is most often selected within each target, predictor set, and model class.
+Table~\ref{tab:app-student-selected-model-frequency} reports the most frequently selected hyperparameter setting over the rolling out-of-sample test months. The table reports which specification is most often selected within each target, predictor set, and model class.
 
 \begin{table}[H]
 \centering
@@ -1469,9 +1469,9 @@ logistic-regression specification with probability smoothing and annual turnover
 \label{app:independent-dynamic-benchmarks}
 
 The additional benchmarks use the same monthly excess-return columns as the independent
-allocation exercise over the sample ending in 2024-10. Cash is treated as zero excess return
-because the independent allocation exercise uses equity and bond excess returns but no
-separate cash-return column. These benchmarks are included to compare the regime-aware rules
+allocation sample ending in 2024-10. Cash is treated as zero excess return because the
+independent allocation stage uses equity and bond excess returns but no separate cash-return
+column. These benchmarks are included to compare the regime-aware rules
 with simple dynamic or single-asset alternatives that do not use regime forecasts.
 
 \begin{table}[H]
@@ -1722,21 +1722,23 @@ validation or grid-selected choices, and robustness or diagnostic components.}
 \section{Coupled allocation: details and sensitivity}
 \label{app:alloc-coupled}
 
-The investable universe is the equity leg, the bond leg and cash; weights are long-only with
-a gross cap of $1.0$ ($w_{\mathrm{cash}}\in[0,1]$), chosen on a $0.05$ grid to maximise
-\eqref{eq:mv} with annualised regime-conditional moments and an exponentially weighted
-(12-month half-life) covariance. The \textsc{const} mapping uses the mean of the single
-predicted regime; the \textsc{prob} mapping uses the probability mixture. Portfolios
-rebalance monthly and pay $10$~bps on traded notional. Four static rules anchor the
-comparison (60/40, 50/50, unconditional minimum-variance, unconditional mean--variance), and
-the regime-aware family comprises minimum-variance ($\gamma{=}20$) and mean--variance
-($\gamma{=}5$) allocators under both mappings and a regime equal-weight overlay holding
-$(0.6,0.4)$ in calm, $(0.72,0.48)$ in normal and $(0,0.4)$ in stressed. The unconditional
-mean--variance rule uses $\gamma{=}3$ on an exponentially weighted mean and the unconditional
-minimum-variance rule uses $\gamma{=}20$. Table~\ref{tab:c-headline} reports the three
-headline strategies with the full set of metrics (CVaR and turnover, condensed in the body
-Table~\ref{tab:alloc-frontier}), and Table~\ref{tab:c-cost} stresses the balanced allocator
-to the transaction cost and turnover penalty.
+The investable universe is the equity leg, the bond leg, and cash. Weights are long-only with
+a gross cap of $1.0$ ($w_{\mathrm{cash}}\in[0,1]$) and are chosen on a $0.05$ grid. The
+\Acoup{} allocator uses annualised regime-conditional moments and an exponentially weighted
+stock--bond covariance with a 12-month half-life. This differs from the \Bindep{} allocation
+grid and covariance estimator reported in Appendix~\ref{app:alloc-independent}.
+
+The \textsc{const} mapping uses the mean of the single predicted regime; the \textsc{prob}
+mapping uses the probability mixture. Portfolios rebalance monthly and pay $10$~bps on
+traded notional. Four static rules anchor the comparison: 60/40, 50/50, unconditional
+minimum-variance, and unconditional mean--variance. The regime-aware family comprises
+minimum-variance ($\gamma{=}20$) and mean--variance ($\gamma{=}5$) allocators under both
+mappings, together with a regime equal-weight overlay holding $(0.6,0.4)$ in calm,
+$(0.72,0.48)$ in normal, and $(0,0.4)$ in stressed. The unconditional mean--variance rule
+uses $\gamma{=}3$ on an exponentially weighted mean, and the unconditional minimum-variance
+rule uses $\gamma{=}20$. Table~\ref{tab:c-headline} reports the three headline strategies
+with the full metric set, and Table~\ref{tab:c-cost} reports transaction-cost and
+turnover-penalty sensitivity for the balanced allocator.
 
 \begin{table}[H]
 \centering
