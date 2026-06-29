@@ -225,7 +225,11 @@ member-level diagnostics.
 \subsection{Label results}
 \label{sec:teacher-results}
 
-The two teacher specifications produce persistent regimes with economically distinct return profiles. Figure~\ref{fig:labels} compares the resulting label histories. The \Bindep{} panel shows equity and bond excess-return indexes with favourable-regime months marked for each leg. The \Acoup{} panel shows the same stock--bond history using the calm, normal, and stressed joint regimes. The coupled ensemble vote shares and coupling-probability path are reported in Appendix~\ref{app:teacher-coupled}.
+The two teacher specifications produce persistent regimes with distinct return profiles.
+Figure~\ref{fig:labels} compares their label histories: the \Bindep{} panel marks
+favourable-regime months for each leg, while the \Acoup{} panel shades the same stock--bond
+history by calm, normal, and stressed joint regimes. Appendix~\ref{app:teacher-coupled}
+reports coupled vote shares and the coupling-probability path.
 
 \begin{figure}[H]
     \centering
@@ -261,31 +265,41 @@ losses in both risky legs.
         three joint regimes. Panel headers report the causal label sample used for each
         representation.}
     \label{tab:state-economics}
-    \small
-    \begin{adjustbox}{center,max width=\textwidth}
+    \scriptsize
+    \setlength{\tabcolsep}{2.4pt}
+    \renewcommand{\arraystretch}{0.96}
+    \begin{adjustbox}{center,max width=1.22\textwidth}
+    \begin{minipage}[t]{0.47\textwidth}
+        \centering
+        \textbf{\Bindep{}: two binary labels (1988--2024)}\\[-1pt]
         \begin{tabular}{@{}llrrrrr@{}}
             \toprule
-            \multicolumn{7}{l}{\textbf{\Bindep{}: two binary labels (1989--2024)}}                  \\
+            Class & Regime & Share & Ret. & Vol. & Sh. & Dur. \\
             \midrule
-            Class  & Regime       & Share            & Ann.\ ret. & Ann.\ vol. & Sharpe  & Avg.\ dur.     \\
-            \midrule
-            Equity & Favourable   & 76.3\%           & $+13.8\%$  & $12.1\%$   & $+1.14$ & 14.3           \\
-            Equity & Unfavourable & 23.7\%           & $-15.4\%$  & $19.8\%$   & $-0.78$ & \phantom{0}4.6 \\
-            Bond   & Favourable   & 67.1\%           & $+5.7\%$   & $3.2\%$    & $+1.81$ & 13.8           \\
-            Bond   & Unfavourable & 32.9\%           & $-4.1\%$   & $5.1\%$    & $-0.81$ & \phantom{0}6.8 \\
-            \midrule
-            \multicolumn{7}{l}{\textbf{\Acoup{}: three joint regimes (1988--2024)}}                \\
-            \midrule
-            Class  & Regime       & Share            & Ann.\ ret. & Ann.\ vol. & Sharpe  & Avg.\ dur.     \\
-            \midrule
-            Equity & Calm         & 13.8\%           & $+21.0\%$  & $8.1\%$    & $+2.60$ & \phantom{0}4.7 \\
-            Equity & Normal       & 77.1\%           & $+9.9\%$   & $14.8\%$   & $+0.67$ & 12.2           \\
-            Equity & Stressed     & \phantom{0}9.0\% & $-40.9\%$  & $13.7\%$   & $-2.99$ & \phantom{0}2.2 \\
-            Bond   & Calm         & 13.8\%           & $+0.8\%$   & $3.5\%$    & $+0.22$ & \phantom{0}4.7 \\
-            Bond   & Normal       & 77.1\%           & $+3.9\%$   & $3.9\%$    & $+1.00$ & 12.2           \\
-            Bond   & Stressed     & \phantom{0}9.0\% & $-8.4\%$   & $5.0\%$    & $-1.69$ & \phantom{0}2.2 \\
+            Equity & Favourable   & 76.3\% & $+13.8\%$ & $12.1\%$ & $+1.14$ & 14.3 \\
+            Equity & Unfavourable & 23.7\% & $-15.4\%$ & $19.8\%$ & $-0.78$ & \phantom{0}4.6 \\
+            Bond   & Favourable   & 67.1\% & $+5.7\%$  & $3.2\%$  & $+1.81$ & 13.8 \\
+            Bond   & Unfavourable & 32.9\% & $-4.1\%$  & $5.1\%$  & $-0.81$ & \phantom{0}6.8 \\
             \bottomrule
         \end{tabular}
+    \end{minipage}
+    \hspace{0.025\textwidth}
+    \begin{minipage}[t]{0.57\textwidth}
+        \centering
+        \textbf{\Acoup{}: three joint regimes (1988--2024)}\\[-1pt]
+        \begin{tabular}{@{}llrrrrr@{}}
+            \toprule
+            Class & Regime & Share & Ret. & Vol. & Sh. & Dur. \\
+            \midrule
+            Equity & Calm     & 13.8\%           & $+21.0\%$ & $8.1\%$  & $+2.60$ & \phantom{0}4.7 \\
+            Equity & Normal   & 77.1\%           & $+9.9\%$  & $14.8\%$ & $+0.67$ & 12.2 \\
+            Equity & Stressed & \phantom{0}9.0\% & $-40.9\%$ & $13.7\%$ & $-2.99$ & \phantom{0}2.2 \\
+            Bond   & Calm     & 13.8\%           & $+0.8\%$  & $3.5\%$  & $+0.22$ & \phantom{0}4.7 \\
+            Bond   & Normal   & 77.1\%           & $+3.9\%$  & $3.9\%$  & $+1.00$ & 12.2 \\
+            Bond   & Stressed & \phantom{0}9.0\% & $-8.4\%$  & $5.0\%$  & $-1.69$ & \phantom{0}2.2 \\
+            \bottomrule
+        \end{tabular}
+    \end{minipage}
     \end{adjustbox}
 \end{table}
 
@@ -372,39 +386,33 @@ allocation section tests whether these probability forecasts improve net portfol
 
 \begin{table}[H]
     \centering
-    \caption{Out-of-sample student forecast quality. The \Bindep{} panel reports binary
+    \caption{Out-of-sample student forecast quality. The \Bindep{} rows report binary
         diagnostics for the equity and bond favourable-state forecasts. The full independent
         predictor-design results are in Table~\ref{tab:student-oos-prediction-summary}. The
-        \Acoup{} panel reports diagnostics for the joint three-class forecast; AUC is the macro
+        \Acoup{} rows report diagnostics for the joint three-class forecast; AUC is the macro
         one-vs-rest average, and Brier and log loss are reported in their multiclass forms.}
     \label{tab:forecast}
-    \small
-    \begin{adjustbox}{center,max width=\textwidth}
-        \begin{tabular}{llcccc}
+    \footnotesize
+    \setlength{\tabcolsep}{5.0pt}
+    \renewcommand{\arraystretch}{1.03}
+    \begin{adjustbox}{center,max width=1.12\textwidth}
+        \begin{tabular}{@{}llllcccc@{}}
             \toprule
-            \multicolumn{6}{@{}l}{\textbf{\Bindep{}: per-leg binary forecast}}                                            \\
-            \multicolumn{6}{@{}l}{\footnotesize OOS 1996 to 2024}               \\
+            Approach & Task & Model & OOS sample & AUC & Bal.\ acc. & Brier & Log loss \\
             \midrule
-            Label                                   & Model               & AUC        & Bal.\ acc. & Brier    & Log loss \\
+            \Bindep{} & Equity & Logistic regression & 1996--2024 & 0.929 & 0.846 & 0.088 & 0.296 \\
+            \Bindep{} & Equity & Random forest       & 1996--2024 & 0.903 & 0.831 & 0.107 & 0.361 \\
+            \Bindep{} & Bond   & Logistic regression & 1996--2024 & 0.892 & 0.831 & 0.128 & 0.462 \\
+            \Bindep{} & Bond   & Random forest       & 1996--2024 & 0.873 & 0.800 & 0.147 & 0.471 \\
             \midrule
-            Equity                                  & Logistic regression & 0.929      & 0.846      & 0.088    & 0.296    \\
-            Equity                                  & Random forest       & 0.903      & 0.831      & 0.107    & 0.361    \\
-            Bond                                    & Logistic regression & 0.892      & 0.831      & 0.128    & 0.462    \\
-            Bond                                    & Random forest       & 0.873      & 0.800      & 0.147    & 0.471    \\
-            \midrule
-            \multicolumn{6}{@{}l}{\textbf{\Acoup{}: three-class forecast}}                                                \\
-            \multicolumn{6}{@{}l}{\footnotesize OOS 1996 to 2024}                                                   \\
-            \midrule
-            \multicolumn{2}{l}{Model}               & AUC                 & Bal.\ acc. & Brier      & Log loss            \\
-            \midrule
-            \multicolumn{2}{l}{Logistic regression} & 0.770               & 0.677      & 0.541      & 1.062               \\
-            \multicolumn{2}{l}{Random forest}       & 0.776               & 0.595      & 0.383      & 0.686               \\
+            \Acoup{}  & Joint  & Logistic regression & 1996--2024 & 0.770 & 0.677 & 0.541 & 1.062 \\
+            \Acoup{}  & Joint  & Random forest       & 1996--2024 & 0.776 & 0.595 & 0.383 & 0.686 \\
             \bottomrule
         \end{tabular}
     \end{adjustbox}
 \end{table}
 
-The \Bindep{} results favour logistic regression on the headline binary metrics. The
+The \Bindep{} results favour logistic regression on the headline binary metrics, while the
 \Acoup{} results show a trade-off between class accuracy and probabilistic scoring. Full
 predictor-design comparisons and probability-path diagnostics are reported in
 Appendices~\ref{app:student-regime-prediction-diagnostics} and~\ref{app:student-coupled}.
@@ -555,10 +563,10 @@ and~\ref{app:alloc-coupled}.
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth,height=0.15\textheight,keepaspectratio]{allocation_mechanics_focused.jpg}
+        \includegraphics[width=\linewidth,height=0.20\textheight,keepaspectratio]{allocation_mechanics_focused.jpg}
     \end{minipage}\hfill
     \begin{minipage}{0.50\textwidth}
-        \includegraphics[width=\linewidth,height=0.15\textheight,keepaspectratio]{COUPLED__alloc_mechanics.pdf}
+        \includegraphics[width=\linewidth,height=0.20\textheight,keepaspectratio]{COUPLED__alloc_mechanics.pdf}
     \end{minipage}
     \caption{Portfolio weights and turnover, out of sample. The panels report equity, bond, and
         cash weights and turnover for the selected dynamic allocations.}
@@ -567,24 +575,30 @@ and~\ref{app:alloc-coupled}.
 
 \subsection{Sensitivity}
 
-Appendices~\ref{app:alloc-independent} and~\ref{app:alloc-coupled} vary risk aversion,
-turnover penalties, transaction costs, probability smoothing, and moment shrinkage; higher
-risk aversion lowers risky exposure, smoothing and turnover penalties reduce trading, and
-higher transaction costs lower net performance.
+Appendices~\ref{app:alloc-independent} and~\ref{app:alloc-coupled} report sensitivity to
+risk aversion, turnover penalties, transaction costs, probability smoothing, and moment
+shrinkage. The patterns are stable: higher risk aversion lowers risky exposure, smoothing
+and turnover penalties reduce trading, and higher transaction costs lower net performance.
 
 \section{Discussion and conclusion}
 \label{sec:conclusion}
 
-Regime forecasts add benchmark-relative value through lower drawdowns, higher risk-adjusted
-returns, lower trading intensity, or higher terminal wealth. The teacher, student, and
-allocation stages provide the ordered empirical test: labels are economically separated,
-persistent enough for monthly trading, predictable from lagged information, and valuable in
-portfolio rules.
+The results support a benchmark-relative role for regime forecasts in monthly stock--bond
+allocation. Their value appears through the allocation margin selected by the portfolio rule:
+lower drawdowns, higher risk-adjusted returns, lower trading intensity, or higher terminal
+wealth.
 
-Bond exposure can hedge disinflationary equity drawdowns and join adverse inflation-led
-sell-offs. The \Bindep{} representation gives separate equity and bond signals; the \Acoup{}
-representation gives a direct diversification-environment signal. Both add value when regime
-information moves exposure away from static 60/40 in poorly suited regimes.
+The teacher, student, and allocation stages give an ordered empirical test. The regime labels
+are economically separated, persistent enough for monthly trading, predictable from lagged
+information, and valuable when their forecast probabilities enter portfolio rules. This links
+realised regime estimation, next-month forecasting, and out-of-sample allocation.
+
+The central economic implication is that the bond leg changes role across states. Bonds can
+hedge equity risk in disinflationary drawdowns, but can become part of the adverse state in
+inflation-led sell-offs. The \Bindep{} representation gives separate equity and bond signals;
+the \Acoup{} representation gives a direct signal for the diversification environment. In
+both cases, regime information adds value when it changes exposure in states where static
+60/40 is least suited to the stock--bond environment.
 \appendix
 \renewcommand{\thefigure}{\thesection.\arabic{figure}}
 \renewcommand{\thetable}{\thesection.\arabic{table}}
