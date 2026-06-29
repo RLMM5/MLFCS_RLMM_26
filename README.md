@@ -127,7 +127,7 @@ _The allocation mechanics show how forecast probabilities translate into portfol
 
 ## Full report
 
-[Read the full report](Report/regime_aware_tactical_asset_allocation.pdf?raw=1)
+[Read the full report](Report/regime_aware_tactical_asset_allocation.pdf)
 
 Source files:
 
