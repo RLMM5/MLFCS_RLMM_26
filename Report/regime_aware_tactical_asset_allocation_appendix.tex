@@ -1,4 +1,4 @@
-﻿\section{Data Sources and Feature Construction}
+\section{Data Sources and Feature Construction}
 \label{app:data-transformations}
 \label{app:features}
 
@@ -290,7 +290,7 @@ features:
 \right).
 \end{align}
 
-The market-derived block for the coupling logistic~\eqref{eq:wt} uses the trailing
+The market-derived block for the coupling logistic~\eqref{eq:kappa} uses the trailing
 12-month equity--bond correlation \(\rho^{\,\mathrm{eq,bd}}_{12,t}\), together with each
 leg's \(\mathrm{trend}_t\) and \(\mathrm{dd\_lvl}_t\).
 
@@ -364,7 +364,9 @@ z_{t,j}
 \frac{x^c_{t,j}-\mu_j}{\sigma_j}.
 \end{align}
 
-Daily equity models are refitted at month ends. Monthly bond models are refitted each month. In each refit, \(\mu_j\) and \(\sigma_j\) are computed from the current training sample.
+Daily equity models are refitted at month ends. Monthly bond models are refitted each month.
+Each refit uses only observations available at the refit date. In each refit, \(\mu_j\) and
+\(\sigma_j\) are computed from that training sample.
 
 \subsection{Jump-model objective}
 
@@ -808,10 +810,11 @@ For standardised joint features $(\zeq,\zbd)$ the per-month cost is \eqref{eq:em
 the path minimises the total of emission and jump costs by Viterbi. The $L^2$ member uses
 Euclidean leg distances with mean centroids; the $L^1$ member uses absolute leg distances
 with median centroids (two centroids per leg, indexed by the benign/adverse bit). The
-coupling probability $\kappa_t$ in \eqref{eq:wt} is fitted by $L^2$-penalised logistic regression
-($C=1$) with balanced class weights and clipped to $[0,1]$. Each fit alternates: (i)
-re-estimate centroids and refit the coupling logistic given the path; (ii) update the
-path by Viterbi given the centroids and $\kappa_t$. At most ten iterations, a single random restart
+coupling probability $\kappa_t$ in \eqref{eq:kappa} is fitted by $L^2$-penalised logistic regression
+($C=1$) with balanced class weights and clipped to $[0,1]$. Within each monthly refit, the
+coupling regression is estimated on the expanding history available at the refit date. Each
+fit alternates: (i) re-estimate centroids and refit the coupling logistic given the
+provisional path; (ii) update the path by Viterbi given the centroids and $\kappa_t$. At most ten iterations, a single random restart
 plus a warm start from the previous month's path; the lowest-objective solution is kept. Per
 leg, the lower-mean state is set to adverse; a stressed-share cap then relabels to normal
 the stressed months whose equity moving-average crossover exceeds the $18\%$ quantile of its
@@ -822,7 +825,7 @@ subject to share, stressed-cap and minimum-run-length constraints (Table~\ref{ta
 
 \begin{table}[H]
 \centering
-\caption{Coupled teacher panel and refitting schedule.}
+\caption{Coupled teacher panel and causal refitting schedule.}
 \label{tab:c-panel}
 \small
 \begin{tabular}{ll}
