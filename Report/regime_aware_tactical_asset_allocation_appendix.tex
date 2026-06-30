@@ -1441,13 +1441,12 @@ Here \(h\) is the probability-smoothing half-life and \(\lambda_{\mathrm{trade}}
 turnover penalty in the allocation objective.
 Monthly net portfolio return is
 \begin{equation}
-r^{p}_{m+1}
+1+r^{p}_{m+1}
 =
-w_{E,m}r_{E,m+1}
-+
-w_{B,m}r_{B,m+1}
--
-c\|w_m-w_{m-1}\|_1.
+\left(1-c\|w_m-w_{m-1}\|_1\right)
+\left(
+1+w_{E,m}R_{E,m+1}+w_{B,m}R_{B,m+1}+w_{C,m}R^{f}_{m+1}
+\right).
 \end{equation}
 
 \subsection{Allocation diagnostics and parameter sensitivity}

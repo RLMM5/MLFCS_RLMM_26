@@ -471,10 +471,10 @@ Appendix~\ref{app:independent-dynamic-benchmarks}.
             \toprule
             Approach  & Role         & Strategy                              & Ann.\ exc. & Vol.   & Sharpe & Max DD    & Final \\
             \midrule
-            \Bindep{} & Defensive    & Random forest, smoothed predictors    & $+4.4\%$   & 5.8\%  & 0.77   & $-14.9\%$ & 341.9 \\
-            \Bindep{} & Low-turnover & Logistic, z-score + smoothed z-score  & $+5.0\%$   & 7.2\%  & 0.69   & $-13.0\%$ & 386.6 \\
-            \Bindep{} & High-return  & Logistic, smoothed predictors         & $+7.9\%$   & 10.6\% & 0.74   & $-19.3\%$ & 814.2 \\
-            \Bindep{} & Benchmark    & 60/40                                 & $+4.5\%$   & 9.6\%  & 0.47   & $-36.2\%$ & 359.4 \\
+            \Bindep{} & Defensive    & Random forest, smoothed predictors    & $+4.4\%$   & 5.8\%  & 0.76   & $-13.0\%$ & 636.6 \\
+            \Bindep{} & Low-turnover & Logistic, z-score + smoothed z-score  & $+4.8\%$   & 7.2\%  & 0.67   & $-11.5\%$ & 720.0 \\
+            \Bindep{} & High-return  & Logistic, smoothed predictors         & $+7.6\%$   & 10.6\%  & 0.71   & $-18.9\%$ & 1513.6 \\
+            \Bindep{} & Benchmark    & 60/40                                 & $+4.5\%$   & 9.6\%  & 0.47   & $-33.4\%$ & 669.8 \\
             \midrule
             \Acoup{}  & Defensive    & Minimum variance, probability mixture & $+0.80\%$  & 1.2\%  & 0.64   & $-2.0\%$  & 234.0 \\
             \Acoup{}  & Balanced     & Mean--variance, probability mixture   & $+2.74\%$  & 4.4\%  & 0.63   & $-9.6\%$  & 398.5 \\
@@ -497,12 +497,13 @@ Figure~\ref{fig:alloc-wealth} reports the corresponding wealth and drawdown path
 
 \begin{figure}[H]
     \centering
-    \begin{minipage}{0.48\textwidth}
+    \makebox[\textwidth][c]{%
+    \begin{minipage}[t]{0.50\textwidth}
         \includegraphics[width=\linewidth]{allocation_wealth_drawdown_focused.jpg}
-    \end{minipage}\hfill
-    \begin{minipage}{0.50\textwidth}
+    \end{minipage}\hspace{0.025\textwidth}%
+    \begin{minipage}[t]{0.50\textwidth}
         \includegraphics[width=\linewidth]{COUPLED__alloc_wealth_drawdown.pdf}
-    \end{minipage}
+    \end{minipage}}
     \caption{Dynamic allocation performance, out of sample. The panels report net wealth indexes
         and drawdowns for selected dynamic allocations and the 60/40 benchmark, with wealth indexed
         to \(100\) at the start of each evaluation sample.}
