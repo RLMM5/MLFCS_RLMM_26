@@ -16,7 +16,7 @@
             \Bindep{} (bond)        & Exponentially weighted return; downside risk; Sharpe ratio; volatility & Monthly bond excess-return features based on recent mean performance, negative-return magnitude, rolling risk-adjusted performance, and volatility & 1, 3, 6, 12 months            \\
             \midrule
             \Acoup{} (equity, bond) & Sortino ratio                                                          & Recent average excess return over downside risk (EWMA of squared negative excess returns)                                                          & 1, 2, 4, 12 m                 \\
-            \Acoup{} (equity, bond) & Drawdown level / term structure                                        & Log downside deviation; short minus long log downside deviation                                                                                    & 6 m; 2 vs 12 m                \\
+            \Acoup{} (equity, bond) & Downside-deviation level / term structure                              & Log downside deviation; short minus long log downside deviation                                                                                    & 6 m; 2 vs 12 m                \\
             \Acoup{} (equity, bond) & MA crossover / trend                                                   & Short minus long average excess return, scaled by downside risk; EWMA-standardised trend                                                           & 3 vs 12 m; 12, 24 m           \\
             \bottomrule
         \end{tabular}
@@ -328,7 +328,7 @@ observation is clipped to the same bounds before scaling, so the transformation 
 causal. Figures~\ref{fig:c-feateq} and~\ref{fig:c-featbd} plot the resulting standardised
 inputs.
 
-\section{Teacher Label Estimation Details}
+\section{Independent Teacher: Label Estimation Details}
 \label{app:teacher-labels}
 \label{app:teacher-independent}
 
@@ -498,7 +498,7 @@ Y^a_{m+1}
 S^{a,MV}_{m+1}.
 \end{equation}
 
-\section{Teacher Label and Feature Diagnostics}
+\section{Independent Teacher: Label and Feature Diagnostics}
 \label{app:teacher-label-diagnostics}
 
 This appendix reports diagnostics for the equity and bond teacher labels. The diagnostics
@@ -506,7 +506,7 @@ cover individual $L^2$ and $L^1$-medoid teacher paths, jump-penalty sensitivity,
 majority-vote construction, transition behaviour, crisis-window behaviour, and teacher-feature
 state separation. These diagnostics document whether the labels are persistent,
 economically separated, and sufficiently stable to serve as supervised targets in the
-student stage. All return statistics use the monthly excess return of the labelled asset.
+student stage. All return statistics use the monthly excess return of the labeled asset.
 The reported independent prediction and allocation results use the equity return--Sortino
 teacher label and the canonical bond teacher label; volatility/downside equity labels were
 candidate diagnostics and are not used in the reported allocation results.
@@ -514,7 +514,7 @@ candidate diagnostics and are not used in the reported allocation results.
 \subsection{Individual teacher paths}
 \label{app:teacher-individual-paths}
 
-Figures~\ref{fig:app-teacher-equity-l2-paths}--\ref{fig:app-teacher-bond-l1-paths} show the fitted teacher paths across jump-penalty values. Each panel plots the labelled asset's excess-return index and shades months assigned to the favourable or unfavourable regime. The panel title reports the jump penalty, favourable-state share, number of switches, and average spell duration.
+Figures~\ref{fig:app-teacher-equity-l2-paths}--\ref{fig:app-teacher-bond-l1-paths} show the fitted teacher paths across jump-penalty values. Each panel plots the labeled asset's excess-return index and shades months assigned to the favourable or unfavourable regime. The panel title reports the jump penalty, favourable-state share, number of switches, and average spell duration.
 
 \begin{figure}[H]
 \centering
@@ -580,7 +580,7 @@ For asset \(a\), the member vote share and final majority label are
     \mathbf{1}\{\pi^a_m\ge 1/2\}.
     \label{eq:independent-vote}
 \end{equation}
-Figures~\ref{fig:app-teacher-equity-majority-vote} and~\ref{fig:app-teacher-bond-majority-vote} show how the final teacher labels are formed from the $L^2$, $L^1$-medoid, and combined teacher paths. Each panel plots the labelled asset's excess-return index, shades the majority-vote regime, and overlays the vote probability. The dashed horizontal line marks the one-half threshold used to form the majority label.
+Figures~\ref{fig:app-teacher-equity-majority-vote} and~\ref{fig:app-teacher-bond-majority-vote} show how the final teacher labels are formed from the $L^2$, $L^1$-medoid, and combined teacher paths. Each panel plots the labeled asset's excess-return index, shades the majority-vote regime, and overlays the vote probability. The dashed horizontal line marks the one-half threshold used to form the majority label.
 
 \begin{figure}[H]
 \centering
@@ -693,7 +693,7 @@ Bond & $L^2$ & 4 & 68.5\% & 29 & 14.4 & 19.7 & 9.1 & 1.2 & -0.25 \\
 \end{landscape}
 
 
-Table~\ref{tab:app-teacher-final-crisis} reports crisis-window behaviour for the final combined teacher labels. Favourable share is computed from the final monthly label within each window; return statistics use the labelled asset's monthly excess returns over the same window.
+Table~\ref{tab:app-teacher-final-crisis} reports crisis-window behaviour for the final combined teacher labels. Favourable share is computed from the final monthly label within each window; return statistics use the labeled asset's monthly excess returns over the same window.
 
 
 
@@ -802,15 +802,13 @@ Bond & $L^2$ & Log downside risk, 6 months & 8.0 & 1.65 \\
 \end{minipage}
 \end{table}
 
-\section{Coupled teacher: estimation details and diagnostics}
+\section{Coupled Teacher: Estimation Details and Diagnostics}
 \label{app:teacher-coupled}
 
 The coupled teacher is estimated on the return panel beginning in 1970; after the fixed
 132-month warm-up its first causal monthly label is 1989-01, coinciding with the start of the
-presented independent label. The pre-1989 history therefore enters only the rolling
-standardisation window; because labelling is strictly causal and performed one month at a time,
-it never enters any labelled month, forecast, or out-of-sample allocation result, so the two
-approaches remain directly comparable.
+presented independent label. The pre-1989 history therefore enters only the rolling standardisation window. Because labeling is strictly causal and performed one month at a time — retaining only the point-in-time label for month $t$
+— the procedure never modifies any labeled month, forecast, or out-of-sample allocation result, so the two approaches remain directly comparable.
 
 \subsection*{Objective, coupling logistic, and fitting}
 For standardised joint features $(\zeq,\zbd)$ the per-month cost is \eqref{eq:emission} and
@@ -830,7 +828,7 @@ subject to share, stressed-cap and minimum-run-length constraints (Table~\ref{ta
 The jump model is unsupervised; the coupling logistic is supervised, but its target is the
 leg-agreement indicator generated by that same unsupervised model rather than any external or
 forward-looking label. The logistic is therefore refit jointly with the path at every month
-(refit cadence one month) using only data available through the labelled month, so the whole
+(refit cadence one month) using only data available through the labeled month, so the whole
 teacher stage is unsupervised with respect to future returns and strictly causal.
 
 \begin{table}[H]
@@ -861,14 +859,14 @@ Combination & Equal-weight vote (argmax of class counts) \\
 \label{app:kappa-detail}
 
 This subsection specifies the coupling logistic completely, so that its inputs, its target, its
-estimation, its effect on the state cost, and its causal status leave no open question.
+estimation, its effect on the state cost, and its causal status are described here.
 
 \paragraph{What $\kappa_t$ represents.}
 The three admissible joint states split into \emph{agree} states, in which the two legs share
 the same bit (calm $=(0,0)$ and stressed $=(1,1)$), and the single \emph{disagree} state, in
 which the bits differ (normal $=(1,0)$). The scalar $\kappa_t\in[0,1]$ is the probability that,
 in month $t$, the equity and bond legs are in an agree state, conditional on observable market
-conditions. It is not a free parameter and not a portfolio weight; it is recomputed each month
+conditions. It is not a free parameter and it is recomputed each month
 from the market-state features below.
 
 \paragraph{Target.}
@@ -877,8 +875,7 @@ Given the current fitted state path, the binary target is the realised leg-agree
 y_t=\mathbf{1}\{s^{\mathrm{eq}}_t=s^{\mathrm{bd}}_t\}\in\{0,1\},
 \]
 which equals $1$ in calm or stressed months (both bits equal) and $0$ in normal months. The
-target is thus produced by the unsupervised jump model itself; it uses no external label and no
-future return.
+target is thus produced by the unsupervised jump model itself.
 
 \paragraph{Features.}
 The regressors are the five-dimensional market-state vector
@@ -888,7 +885,7 @@ x^{\mathrm{mkt}}_t=\big\{\rho^{\,\mathrm{eq,bd}}_{12,t},\
 \mathrm{dd}^{\mathrm{eq}}_t,\ \mathrm{dd}^{\mathrm{bd}}_t\big\},
 \]
 namely the trailing twelve-month equity--bond return correlation, each leg's trend, and each
-leg's drawdown level (Appendix~\ref{app:features}). These are the descriptors that drive
+leg's downside-deviation level (Appendix~\ref{app:features}). These are the descriptors that drive
 equity--bond co-movement, so the regression learns the mapping from the current market state to
 the probability that the two legs share a regime. The features are standardised on the same
 trailing $120$-month, $1\%/99\%$ winsorised window used for the leg features, so no future
@@ -896,11 +893,12 @@ information enters.
 
 \paragraph{Estimator.}
 $\kappa_t=\sigma(\beta_0+\beta^{\top}x^{\mathrm{mkt}}_t)$ is an $L^2$-penalised (ridge)
-logistic regression with inverse-regularisation strength $C=1$ and balanced class weights; the
-fitted probability is clipped to $[0,1]$. Balanced class weights matter here: agree months
-(calm $+$ stressed) are the majority, and without re-weighting $\kappa_t$ would be biased
-upward and would structurally suppress the disagree (normal) state; balancing keeps the normal
-state attainable.
+logistic regression with inverse-regularisation strength $C=1$
+and balanced class weights; the fitted probability is clipped to $[0,1]$. 
+Balanced class weights matter here: disagree months (normal) are the majority, and without re-weighting, 
+$\kappa_t$ would be biased downward and
+would structurally suppress the agree 
+(calm and stressed) states; balancing keeps calm and stressed attainable.
 
 \paragraph{Effect on the state cost.}
 $\kappa_t$ enters the per-month emission cost~\eqref{eq:emission} as
@@ -912,29 +910,23 @@ $\eta$ and the jump penalty $\lambda$ are selected per month from $\{1,2,4,8\}$ 
 $\{2,3,4,6\}$ (Table~\ref{tab:c-panel}).
 
 \paragraph{Joint estimation and refit cadence.}
-The logistic is not a post-hoc add-on: it is refit inside the coordinate descent that fits the
-teacher. Starting from the previous month's warm-started path, each iteration (i) re-estimates
+The coupling logistic is estimated jointly with the state path, NOT in a separate step after the path is fixed: it is refit inside the coordinate descent that fits the teacher. Starting from the previous month's warm-started path, each iteration (i) re-estimates
 the leg centroids given the current path, (ii) refits the logistic of $y_t$ on
 $x^{\mathrm{mkt}}_t$ to obtain $\kappa_t$, and (iii) recomputes the path by dynamic programming
 under~\eqref{eq:emission}; the iteration runs up to ten steps and the lowest-objective solution
-is kept. This is repeated at \emph{every} labelled month (refit cadence one month, no delay): at
-month $t$ the entire fit --- centroids, coefficients $\beta$, and path --- uses only the
-expanding sample through month $t$.
+is kept. This is repeated at \emph{every} labeled month (refit cadence one month, no delay): at
+month $t$ the entire fit -- centroids, coefficients $\beta$, and path -- uses only the
+expanding sample through month $t$. And only month $t$ is labeled at each step - there is no labeling backwards in time, which would break the causality.
 
-\paragraph{Causal, unsupervised status.}
-Two facts together establish that the teacher is causal and unsupervised with respect to future
-returns. First, every quantity used at month $t$ (features, target, centroids, coefficients) is
-computed from data available through $t$ only, so the label carries no look-ahead. Second, the
-only supervised component --- the coupling logistic --- is trained on a target $y_t$ that is
-itself generated by the unsupervised jump model, not by any human annotation or realised future
-return; it is best read as a self-consistency step that sharpens the model's own agree/disagree
-structure. The teacher therefore remains unsupervised in the sense relevant to leakage: no
-future return and no external label ever enters the fit.
+
+\paragraph{Causal, unsupervised status.} The teacher introduces no look-ahead. Every quantity entering the month-$t$ fit -- features, target, centroids, and logistic coefficients -- is computed from data available through month $t$. The coupling logistic is refit at every labeled month with no delay: at month $t$ it is estimated on the expanding sample $\{\tau\le t\}$, so no observation dated after $t$ enters and the label is a strictly causal function of past returns. The two components differ in whether they use a target. The jump model is unsupervised, estimating the state path from returns alone. The coupling logistic is supervised, but its target 
+$y_t=\mathbf{1}\{s^{\mathrm{eq}}_t=s^{\mathrm{bd}}_t\}$ is a deterministic function of that causally estimated state path -- not a realised future return. It is therefore trained only on labels the unsupervised jump model generates from data through $t$, so the teacher as a whole is unsupervised with respect to future returns, and causal.
+
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{figs/COUPLED__vote_kappa.png}
-    \caption{\Acoup{} ensemble label construction (causal teacher labelling). The top panel reports per-class vote shares across the 22 coupled members. The bottom panel reports the average coupling probability \(\kappa_t\), with regime shading and the \(0.5\) reference line.}
+    \caption{\Acoup{} ensemble label construction (causal teacher labeling). The top panel reports per-class vote shares across the 22 coupled members. The bottom panel reports the average coupling probability \(\kappa_t\), with regime shading and the \(0.5\) reference line.}
     \label{fig:vote-wt}
 \end{figure}
 
@@ -964,7 +956,7 @@ Table~\ref{tab:app-teacher-final-crisis}.
 \begin{table}[H]
 \centering
 \caption{Coupled teacher: crisis-window summary by leg. Stressed share is the fraction of
-window months in the stressed joint regime; return statistics use the labelled leg's monthly
+window months in the stressed joint regime; return statistics use the labeled leg's monthly
 excess return over the window.}
 \label{tab:c-crisis}
 \tiny
@@ -1012,8 +1004,8 @@ regimes.}
 \toprule
 Component & Teacher features & Frequency & Initial sample \\
 \midrule
-Equity state bit & Equity Sortino, drawdown and trend features & Monthly & 11 years \\
-Bond state bit & Bond Sortino, drawdown and trend features & Monthly & 11 years \\
+Equity state bit & Equity Sortino, downside-deviation and trend features & Monthly & 11 years \\
+Bond state bit & Bond Sortino, downside-deviation and trend features & Monthly & 11 years \\
 Joint regime & Combination (eq bit, bd bit) mapped to calm / normal / stressed, with the coupling probability $\kappa_t$ tying the two bits & Monthly & 11 years \\
 \bottomrule
 \end{tabular}
@@ -1023,8 +1015,8 @@ Joint regime & Combination (eq bit, bd bit) mapped to calm / normal / stressed, 
 \begin{table}[H]
 \centering
 \caption{Coupled teacher: three-regime summary with spell counts (1989-01 to 2024-11, causal
-teacher labelling). Share is the fraction of
-labelled months in each joint regime; equity and bond statistics are same-month annualised
+teacher labeling). Share is the fraction of
+labeled months in each joint regime; equity and bond statistics are same-month annualised
 excess returns conditional on the regime; spells is the number of distinct runs.}
 \label{tab:c-regime3}
 \small
@@ -1046,7 +1038,7 @@ Stressed & \phantom{0}9.3\% & $-40.9\%$ & $13.7\%$ & $-2.99$ & $-8.4\%$ & $5.0\%
 \subsection*{Member-level and feature-level diagnostics}
 Table~\ref{tab:c-members} reports the twenty-two members. Most of the members select the smallest
 jump penalty $\lambda=2$: the persistence in the final labels comes from the coupling term
-and the monthly refit, not from a large $\lambda$. Members separate well (most separation
+and the monthly refit, not from a large $\lambda$. Smaller penalties below this value were also tried but switched too frequently, which is why the grid is floored at $\lambda=2$. Members separate well (most separation
 scores between $4$ and $7$), with Sortino- and momentum-based families separating
 best. Table~\ref{tab:c-featsep} ranks the per-leg features by how strongly their
 standardised mean separates across the three regimes.
@@ -1154,43 +1146,51 @@ Figures~\ref{fig:app-teacher-equity-majority-vote}--\ref{fig:app-teacher-bond-ma
 \caption{Coupled teacher: majority-vote construction. Each panel restricts the ensemble to a
 scope ($L^2$ members, $L^1$-medoid members, or all $22$ combined), shades the equity
 excess-return index by the scope's majority joint regime, and overlays the majority-class vote
-share on the right axis. The dashed line marks an absolute majority ($0.5$); below it the
-winning class is a plurality among the three regimes.}
+share on the right axis. Because the label is a plurality (argmax) vote over three regimes, the
+winning share is always at least $1/3$; the dashed line marks this $1/3$ floor, so a share near
+the line indicates a near three-way split among the members (weak consensus) and a share
+approaching $1$ indicates strong agreement on a single joint regime.}
 \label{fig:c-majvote}
 \end{figure}
 
 \paragraph{Jump-penalty diagnostics.}
-To isolate the effect of persistence, the jump penalty is held fixed across a wider grid
-$\lambda\in\{2,3,4,6,8,12,16\}$ at $\eta=2$ for the all-feature member under each norm
-(these paths form a sensitivity diagnostic, not the reported labels). A larger penalty produces longer,
-stickier regimes: switch counts fall and durations rise with $\lambda$ while the calm share
-shrinks, and the separation score is highest at small penalties---consistent with the
-reported specification selecting $\lambda=2$ for most of the members
-(Figures~\ref{fig:c-patheqL2}--\ref{fig:c-lamdiag-bd}).
+Figures~\ref{fig:c-patheqL2}--\ref{fig:c-lamdiag-bd} refit the all-feature member across the
+full grid $\lambda\in\{2,3,4,6\}$ and $\eta\in\{1,2,4,8\}$, separately for each leg and norm;
+these paths are a sensitivity diagnostic, not the reported labels. Persistence is set jointly by
+$\lambda$ and $\eta$ rather than by $\lambda$ alone: there is no clean monotone $\lambda$ effect
+on switch counts or spell durations once $\eta$ is varied (at large $\eta$, longer regimes do
+appear at larger $\lambda$, but at small $\eta$ the relationship breaks down), and much of the
+persistence is contributed by the coupling term rather than by the penalty. A few off-diagonal
+cells that combine a large $\lambda$ with a small $\eta$ collapse to a near-constant label---for
+example $\lambda=6$, $\eta=1$ in the $L^2$ panels, with an $83\%$ calm share. Small penalties are
+favoured overall, and the reported members predominantly select $\lambda=2$
+(Table~\ref{tab:c-members}).
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figs/COUPLED__lambda_sweep_eq_l2.png}
-\caption{Coupled teacher: equity $L^2$ paths across the jump penalty (each panel fixes
-$\lambda$, $\eta=2$, and shades the equity excess-return index by the fitted regime).}
+\caption{Coupled teacher: equity $L^2$ paths across the grid $\lambda\in\{2,3,4,6\}$,
+$\eta\in\{1,2,4,8\}$. Each panel fixes one $(\lambda,\eta)$ pair and shades the equity
+excess-return index by the fitted regime; the title reports the calm share, switch count, and
+average spell duration.}
 \label{fig:c-patheqL2}
 \end{figure}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figs/COUPLED__lambda_sweep_eq_l1.png}
-\caption{Coupled teacher: equity $L^1$ paths across the jump penalty.}
+\caption{Coupled teacher: equity $L^1$ paths across the $\lambda\times\eta$ grid (as in Figure~\ref{fig:c-patheqL2}).}
 \label{fig:c-patheqL1}
 \end{figure}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figs/COUPLED__lambda_sweep_bd_l2.png}
-\caption{Coupled teacher: bond $L^2$ paths across the jump penalty.}
+\caption{Coupled teacher: bond $L^2$ paths across the $\lambda\times\eta$ grid (as in Figure~\ref{fig:c-patheqL2}). Labels are the joint teacher regime, identical to the equity $L^2$ panels; only the shaded index (bond vs.\ equity) differs.}
 \label{fig:c-pathbdL2}
 \end{figure}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figs/COUPLED__lambda_sweep_bd_l1.png}
-\caption{Coupled teacher: bond $L^1$ paths across the jump penalty.}
+\caption{Coupled teacher: bond $L^1$ paths across the $\lambda\times\eta$ grid (as in Figure~\ref{fig:c-patheqL2}).}
 \label{fig:c-pathbdL1}
 \end{figure}
 \begin{figure}[H]
@@ -1370,9 +1370,12 @@ The feature-block definitions are: equity cross-section contains equity factors,
 
 \paragraph{Coupled student.} The target is the next-month three-class regime. At each refit
 the five predictors most correlated with the next-month regime over the trailing window are
-kept, and the current-regime indicators and run-length are appended. Two classifiers are
+kept; this screen is strictly causal, computed only from months whose next-month regime is
+already realised at the refit date, so it never uses the outcome being forecast. These five
+screened predictors, together with the current-regime indicators (3 indicators that are each $\{0, 1\}$, and indicate which of the 3 regimes is currently present) and the regime run-length,
+form the input feature vector passed to the classifiers. Two classifiers are
 fitted with balanced class weights: an $L_2$-penalised multinomial logistic regression and a
-random forest. The logistic regularisation grid is $C\in\{0.03,0.1,0.3,1.0\}$ and the
+random forest (the random forest using the per-bootstrap balanced subsample variant of balanced class weights). The logistic regularisation grid is $C\in\{0.03,0.1,0.3,1.0\}$ and the
 random-forest grid is $\{(n{=}300,d{=}4,\ell{=}5),(n{=}400,d{=}6,\ell{=}3)\}$, where $n$ is
 the number of trees, $d$ the maximum depth and $\ell$ the minimum leaf size; random-forest
 probabilities are averaged over seeds $\{101,111,121\}$ and the logistic solver is
@@ -1404,8 +1407,8 @@ Brier and log loss are probabilistic scores (lower is better).}
 \toprule
 Model & Accuracy & Balanced acc. & AUC (macro OVR) & Brier & Log loss \\
 \midrule
-Logistic regression & 0.672 & 0.620 & 0.724 & 0.553 & 1.074 \\
-Random forest       & 0.791 & 0.593 & 0.759 & 0.367 & 0.747 \\
+Logistic regression & 0.678 & 0.546 & 0.649 & 0.515 & 1.188 \\
+Random forest       & 0.736 & 0.479 & 0.648 & 0.398 & 0.938 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -1422,7 +1425,7 @@ walk-forward out-of-sample windows, with the share of windows in which it was ch
 Model & Most frequent setting & Selection share & OOS windows \\
 \midrule
 Logistic regression & $C=0.03$ & 74.1\% & 58 \\
-Random forest & $d=4$, leaf $=5$, $n=300$ & 70.7\% & 58 \\
+Random forest & $d=4$, leaf $=5$, $n=300$ & 77.6\% & 58 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1432,8 +1435,8 @@ Random forest & $d=4$, leaf $=5$, $n=300$ & 70.7\% & 58 \\
 \includegraphics[width=\linewidth]{figs/COUPLED__pred_probabilities.pdf}
 \caption{\Acoup{} student out-of-sample probability paths for the three joint regimes
 (calm, normal, stressed), shown for the logistic and random-forest students. Shading marks
-the realised teacher regime, the black lines report the predicted regime probabilities, and
-the dashed line marks the \(0.5\) threshold.}
+the realised teacher regime, the solid lines report the predicted regime probabilities, and
+the dashed line marks the \(1/3\) equal-probability level.}
 \label{fig:c-student-probs}
 \end{figure}
 
@@ -1818,32 +1821,43 @@ validation or grid-selected choices, and robustness or diagnostic components.}
 \section{Coupled allocation: details and sensitivity}
 \label{app:alloc-coupled}
 
-The coupled allocator is a faithful port of the \Bindep{} allocation engine, so that the only
-difference between the two approaches is the regime representation that supplies the
-conditional moments. The investable universe is the equity leg, the bond leg and cash; weights
-are long-only with each risky leg capped at one and a gross risky cap of $1.0$
-($w_E+w_B\le 1$), chosen on the same $0.02$ grid as the \Bindep{} side to maximise the
-mean--variance objective~\eqref{eq:mv}. Portfolios rebalance monthly and pay $10$~bps on traded
-notional at the headline cost. The conditional moments are formed as a probability mixture over
-the three joint regimes: per-regime means and variances are estimated from the expanding
-history of returns assigned to each regime and shrunk toward the pre-out-of-sample
-unconditional moments with weight $n/(n+K)$ at $K=36$; the equity--bond correlation is shrunk
-identically and combined with the conditional volatilities to form the covariance; the
-predicted probabilities are optionally smoothed with an exponential half-life $h$ and
-renormalised across the three classes. The reported grid varies the risk aversion
-$\gamma\in\{0.25,0.5,1,2,3,5,8,12\}$, the turnover multiplier $\tau\in\{0,1,3,5\}$ (the
-turnover penalty in~\eqref{eq:mv} is $\tau c\lVert w-w_{t-1}\rVert_1$, the same $\tau c$
-convention as the \Bindep{} side), the one-way cost $c\in\{5,10,25,50\}$~bps, and the
-probability-smoothing half-life $h\in\{0,3,6\}$. The three headline strategies are selected
-mechanically on the headline-cost grid: the defensive role maximises the Sharpe ratio subject
-to a maximum drawdown no worse than $-15\%$; the low-turnover role minimises annual turnover
-subject to a Sharpe ratio at least $0.85$ times the best grid Sharpe; and the high-return role
-maximises the annualised excess return subject to a maximum drawdown no worse than $-35\%$,
-with each role excluding the strategies already taken. Table~\ref{tab:c-headline} reports the
-three headline strategies with the full set of metrics (CVaR and turnover, condensed in the
-body Table~\ref{tab:alloc-frontier}), and Table~\ref{tab:c-cost} stresses the reference
-logistic probability-mixture mean--variance allocator (risk aversion $5$, no smoothing) to the
-transaction cost and turnover multiplier.
+The coupled and \Bindep{} allocators use the same mean--variance objective~\eqref{eq:mv},
+investable universe, weight grid, and transaction-cost and turnover conventions, and differ
+only in the regime representation that supplies the conditional moments; this isolates the
+effect of the representation. The universe is the equity leg, the bond leg, and cash, with
+long-only weights, each risky leg capped at one, and a gross risky cap $w_E+w_B\le 1$; the
+weights maximise objective~\eqref{eq:mv} over a $0.02$ grid. Portfolios rebalance monthly and
+pay a one-way headline cost of $10$~bps on traded notional. The conditional moments are a
+probability mixture over the three joint regimes: per-regime means and variances are estimated
+from the expanding return history assigned to each regime and shrunk toward the
+pre-out-of-sample unconditional moments with weight $n/(n+K)$ at $K=36$; the equity--bond
+correlation is shrunk identically and combined with the conditional volatilities to form the
+covariance; and the forecast probabilities are optionally smoothed with an exponential
+half-life $h$ and renormalised across the three classes. The reported grid varies the risk
+aversion $\gamma\in\{0.25,0.5,1,2,3,5,8,12\}$, the turnover multiplier $\tau\in\{0,1,3,5\}$
+(the turnover penalty in~\eqref{eq:mv} is $\tau c\lVert w-w_{t-1}\rVert_1$), the one-way cost
+$c\in\{5,10,25,50\}$~bps, and the probability-smoothing half-life $h\in\{0,3,6\}$.
+
+The three headline strategies are defined by fixed role criteria applied to the headline-cost
+grid: the defensive role maximises the Sharpe ratio subject to a maximum drawdown no worse than
+$-15\%$; the low-turnover role minimises annual turnover subject to a Sharpe ratio at least
+$0.85$ times the best grid Sharpe; and the high-return role maximises the annualised excess
+return subject to a maximum drawdown no worse than $-35\%$, each role excluding strategies
+already assigned. Each candidate allocation is a causal, out-of-sample rule: at every month $t$
+the weights depend only on information available through $t$---regime-conditional moments
+estimated from returns realised up to $t$ and shrunk toward moments fixed before the
+out-of-sample period, forecast probabilities from the walk-forward student of
+Appendix~\ref{app:student-coupled}, and, where smoothing is used, a backward exponential
+average---and the selected weights are held into month $t+1$ and earn that month's realised
+return net of costs. The reported statistics therefore contain no look-ahead in the trading.
+The role labels are assigned ex post, by ranking the candidate strategies on their
+out-of-sample statistics over the full evaluation window, and so identify representative points
+on the realised out-of-sample frontier rather than a rule applied in real time.
+Table~\ref{tab:c-headline} reports the three headline strategies with the full set of metrics
+(CVaR and turnover are condensed in the body Table~\ref{tab:alloc-frontier}), and
+Table~\ref{tab:c-cost} stresses the reference logistic probability-mixture mean--variance
+allocator (risk aversion $5$, no smoothing) against the transaction cost and turnover
+multiplier.
 
 \begin{table}[H]
 \centering
@@ -1856,9 +1870,9 @@ indexes $100$ at the start; ``Turn.'' is annual turnover. The 60/40 benchmark co
 \toprule
 Role & Strategy & Ann.\ exc. & Vol. & Sharpe & Max DD & CVaR$_{1\%}$ & Final & Turn. \\
 \midrule
-Defensive    & Logistic, $\gamma{=}3,\ \tau{=}3,\ h{=}0$    & $+2.26\%$ & 3.15\%  & 0.719 & $-7.5\%$  & $-2.73\%$ & 188.8 & 23.0\% \\
-Low-turnover & Logistic, $\gamma{=}12,\ \tau{=}3,\ h{=}3$   & $+0.70\%$ & 1.14\%  & 0.613 & $-4.6\%$  & $-1.14\%$ & 121.9 & \phantom{0}3.3\% \\
-High-return  & Logistic, $\gamma{=}0.25,\ \tau{=}1,\ h{=}6$ & $+4.92\%$ & 8.11\%  & 0.606 & $-21.3\%$ & $-8.23\%$ & 372.9 & 24.3\% \\
+Defensive    & Random forest, $\gamma{=}5,\ \tau{=}3,\ h{=}0$  & $+3.15\%$ & 4.33\%  & 0.727 & $-14.3\%$ & $-3.99\%$  & 240.2 & \phantom{0}8.9\% \\
+Low-turnover & Random forest, $\gamma{=}12,\ \tau{=}3,\ h{=}3$ & $+1.69\%$ & 2.66\%  & 0.635 & $-10.5\%$ & $-2.52\%$  & 160.8 & \phantom{0}3.1\% \\
+High-return  & Logistic, $\gamma{=}0.25,\ \tau{=}0,\ h{=}0$    & $+5.28\%$ & 11.04\% & 0.478 & $-34.8\%$ & $-10.56\%$ & 381.2 & 307.3\% \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -1876,10 +1890,10 @@ Cells are out-of-sample Sharpe ratios.}
 \toprule
 $\tau$ & 5 bps & 10 bps & 25 bps \\
 \midrule
-0 & 0.564 & 0.545 & 0.487 \\
-1 & 0.575 & 0.580 & 0.713 \\
-3 & 0.599 & 0.651 & 0.284 \\
-5 & 0.725 & 0.420 & 0.289 \\
+0 & 0.647 & 0.634 & 0.593 \\
+1 & 0.602 & 0.615 & 0.645 \\
+3 & 0.626 & 0.599 & 0.180 \\
+5 & 0.655 & 0.225 & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1947,7 +1961,7 @@ Benchmark & Ann.\ exc. & Vol. & Sharpe & Max DD & Final & Turn. \\
 50/50 & $+4.46\%$ & 8.26\% & 0.540 & $-29.9\%$ & 326.2 & \phantom{0}3.5\% \\
 Equity-only & $+6.85\%$ & 15.43\% & 0.444 & $-62.2\%$ & 505.0 & \phantom{0}3.5\% \\
 Bond-only & $+2.07\%$ & 4.07\% & 0.509 & $-21.3\%$ & 177.1 & \phantom{0}3.5\% \\
-Min-variance (uncond.) & $+2.20\%$ & 4.07\% & 0.540 & $-20.2\%$ & 183.7 & 15.5\% \\
+Min-variance (uncond.) & $+2.22\%$ & 4.08\% & 0.544 & $-20.3\%$ & 184.8 & \phantom{0}8.4\% \\
 Vol-targeted 60/40 & $+3.26\%$ & 6.92\% & 0.471 & $-31.3\%$ & 238.0 & 17.1\% \\
 \bottomrule
 \end{tabular}
@@ -1965,15 +1979,15 @@ strategies use $K=36$.}
 \toprule
 Shrinkage $K$ & Ann.\ return & Ann.\ vol. & Sharpe & Ann.\ turnover \\
 \midrule
-0  & $+1.72\%$ & 3.12\% & 0.551 & 124.1\% \\
-12 & $+1.93\%$ & 3.34\% & 0.577 & 110.1\% \\
-24 & $+2.07\%$ & 3.49\% & 0.594 & 81.0\% \\
-30 & $+2.11\%$ & 3.58\% & 0.590 & 69.3\% \\
-36 & $+2.12\%$ & 3.65\% & 0.580 & 60.5\% \\
-42 & $+2.12\%$ & 3.71\% & 0.573 & 52.9\% \\
-48 & $+2.24\%$ & 3.77\% & 0.593 & 48.1\% \\
-60 & $+2.37\%$ & 3.89\% & 0.607 & 40.8\% \\
-96 & $+2.51\%$ & 4.05\% & 0.619 & 27.2\% \\
+0  & $+1.83\%$ & 5.32\% & 0.344 & 105.9\% \\
+12 & $+2.55\%$ & 5.14\% & 0.497 & 95.1\% \\
+24 & $+2.77\%$ & 4.95\% & 0.560 & 66.8\% \\
+30 & $+2.77\%$ & 4.81\% & 0.576 & 57.1\% \\
+36 & $+2.91\%$ & 4.74\% & 0.615 & 49.9\% \\
+42 & $+2.93\%$ & 4.66\% & 0.629 & 44.2\% \\
+48 & $+2.94\%$ & 4.63\% & 0.635 & 39.7\% \\
+60 & $+2.96\%$ & 4.48\% & 0.661 & 30.7\% \\
+96 & $+2.86\%$ & 4.38\% & 0.654 & 21.7\% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2017,19 +2031,19 @@ Shrinkage $K$ & Ann.\ return & Ann.\ vol. & Sharpe & Ann.\ turnover \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth,height=0.88\textheight,keepaspectratio]{figs/COUPLED__allocation_sweep_turnover_penalty_high_return.pdf}
-\caption{Coupled allocation: turnover-penalty sweep around the high-return strategy. The horizontal axis is the turnover penalty $\tau c$, the coefficient on $\lVert w-w_{t-1}\rVert_1$ in objective~\eqref{eq:mv}, using the same $\tau c$ convention as the \Bindep{} side.}
+\caption{Coupled allocation: turnover-penalty sweep around the high-return strategy. The horizontal axis is the turnover penalty $\tau c$, the coefficient on $\lVert w-w_{t-1}\rVert_1$ in objective~\eqref{eq:mv}.}
 \label{fig:c-sweep-tp-hr}
 \end{figure}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth,height=0.88\textheight,keepaspectratio]{figs/COUPLED__allocation_sweep_turnover_penalty_defensive.pdf}
-\caption{Coupled allocation: turnover-penalty sweep around the defensive strategy. The horizontal axis is the turnover penalty $\tau c$, the coefficient on $\lVert w-w_{t-1}\rVert_1$ in objective~\eqref{eq:mv}, using the same $\tau c$ convention as the \Bindep{} side.}
+\caption{Coupled allocation: turnover-penalty sweep around the defensive strategy. The horizontal axis is the turnover penalty $\tau c$, the coefficient on $\lVert w-w_{t-1}\rVert_1$ in objective~\eqref{eq:mv}.}
 \label{fig:c-sweep-tp-def}
 \end{figure}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth,height=0.88\textheight,keepaspectratio]{figs/COUPLED__allocation_sweep_turnover_penalty_low_turnover.pdf}
-\caption{Coupled allocation: turnover-penalty sweep around the low-turnover strategy. The horizontal axis is the turnover penalty $\tau c$, the coefficient on $\lVert w-w_{t-1}\rVert_1$ in objective~\eqref{eq:mv}, using the same $\tau c$ convention as the \Bindep{} side.}
+\caption{Coupled allocation: turnover-penalty sweep around the low-turnover strategy. The horizontal axis is the turnover penalty $\tau c$, the coefficient on $\lVert w-w_{t-1}\rVert_1$ in objective~\eqref{eq:mv}.}
 \label{fig:c-sweep-tp-lt}
 \end{figure}
 \begin{figure}[H]
@@ -2064,9 +2078,11 @@ validation or grid search, and which are used only as diagnostics. As with the i
 protocol in Table~\ref{tab:independent-model-selection-protocol}, the purpose is to separate the
 reported coupled specification from robustness checks and presentation-only diagnostics. The coupled teacher produces a single joint three-state label (calm, normal, stressed), and the student forecasts that joint label directly.
 
-\begin{table}[H]
+\begin{table}[p]
 \centering
-\small
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.05}
 \begin{adjustbox}{center,max width=\linewidth}
 \begin{tabular}{p{0.20\linewidth}p{0.30\linewidth}p{0.17\linewidth}p{0.18\linewidth}p{0.18\linewidth}}
 \toprule
@@ -2081,10 +2097,10 @@ Student predictor sets & Lagged macro-financial predictors for the next-month jo
 Student model hyperparameters & Three-class logistic regression and random forest specifications & Model classes fixed before evaluation & Hyperparameters selected within the rolling validation design & Most-frequent-specification table reports selected settings \\
 Student validation metrics & Macro one-vs-rest AUC, balanced accuracy, multiclass Brier score, and log loss & Metrics fixed before reporting & Best reported specifications selected from rolling outputs & Full three-class prediction diagnostics kept in appendix \\
 Allocation rule & Long-only equity--bond allocation with cash allowed and an $L^1$ turnover penalty, mapping regime probabilities to moments & Asset universe and allocation objective fixed before grid search & Candidate grid varies risk aversion, turnover penalty, transaction cost, and probability smoothing & Parameter-sensitivity appendix reports one-way checks \\
-Probability-to-moment mapping & Probability-mixture mapping over the three joint regimes, with state moments shrunk to pre-out-of-sample unconditional moments & Mapping and shrinkage form fixed as the \Bindep{} port & Headline and reported rows use the probability mixture & Shrinkage constant $K$ and probability smoothing reported as sensitivity \\
+Probability-to-moment mapping & Probability-mixture mapping over the three joint regimes, with state moments shrunk to pre-out-of-sample unconditional moments & Mapping and shrinkage form fixed before headline reporting & Headline and reported rows use the probability mixture & Shrinkage constant $K$ and probability smoothing reported as sensitivity \\
 Risk aversion & Mean--variance allocator with risk aversion from the grid $\gamma\in\{0.25,0.5,1,2,3,5,8,12\}$ & Grid fixed before headline reporting & Headline rows use selected grid points & Risk-aversion sweeps reported as sensitivity \\
-Transaction cost and turnover penalty & One-way transaction-cost grid with a $\tau c$ turnover penalty (same convention as the \Bindep{} side) & Grid fixed before headline reporting & Headline coupled rows use 10~bps & Cost and turnover-multiplier sensitivity reported in appendix \\
-Headline allocation rows & Defensive, low-turnover, and high-return rows, defined mechanically on the headline-cost grid: defensive $=$ maximum Sharpe s.t.\ max drawdown $\ge -15\%$; low-turnover $=$ minimum annual turnover s.t.\ Sharpe $\ge 0.85\times$ best grid Sharpe; high-return $=$ maximum annualised excess return s.t.\ max drawdown $\ge -35\%$ & Role objectives and constraints fixed before reporting & Each role is the grid point optimising its objective subject to its constraint, excluding rows already taken & Full-grid sweeps reported only as sensitivity diagnostics \\
+Transaction cost and turnover penalty & One-way transaction-cost grid with a $\tau c$ turnover penalty in the allocation objective & Grid fixed before headline reporting & Headline coupled rows use 10~bps & Cost and turnover-multiplier sensitivity reported in appendix \\
+Headline allocation rows & Defensive, low-turnover, and high-return rows, defined mechanically on the headline-cost grid: defensive $=$ maximum Sharpe s.t.\ max drawdown $\ge -15\%$; low-turnover $=$ minimum annual turnover s.t.\ Sharpe $\ge 0.85\times$ best grid Sharpe; high-return $=$ maximum annualised excess return s.t.\ max drawdown $\ge -35\%$ & Role objectives and constraints fixed before reporting & For each role, the reported strategy is the single grid setting that best meets the role's objective while satisfying its constraint; a setting already chosen for one role is not reused for another & Full-grid sweeps reported only as sensitivity diagnostics \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}

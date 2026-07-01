@@ -102,7 +102,7 @@ The one-month risk-free rate defines excess returns,
 The \Bindep{} equity teacher uses daily equity exponentially weighted returns and Sortino
 ratios over 21, 63, 126, and 252 trading days. The \Bindep{} bond teacher uses monthly bond
 exponentially weighted returns, downside risk, Sharpe ratios, and volatility over one- to
-twelve-month horizons. The \Acoup{} teacher uses monthly equity and bond Sortino, drawdown,
+twelve-month horizons. The \Acoup{} teacher uses monthly equity and bond Sortino, downside-deviation,
 and trend features. Appendix~\ref{app:features} reports the formulas, horizons, and
 transformations.
 
@@ -115,7 +115,7 @@ Treasury, commodity, and regime-context variables, together with current-regime 
 and regime run length. Appendices~\ref{app:features} and~\ref{app:student-coupled} report
 the predictor definitions and transformations.
 
-\section{Teacher: regime labelling with statistical jump models}
+\section{Teacher: regime labeling with statistical jump models}
 \label{sec:teacher}
 
 The teacher stage defines the realised regimes that the student models later forecast. The
@@ -199,7 +199,7 @@ month~$t$.
 Given the current state path, $\kappa_t$ is fitted by an
 $L^2$-penalised logistic regression of the leg-agreement indicator
 $y_t=\mathbf{1}\{s^{\mathrm{eq}}_t=s^{\mathrm{bd}}_t\}$ on equity--bond correlation, equity
-and bond trend, and equity and bond drawdown:
+and bond trend, and equity and bond downside deviation:
 \begin{equation}
     \kappa_t=\sigma\!\left(\beta_0+\beta^{\top}x^{\mathrm{mkt}}_t\right),\qquad
     x^{\mathrm{mkt}}_t=\big\{\rho^{\,\mathrm{eq,bd}}_{12,t},\ \mathrm{trend}^{\mathrm{eq}}_t,\
@@ -212,7 +212,7 @@ The coupling term acts as a soft bias in the state cost. It raises the cost of s
 conflict with the fitted equity--bond dependence signal and lowers the cost of states
 supported by that signal.
 
-The coupling logistic~\eqref{eq:kappa} is re-fitted at \emph{every} labelled month, with no
+The coupling logistic~\eqref{eq:kappa} is re-fitted at \emph{every} labeled month, with no
 delay: at month~$t$ it uses only the expanding history through~$t$ (refit cadence one month),
 and it is estimated \emph{jointly} with the state path inside the coordinate descent that
 defines the teacher. Each iteration re-estimates the leg centres, refits the logistic of the
@@ -252,7 +252,7 @@ reports coupled vote shares and the coupling-probability path.
             \includegraphics[width=\linewidth]{COUPLED__labels.png}
         \end{minipage}}
     \caption{Causal teacher-label representations of the stock--bond history. Both panels report
-        labels formed using information available through the labelled month. Left (\Bindep{}):
+        labels formed using information available through the labeled month. Left (\Bindep{}):
         equity and bond excess-return indexes with favourable-regime months marked for each leg.
         Right (\Acoup{}): cumulative excess-return indexes shaded by calm, normal, and stressed
         joint regimes.}
@@ -278,7 +278,7 @@ negative Sharpe ratios for both equity and bonds. In the \Acoup{} panel, calm is
     \begin{adjustbox}{center,max width=1.22\textwidth}
         \begin{minipage}[t]{0.47\textwidth}
             \centering
-            \textbf{Independent: two binary labels (1988--2024)}\\[-1pt]
+             \textbf{Independent: two binary labels (1988--2024)}\\[-1pt]
             \begin{tabular}{@{}llrrrrr@{}}
                 \toprule
                 Class  & Regime       & Share  & Ret.      & Vol.     & Sh.     & Dur.           \\
@@ -324,7 +324,7 @@ fall together.
 
 \begin{table}[H]
     \centering
-    \caption{Crisis-window behaviour under both labellings. The \Bindep{} columns report the bond
+    \caption{Crisis-window behaviour under both labelings. The \Bindep{} columns report the bond
         label's favourable share and Sharpe ratio. The \Acoup{} columns report the joint regime mix
         within each window and the equity and bond Sharpe ratios. Sharpe ratios use same-month
         annualised excess returns over each window.}
@@ -410,8 +410,8 @@ allocation section tests whether these probability forecasts improve net portfol
             \Bindep{} & Bond   & Logistic regression & 1996--2024 & 0.892 & 0.831      & 0.128 & 0.462    \\
             \Bindep{} & Bond   & Random forest       & 1996--2024 & 0.873 & 0.800      & 0.147 & 0.471    \\
             \midrule
-            \Acoup{}  & Joint  & Logistic regression & 1996--2024 & 0.724 & 0.620      & 0.553 & 1.074    \\
-            \Acoup{}  & Joint  & Random forest       & 1996--2024 & 0.759 & 0.593      & 0.367 & 0.747    \\
+            \Acoup{}  & Joint  & Logistic regression & 1996--2024 & 0.649 & 0.546      & 0.515 & 1.188    \\
+            \Acoup{}  & Joint  & Random forest       & 1996--2024 & 0.648 & 0.479      & 0.398 & 0.938    \\
             \bottomrule
         \end{tabular}
     \end{adjustbox}
@@ -524,9 +524,9 @@ allocations, are reported in Appendix~\ref{app:independent-dynamic-benchmarks}.
             \Bindep{} & High-return  & Logistic, smoothed predictors         & $+7.6\%$   & 10.6\%  & 0.71   & $-18.9\%$ & 1513.6 \\
             \Bindep{} & Benchmark    & 60/40                                 & $+4.5\%$   & 9.6\%  & 0.47   & $-36.2\%$ & 359.4 \\
             \midrule
-            \Acoup{}  & Defensive    & Logistic, prob.\ mixture ($\gamma{=}3$)    & $+2.3\%$   & 3.2\%  & 0.72   & $-7.5\%$  & 188.8 \\
-            \Acoup{}  & Low-turnover & Logistic, prob.\ mixture ($\gamma{=}12$)   & $+0.7\%$   & 1.1\%  & 0.61   & $-4.6\%$  & 121.9 \\
-            \Acoup{}  & High-return  & Logistic, prob.\ mixture ($\gamma{=}0.25$) & $+4.9\%$   & 8.1\%  & 0.61   & $-21.3\%$ & 372.9 \\
+            \Acoup{}  & Defensive    & Random forest, prob.\ mixture ($\gamma{=}5$)  & $+3.2\%$ & 4.3\%  & 0.73   & $-14.3\%$ & 240.2 \\
+            \Acoup{}  & Low-turnover & Random forest, prob.\ mixture ($\gamma{=}12$) & $+1.7\%$ & 2.7\%  & 0.64   & $-10.5\%$ & 160.8 \\
+            \Acoup{}  & High-return  & Logistic, prob.\ mixture ($\gamma{=}0.25$)    & $+5.3\%$ & 11.0\% & 0.48   & $-34.8\%$ & 381.2 \\
             \bottomrule
         \end{tabular}
     \end{adjustbox}
@@ -633,7 +633,7 @@ signals.
 \input{regime_aware_tactical_asset_allocation_appendix}
 
 \clearpage
-\section*{References}
+%\section*{References}
 
 \begin{thebibliography}{99}
 
