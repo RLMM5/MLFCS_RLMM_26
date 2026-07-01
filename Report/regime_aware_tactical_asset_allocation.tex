@@ -277,7 +277,7 @@ negative Sharpe ratios for both equity and bonds. In the \Acoup{} panel, calm is
     \begin{adjustbox}{center,max width=1.22\textwidth}
         \begin{minipage}[t]{0.47\textwidth}
             \centering
-             \textbf{Independent: two binary labels (1989-01 to 2024-11)}\\[-1pt]
+            \textbf{Independent: two binary labels (1989-01 to 2024-11)}\\[-1pt]
             \begin{tabular}{@{}llrrrrr@{}}
                 \toprule
                 Class  & Regime       & Share  & Ret.      & Vol.     & Sh.     & Dur.           \\
@@ -332,17 +332,17 @@ fall together.
     \begin{adjustbox}{center,max width=1.18\textwidth}
         \begin{tabular}{lrrrrrrrrr}
             \toprule
-                                    & \multicolumn{2}{c}{\Bindep{} equity} & \multicolumn{2}{c}{\Bindep{} bond} & \multicolumn{3}{c}{\Acoup{} regime share} & \multicolumn{2}{c}{\Acoup{} Sharpe}                                               \\
+                                    & \multicolumn{2}{c}{\Bindep{} equity} & \multicolumn{2}{c}{\Bindep{} bond} & \multicolumn{3}{c}{\Acoup{} regime share} & \multicolumn{2}{c}{\Acoup{} Sharpe}                                                      \\
             \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-8}\cmidrule(lr){9-10}
-            Window                  & Fav.                                 & Sharpe                                  & Fav.                               & Sharpe                                    & Calm                                & Normal & Stress.        & Eq.     & Bd.     \\
+            Window                  & Fav.                                 & Sharpe                             & Fav.                                      & Sharpe                              & Calm & Normal & Stress.        & Eq.     & Bd.     \\
             \midrule
-            1990 recession          & \phantom{0}33.3\%                    & $+0.05$                                 & 100.0\%                            & $+1.33$                                   & 0\%                                 & 100\%  & \phantom{0}0\% & $+0.05$ & $+1.41$ \\
-            1994 bond shock         & \phantom{0}50.0\%                    & $-0.46$                                 & \phantom{0}8.3\%                   & $-1.55$                                   & 8\%                                 & 33\%   & 58\%           & $-0.48$ & $-1.61$ \\
-            Dot-com bust            & \phantom{0}0.0\%                     & $-1.05$                                 & 87.5\%                             & $+1.81$                                   & 0\%                                 & 97\%   & \phantom{0}3\% & $-1.07$ & $+1.97$ \\
-            Global financial crisis & \phantom{0}0.0\%                     & $-1.20$                                 & 72.2\%                             & $+0.74$                                   & 0\%                                 & 94\%   & \phantom{0}6\% & $-1.58$ & $+0.74$ \\
-            Euro sovereign 2011     & \phantom{0}75.0\%                    & $-0.57$                                 & 100.0\%                            & $+3.46$                                   & 12\%                                & 88\%   & \phantom{0}0\% & $-0.61$ & $+3.69$ \\
-            Covid crash             & \phantom{0}33.3\%                    & $-0.72$                                 & 100.0\%                            & $+2.25$                                   & 0\%                                 & 100\%  & \phantom{0}0\% & $-0.88$ & $+2.76$ \\
-            Inflation 2022          & \phantom{0}41.7\%                    & $-0.89$                                 & \phantom{0}0.0\%                   & $-1.82$                                   & 0\%                                 & 33\%   & 67\%           & $-0.93$ & $-1.90$ \\
+            1990 recession          & \phantom{0}33.3\%                    & $+0.05$                            & 100.0\%                                   & $+1.33$                             & 0\%  & 100\%  & \phantom{0}0\% & $+0.05$ & $+1.41$ \\
+            1994 bond shock         & \phantom{0}50.0\%                    & $-0.46$                            & \phantom{0}8.3\%                          & $-1.55$                             & 8\%  & 33\%   & 58\%           & $-0.48$ & $-1.61$ \\
+            Dot-com bust            & \phantom{0}0.0\%                     & $-1.05$                            & 87.5\%                                    & $+1.81$                             & 0\%  & 97\%   & \phantom{0}3\% & $-1.07$ & $+1.97$ \\
+            Global financial crisis & \phantom{0}0.0\%                     & $-1.20$                            & 72.2\%                                    & $+0.74$                             & 0\%  & 94\%   & \phantom{0}6\% & $-1.58$ & $+0.74$ \\
+            Euro sovereign 2011     & \phantom{0}75.0\%                    & $-0.57$                            & 100.0\%                                   & $+3.46$                             & 12\% & 88\%   & \phantom{0}0\% & $-0.61$ & $+3.69$ \\
+            Covid crash             & \phantom{0}33.3\%                    & $-0.72$                            & 100.0\%                                   & $+2.25$                             & 0\%  & 100\%  & \phantom{0}0\% & $-0.88$ & $+2.76$ \\
+            Inflation 2022          & \phantom{0}41.7\%                    & $-0.89$                            & \phantom{0}0.0\%                          & $-1.82$                             & 0\%  & 33\%   & 67\%           & $-0.93$ & $-1.90$ \\
             \bottomrule
         \end{tabular}
     \end{adjustbox}
@@ -516,16 +516,16 @@ allocations, are reported in Appendix~\ref{app:independent-dynamic-benchmarks}.
     \begin{adjustbox}{center,max width=1.12\textwidth}
         \begin{tabular}{@{}lllrrrrr@{}}
             \toprule
-            Approach  & Role         & Strategy                              & Ann.\ exc. & Vol.   & Sharpe & Max DD    & Final \\
+            Approach  & Role         & Strategy                                            & Ann.\ exc. & Vol.   & Sharpe & Max DD    & Final  \\
             \midrule
-            \Bindep{} & Defensive    & Random forest, smoothed predictors ($\gamma{=}3$)    & $+4.4\%$   & 5.8\%  & 0.76   & $-13.0\%$ & 636.6 \\
-            \Bindep{} & Low-turnover & Logistic, z-score + smoothed z-score ($\gamma{=}3$)  & $+4.8\%$   & 7.2\%  & 0.67   & $-11.5\%$ & 720.0 \\
-            \Bindep{} & High-return  & Logistic, smoothed predictors ($\gamma{=}0.5$)         & $+7.6\%$   & 10.6\%  & 0.71   & $-18.9\%$ & 1513.6 \\
-            \Bindep{} & Benchmark    & 60/40                                 & $+4.5\%$   & 9.6\%  & 0.47   & $-36.2\%$ & 359.4 \\
+            \Bindep{} & Defensive    & Random forest, smoothed predictors ($\gamma{=}3$)   & $+4.4\%$   & 5.8\%  & 0.76   & $-13.0\%$ & 636.6  \\
+            \Bindep{} & Low-turnover & Logistic, z-score + smoothed z-score ($\gamma{=}3$) & $+4.8\%$   & 7.2\%  & 0.67   & $-11.5\%$ & 720.0  \\
+            \Bindep{} & High-return  & Logistic, smoothed predictors ($\gamma{=}0.5$)      & $+7.6\%$   & 10.6\% & 0.71   & $-18.9\%$ & 1513.6 \\
+            \Bindep{} & Benchmark    & 60/40                                               & $+4.5\%$   & 9.6\%  & 0.47   & $-36.2\%$ & 359.4  \\
             \midrule
-            \Acoup{}  & Defensive    & Random forest, prob.\ mixture ($\gamma{=}5$)  & $+3.2\%$ & 4.3\%  & 0.73   & $-14.3\%$ & 240.2 \\
-            \Acoup{}  & Low-turnover & Random forest, prob.\ mixture ($\gamma{=}12$) & $+1.7\%$ & 2.7\%  & 0.64   & $-10.5\%$ & 160.8 \\
-            \Acoup{}  & High-return  & Logistic, prob.\ mixture ($\gamma{=}0.25$)    & $+5.3\%$ & 11.0\% & 0.48   & $-34.8\%$ & 381.2 \\
+            \Acoup{}  & Defensive    & Random forest, prob.\ mixture ($\gamma{=}5$)        & $+3.2\%$   & 4.3\%  & 0.73   & $-14.3\%$ & 240.2  \\
+            \Acoup{}  & Low-turnover & Random forest, prob.\ mixture ($\gamma{=}12$)       & $+1.7\%$   & 2.7\%  & 0.64   & $-10.5\%$ & 160.8  \\
+            \Acoup{}  & High-return  & Logistic, prob.\ mixture ($\gamma{=}0.25$)          & $+5.3\%$   & 11.0\% & 0.48   & $-34.8\%$ & 381.2  \\
             \bottomrule
         \end{tabular}
     \end{adjustbox}
@@ -544,12 +544,12 @@ Figure~\ref{fig:alloc-wealth} reports the corresponding wealth and drawdown path
 \begin{figure}[H]
     \centering
     \makebox[\textwidth][c]{%
-    \begin{minipage}[t]{0.50\textwidth}
-        \includegraphics[width=\linewidth]{allocation_wealth_drawdown_focused.jpg}
-    \end{minipage}\hspace{0.025\textwidth}%
-    \begin{minipage}[t]{0.50\textwidth}
-        \includegraphics[width=\linewidth]{COUPLED__alloc_wealth_drawdown.pdf}
-    \end{minipage}}
+        \begin{minipage}[t]{0.50\textwidth}
+            \includegraphics[width=\linewidth]{allocation_wealth_drawdown_focused.jpg}
+        \end{minipage}\hspace{0.025\textwidth}%
+        \begin{minipage}[t]{0.50\textwidth}
+            \includegraphics[width=\linewidth]{COUPLED__alloc_wealth_drawdown.pdf}
+        \end{minipage}}
     \caption{Dynamic allocation performance, out of sample. The panels report net wealth indexes
         and drawdowns for selected dynamic allocations and the 60/40 benchmark, with wealth indexed
         to \(100\) at the start of each evaluation sample.}
@@ -643,51 +643,51 @@ signals.
 
 \begin{thebibliography}{99}
 
-\bibitem{aydinhan2024identifying}
-Ayd{\i}nhan, A.~O., Kolm, P.~N., Mulvey, J.~M., and Shu, Y. (2024).
-Identifying patterns in financial markets: extending the statistical jump model for regime identification.
-\emph{Annals of Operations Research}.
-doi:10.1007/s10479-024-06035-z.
+    \bibitem{aydinhan2024identifying}
+    Ayd{\i}nhan, A.~O., Kolm, P.~N., Mulvey, J.~M., and Shu, Y. (2024).
+    Identifying patterns in financial markets: extending the statistical jump model for regime identification.
+    \emph{Annals of Operations Research}.
+    doi:10.1007/s10479-024-06035-z.
 
-\bibitem{bemporad2018fitting}
-Bemporad, A., Breschi, V., Piga, D., and Boyd, S.~P. (2018).
-Fitting jump models.
-\emph{Automatica}, 96, 11--21.
-doi:10.1016/j.automatica.2018.06.022.
+    \bibitem{bemporad2018fitting}
+    Bemporad, A., Breschi, V., Piga, D., and Boyd, S.~P. (2018).
+    Fitting jump models.
+    \emph{Automatica}, 96, 11--21.
+    doi:10.1016/j.automatica.2018.06.022.
 
-\bibitem{mccracken2016fredmd}
-McCracken, M.~W. and Ng, S. (2016).
-FRED-MD: A monthly database for macroeconomic research.
-\emph{Journal of Business \& Economic Statistics}, 34(4), 574--589.
-doi:10.1080/07350015.2015.1086655.
+    \bibitem{mccracken2016fredmd}
+    McCracken, M.~W. and Ng, S. (2016).
+    FRED-MD: A monthly database for macroeconomic research.
+    \emph{Journal of Business \& Economic Statistics}, 34(4), 574--589.
+    doi:10.1080/07350015.2015.1086655.
 
-\bibitem{mccracken2021fredqd}
-McCracken, M.~W. and Ng, S. (2021).
-FRED-QD: A quarterly database for macroeconomic research.
-\emph{Federal Reserve Bank of St. Louis Review}, 103(1), 1--44.
-doi:10.20955/r.103.1-44.
+    \bibitem{mccracken2021fredqd}
+    McCracken, M.~W. and Ng, S. (2021).
+    FRED-QD: A quarterly database for macroeconomic research.
+    \emph{Federal Reserve Bank of St. Louis Review}, 103(1), 1--44.
+    doi:10.20955/r.103.1-44.
 
-\bibitem{nystrup2021feature}
-Nystrup, P., Kolm, P.~N., and Lindstr{\"o}m, E. (2021).
-Feature selection in jump models.
-\emph{Expert Systems with Applications}, 184, 115558.
-doi:10.1016/j.eswa.2021.115558.
+    \bibitem{nystrup2021feature}
+    Nystrup, P., Kolm, P.~N., and Lindstr{\"o}m, E. (2021).
+    Feature selection in jump models.
+    \emph{Expert Systems with Applications}, 184, 115558.
+    doi:10.1016/j.eswa.2021.115558.
 
-\bibitem{oliveira2025tactical}
-Oliveira, D.~C., Sandfelder, D., Fujita, A., Dong, X., and Cucuringu, M. (2025).
-Tactical asset allocation with macroeconomic regime detection.
-\emph{arXiv preprint arXiv:2503.11499}.
+    \bibitem{oliveira2025tactical}
+    Oliveira, D.~C., Sandfelder, D., Fujita, A., Dong, X., and Cucuringu, M. (2025).
+    Tactical asset allocation with macroeconomic regime detection.
+    \emph{arXiv preprint arXiv:2503.11499}.
 
-\bibitem{shu2024downside}
-Shu, Y., Yu, C., and Mulvey, J.~M. (2024).
-Downside risk reduction using regime-switching signals: a statistical jump model approach.
-\emph{Journal of Asset Management}, 25(5), 493--507.
-doi:10.1057/s41260-024-00376-x.
+    \bibitem{shu2024downside}
+    Shu, Y., Yu, C., and Mulvey, J.~M. (2024).
+    Downside risk reduction using regime-switching signals: a statistical jump model approach.
+    \emph{Journal of Asset Management}, 25(5), 493--507.
+    doi:10.1057/s41260-024-00376-x.
 
-\bibitem{shu2024dynamic}
-Shu, Y., Yu, C., and Mulvey, J.~M. (2024).
-Dynamic asset allocation with asset-specific regime forecasts.
-\emph{arXiv preprint arXiv:2406.09578}.
+    \bibitem{shu2024dynamic}
+    Shu, Y., Yu, C., and Mulvey, J.~M. (2024).
+    Dynamic asset allocation with asset-specific regime forecasts.
+    \emph{arXiv preprint arXiv:2406.09578}.
 
 \end{thebibliography}
 

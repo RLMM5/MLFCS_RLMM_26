@@ -1,10 +1,4 @@
-﻿# ==================================================================================================
-# Student prediction diagnostics and allocation robustness analysis
-# Paste/run this immediately after:
-# Majority-label student prediction and target-volatility allocation
-# ==================================================================================================
-
-import warnings
+﻿import warnings
 warnings.filterwarnings("ignore")
 
 from pathlib import Path
@@ -31,7 +25,7 @@ except Exception:
     _HAS_SKLEARN = False
 
 # ==================================================================================================
-# 0. CONFIG - KEEP THIS SMALL AND EXPLICIT
+# 0. CONFIG
 # ==================================================================================================
 
 FEATURE_IMPORTANCE_CUM_SHARE_THRESHOLD = 0.80
@@ -48,11 +42,9 @@ TARGETS_TO_USE = [
     "eq_vol_downside_state_h1",
 ]
 
-# Allocation deliberately focuses on the economically best pair. Add "vol_downside_vs_bond" only for robustness.
 ALLOCATION_PAIRS_TO_USE = ["return_sortino_vs_bond"]
 BUDGET_MODES_TO_USE = ["cash_allowed"]
 
-# Practical grid. This is already enough to see parameter sensitivity without creating endless output.
 GAMMA_GRID = [0.25, 0.5, 1.0, 2.0, 3.0, 5.0]
 TCOST_GRID = [0.0005, 0.0010, 0.0025, 0.0050]
 LAMBDA_TRADE_GRID = [0.0, 0.00025, 0.0005, 0.001, 0.0025, 0.005, 0.01, 0.02, 0.05]
@@ -69,7 +61,6 @@ PRINT_TOP_N_STRATEGIES = 25
 MAX_ALLOCATION_PLOTS = 14
 TURNOVER_FRONTIER_CAPS = [0.50, 0.75, 1.00, 1.25, 1.50, 2.00]
 
-# Reasonable strategy filter for final selection. These are not hard model assumptions; only reporting filters.
 MIN_ANN_VOL = 0.045
 MAX_AVG_CASH = 0.85
 MIN_AVG_EQ = 0.10
@@ -764,9 +755,6 @@ L1_FEATURE_DESIGNS = ["z_smooth_only", "z_plus_zsmooth"]
 L1_FAMILIES = ["LOGIT", "RF"]
 L1_BUDGET_MODE = "cash_allowed"
 
-# Full grid over the economically relevant allocation parameters.
-# Larger lambda values are deliberately included so the frontier shows where the optimizer starts to
-# over-penalize trading and collapse into cash / tiny-volatility solutions.
 L1_GAMMA_GRID = [0.25, 0.50, 1.00, 2.00, 3.00, 5.00, 8.00, 12.00]
 L1_TCOST_GRID = [0.0005, 0.0010, 0.0025, 0.0050]
 L1_PROB_SMOOTH_HALFLIFE_GRID = [0.0, 3.0, 6.0]
@@ -789,8 +777,6 @@ L1_LAMBDA_TRADE_GRID = [
     0.05000,
 ]
 
-# Reporting/selection filters only. These do NOT enter the optimizer.
-# They prevent final plots from being dominated by all-cash / tiny-volatility pseudo-solutions.
 L1_MIN_AVG_EQ_WEIGHT = 0.25
 L1_MAX_AVG_EQ_WEIGHT = 0.90
 L1_MAX_AVG_BD_WEIGHT = 0.80
@@ -805,8 +791,6 @@ L1_TURNOVER_CAPS_TO_REPORT = [0.50, 0.75, 1.00, 1.25, 1.50, 2.00]
 L1_MAX_PLOTS = 14
 L1_PRINT_TOP_N = 25
 
-# Known economically interesting parameter points from the earlier good runs.
-# These are highlighted/plotted when present, but selection is still driven by the full grid.
 L1_KNOWN_GOOD_POINTS = pd.DataFrame([
     {"feature_design": "z_smooth_only",  "family": "LOGIT", "gamma": 0.25, "tcost_one_way": 0.0005, "prob_smooth_halflife": 0.0, "lambda_trade": 0.0000},
     {"feature_design": "z_smooth_only",  "family": "LOGIT", "gamma": 0.50, "tcost_one_way": 0.0005, "prob_smooth_halflife": 0.0, "lambda_trade": 0.0000},
@@ -1270,7 +1254,6 @@ def _summarize_l1_results(allocation_results):
         d["prob_smooth_halflife"] = float(g["prob_smooth_halflife"].iloc[0])
         d["lambda_trade"] = float(g["lambda_trade"].iloc[0])
 
-        # State behaviour uses realized teacher labels when available, otherwise predicted probability buckets.
         if g["eq_realized_good"].notna().any() and g["bd_realized_good"].notna().any():
             eq_good = g["eq_realized_good"].eq(1)
             bd_good = g["bd_realized_good"].eq(1)
@@ -2138,26 +2121,4 @@ for _, row in l1_selected_plot_strategies.iterrows():
 for sweep_family in ["LOGIT", "RF"]:
     plot_l1_parameter_sweep_dashboard(sweep_family, "gamma")
     plot_l1_parameter_sweep_dashboard(sweep_family, "lambda_trade")
-
-# --------------------------------------------------------------------------------------------------
-# No file saves. Objects stay in memory only.
-# --------------------------------------------------------------------------------------------------
-
-print("\n" + "#" * 150)
-print("STUDENT PREDICTION AND ALLOCATION DIAGNOSTICS DONE")
-print("#" * 150)
-print("No CSV files were saved. All outputs are kept as in-memory DataFrames/objects.")
-print("\nMain objects left in memory:")
-print("  feature_importance_summary")
-print("  feature_importance_top_table")
-print("  prediction_panel")
-print("  prediction_metrics")
-print("  l1_turnover_allocation_results_long")
-print("  l1_turnover_allocation_strategy_summary")
-print("  l1_economic_universe")
-print("  l1_lambda_sensitivity, l1_gamma_sensitivity, l1_tcost_sensitivity")
-print("  l1_prob_smoothing_sensitivity, l1_model_sensitivity")
-print("  l1_lambda_gamma_sensitivity, l1_lambda_tcost_sensitivity")
-print("  l1_turnover_frontier")
-print("  l1_selected_plot_strategies")
 
