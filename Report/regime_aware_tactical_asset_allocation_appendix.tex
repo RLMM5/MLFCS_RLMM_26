@@ -1821,7 +1821,7 @@ validation or grid-selected choices, and robustness or diagnostic components.}
 \section{Coupled allocation: details and sensitivity}
 \label{app:alloc-coupled}
 
-The coupled and \Bindep{} allocators use the same mean--variance objective~\eqref{eq:mv},
+The \Acoup{} and \Bindep{} allocators use the same mean--variance objective~\eqref{eq:mv},
 investable universe, weight grid, and transaction-cost and turnover conventions, and differ
 only in the regime representation that supplies the conditional moments; this isolates the
 effect of the representation. The universe is the equity leg, the bond leg, and cash, with
@@ -1834,9 +1834,9 @@ pre-out-of-sample unconditional moments with weight $n/(n+K)$ at $K=36$; the equ
 correlation is shrunk identically and combined with the conditional volatilities to form the
 covariance; and the forecast probabilities are optionally smoothed with an exponential
 half-life $h$ and renormalised across the three classes. The reported grid varies the risk
-aversion $\gamma\in\{0.25,0.5,1,2,3,5,8,12\}$, the turnover multiplier $\tau\in\{0,1,3,5\}$
+aversion $\gamma\in\{0.25,0.5,1,2,3,5\}$, the turnover multiplier $\tau\in\{0,1,3,5\}$
 (the turnover penalty in~\eqref{eq:mv} is $\tau c\lVert w-w_{t-1}\rVert_1$), the one-way cost
-$c\in\{5,10,25,50\}$~bps, and the probability-smoothing half-life $h\in\{0,3,6\}$.
+$c\in\{5,10,25\}$~bps, and the probability-smoothing half-life $h\in\{0,3,6\}$.
 
 The three headline strategies are defined by fixed role criteria applied to the headline-cost
 grid: the defensive role maximises the Sharpe ratio subject to a maximum drawdown no worse than
@@ -2098,7 +2098,7 @@ Student model hyperparameters & Three-class logistic regression and random fores
 Student validation metrics & Macro one-vs-rest AUC, balanced accuracy, multiclass Brier score, and log loss & Metrics fixed before reporting & Best reported specifications selected from rolling outputs & Full three-class prediction diagnostics kept in appendix \\
 Allocation rule & Long-only equity--bond allocation with cash allowed and an $L^1$ turnover penalty, mapping regime probabilities to moments & Asset universe and allocation objective fixed before grid search & Candidate grid varies risk aversion, turnover penalty, transaction cost, and probability smoothing & Parameter-sensitivity appendix reports one-way checks \\
 Probability-to-moment mapping & Probability-mixture mapping over the three joint regimes, with state moments shrunk to pre-out-of-sample unconditional moments & Mapping and shrinkage form fixed before headline reporting & Headline and reported rows use the probability mixture & Shrinkage constant $K$ and probability smoothing reported as sensitivity \\
-Risk aversion & Mean--variance allocator with risk aversion from the grid $\gamma\in\{0.25,0.5,1,2,3,5,8,12\}$ & Grid fixed before headline reporting & Headline rows use selected grid points & Risk-aversion sweeps reported as sensitivity \\
+Risk aversion & Mean--variance allocator with risk aversion from the grid $\gamma\in\{0.25,0.5,1,2,3,5\}$ & Grid fixed before headline reporting & Headline rows use selected grid points & Risk-aversion sweeps reported as sensitivity \\
 Transaction cost and turnover penalty & One-way transaction-cost grid with a $\tau c$ turnover penalty in the allocation objective & Grid fixed before headline reporting & Headline coupled rows use 10~bps & Cost and turnover-multiplier sensitivity reported in appendix \\
 Headline allocation rows & Defensive, low-turnover, and high-return rows, defined mechanically on the headline-cost grid: defensive $=$ maximum Sharpe s.t.\ max drawdown $\ge -15\%$; low-turnover $=$ minimum annual turnover s.t.\ Sharpe $\ge 0.85\times$ best grid Sharpe; high-return $=$ maximum annualised excess return s.t.\ max drawdown $\ge -35\%$ & Role objectives and constraints fixed before reporting & For each role, the reported strategy is the single grid setting that best meets the role's objective while satisfying its constraint; a setting already chosen for one role is not reused for another & Full-grid sweeps reported only as sensitivity diagnostics \\
 \bottomrule
