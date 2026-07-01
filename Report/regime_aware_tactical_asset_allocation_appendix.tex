@@ -4,7 +4,7 @@
 
 \begin{table}[H]
     \centering
-    \caption{Teacher features by approach. The \Bindep{} teacher uses daily equity features and monthly bond features. The \Acoup{} teacher uses a monthly joint equity--bond construction. Horizons are reported in trading days for daily equity features and in months for monthly features.}
+    \caption{Teacher features by approach. The \Bindep{} teacher uses daily equity features and monthly bond features. The \Acoup{} teacher uses a monthly joint stock--bond construction. Horizons are reported in trading days for daily equity features and in months for monthly features.}
     \label{tab:teacher-features}
     \small
     \begin{adjustbox}{center,max width=1.08\textwidth}
@@ -364,7 +364,9 @@ z_{t,j}
 \frac{x^c_{t,j}-\mu_j}{\sigma_j}.
 \end{align}
 
-Daily equity models are refitted at month ends. Monthly bond models are refitted each month. In each refit, \(\mu_j\) and \(\sigma_j\) are computed from the current training sample.
+Daily equity models are refitted at month ends. Monthly bond models are refitted each month.
+Each refit uses only observations available at the refit date. In each refit, \(\mu_j\) and
+\(\sigma_j\) are computed from that training sample.
 
 \subsection{Jump-model objective}
 
@@ -499,9 +501,7 @@ S^{a,MV}_{m+1}.
 \section{Teacher Label and Feature Diagnostics}
 \label{app:teacher-label-diagnostics}
 
-This appendix reports diagnostics for the equity and bond teacher labels. All labels use
-causal teacher labelling: at each month $t$ the jump model is fit on the expanding history
-available up to month $t$, so the label for month $t$ uses no future information. The diagnostics
+This appendix reports diagnostics for the equity and bond teacher labels. The diagnostics
 cover individual $L^2$ and $L^1$-medoid teacher paths, jump-penalty sensitivity,
 majority-vote construction, transition behaviour, crisis-window behaviour, and teacher-feature
 state separation. These diagnostics document whether the labels are persistent,
@@ -605,7 +605,7 @@ Table~\ref{tab:app-teacher-final-transitions} reports transition probabilities a
 
 \begin{table}[H]
 \centering
-\caption{Teacher regime label transition summary (causal teacher labelling)}
+\caption{Teacher regime label transition summary}
 \label{tab:app-teacher-final-transitions}
 \small
 \setlength{\tabcolsep}{5pt}
@@ -634,7 +634,7 @@ Table~\ref{tab:app-teacher-path-persistence} reports path-level persistence and 
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{0.96}
 \begin{longtable}{llrccccccc}
-\caption{Teacher path persistence summary (causal teacher labelling)}\label{tab:app-teacher-path-persistence}\\
+\caption{Teacher path persistence summary}\label{tab:app-teacher-path-persistence}\\
 \toprule
 Label & Model & $\lambda$ & Fav. share & Sw. & Avg. dur. & Fav. dur. & Unfav. dur. & Fav. Sharpe & Unfav. Sharpe \\
 \midrule
@@ -699,7 +699,7 @@ Table~\ref{tab:app-teacher-final-crisis} reports crisis-window behaviour for the
 
 \begin{table}[H]
 \centering
-\caption{Teacher regime label crisis-window summary (causal teacher labelling)}
+\caption{Teacher regime label crisis-window summary}
 \label{tab:app-teacher-final-crisis}
 \tiny
 \setlength{\tabcolsep}{2.6pt}
@@ -1317,7 +1317,7 @@ feature importance. Values are aggregated within predictor blocks.}
 \label{fig:importance}
 \end{figure}
 
-Table~\ref{tab:app-student-selected-model-frequency} reports the most frequently selected hyperparameter setting over the rolling out-of-sample test months. The table documents which specification is most often selected within each target, predictor set, and model class.
+Table~\ref{tab:app-student-selected-model-frequency} reports the most frequently selected hyperparameter setting over the rolling out-of-sample test months. The table reports which specification is most often selected within each target, predictor set, and model class.
 
 \begin{table}[H]
 \centering
@@ -1518,30 +1518,29 @@ w_E+w_B\le 1,
 with equity and bond weights each capped at one and selected on a 0.02 grid. The reported
 allocation grid varies
 \[
-\gamma\in\{0.25,0.5,1,2,3,5,8,12\},
+\gamma\in\{0.25,0.5,1,2,3,5\},
 \]
 \[
-c\in\{0.0005,0.0010,0.0025,0.0050\},
+c\in\{0.0005,0.0010,0.0025\},
 \]
 \[
 h\in\{0,3,6\},
 \]
-and the turnover penalty $\tau c\lVert w-w_{t-1}\rVert_1$ with multiplier
+and
 \[
-\tau\in\{0,1,3,5\}.
+\lambda_{\mathrm{trade}}\in
+\{0,0.0005,0.001,0.0025,0.005,0.0075,0.01,0.015,0.02,0.03,0.05\}.
 \]
-Here \(h\) is the probability-smoothing half-life and $\tau$ scales the one-way cost $c$ in the
-turnover penalty. This grid is identical to the coupled allocation grid in
-Appendix~\ref{app:alloc-coupled}.
+Here \(h\) is the probability-smoothing half-life and \(\lambda_{\mathrm{trade}}\) is the
+turnover penalty in the allocation objective.
 Monthly net portfolio return is
 \begin{equation}
-r^{p}_{m+1}
+1+r^{p}_{m+1}
 =
-w_{E,m}r_{E,m+1}
-+
-w_{B,m}r_{B,m+1}
--
-c\|w_m-w_{m-1}\|_1.
+\left(1-c\|w_m-w_{m-1}\|_1\right)
+\left(
+1+w_{E,m}R_{E,m+1}+w_{B,m}R_{B,m+1}+w_{C,m}R^{f}_{m+1}
+\right).
 \end{equation}
 
 \subsection{Allocation diagnostics and parameter sensitivity}
@@ -1562,27 +1561,13 @@ volatility, lower drawdown, and a higher Sharpe ratio. The low-turnover row show
 logistic-regression specification with probability smoothing and annual turnover near
 51\%. The full parameter sweeps around these rows are reported below.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.92\linewidth]{allocation_mechanics_focused.jpg}\\[3pt]
-    {\footnotesize (a) \Bindep{}\par}
-    \vspace{8pt}
-
-    \includegraphics[width=0.92\linewidth]{figs/COUPLED__alloc_mechanics.pdf}\\[3pt]
-    {\footnotesize (b) \Acoup{}\par}
-    \caption{Portfolio weights and turnover, out of sample. The panels report equity, bond, and
-        cash weights together with turnover for the selected dynamic allocations under the \Bindep{}
-        and \Acoup{} approaches.}
-    \label{fig:alloc-mech}
-\end{figure}
-
 \subsection{Additional independent benchmarks}
 \label{app:independent-dynamic-benchmarks}
 
 The additional benchmarks use the same monthly excess-return columns as the independent
-allocation exercise over the sample ending in 2024-10. Cash is treated as zero excess return
-because the independent allocation exercise uses equity and bond excess returns but no
-separate cash-return column. These benchmarks are included to compare the regime-aware rules
+allocation sample ending in 2024-10. Cash is treated as zero excess return because the
+independent allocation stage uses equity and bond excess returns but no separate cash-return
+column. These benchmarks are included to compare the regime-aware rules
 with simple dynamic or single-asset alternatives that do not use regime forecasts.
 
 \begin{table}[H]
@@ -1816,7 +1801,7 @@ Allocation rule & Long-only equity--bond allocation with cash allowed and an $L^
 Risk aversion & Values from the allocation grid & Grid fixed before headline reporting & Representative rows use selected grid points & Risk-aversion sweeps reported as sensitivity \\
 Transaction cost & One-way transaction-cost grid & Grid fixed before headline reporting & Headline independent rows use 10 bps & Cost and turnover-penalty sensitivity reported in appendix \\
 Turnover penalty & $L^1$ turnover penalty in the allocation objective & Grid fixed before headline reporting & Representative rows use role-specific penalty values & Turnover-penalty sweeps reported as sensitivity \\
-Headline allocation rows & Defensive, low-turnover, and high-return rows, defined mechanically on the headline-cost grid: defensive $=$ maximum Sharpe s.t.\ max drawdown $\ge -15\%$; low-turnover $=$ minimum annual turnover s.t.\ Sharpe $\ge 0.85\times$ best grid Sharpe; high-return $=$ maximum annualised excess return s.t.\ max drawdown $\ge -35\%$ & Role objectives and constraints fixed before reporting & Each role is the grid point optimising its objective subject to its constraint, excluding rows already taken & Full-grid sweeps reported only as sensitivity diagnostics \\
+Headline allocation rows & High-return, defensive, and low-turnover representative rows & Roles fixed for presentation & Rows selected as representative points from the allocation grid & Full-grid ranking rules are reported only as sensitivity diagnostics \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -2110,4 +2095,5 @@ independent protocol in Table~\ref{tab:independent-model-selection-protocol}.}
 \end{table}
 
 \FloatBarrier
+
 
