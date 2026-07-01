@@ -143,7 +143,7 @@ where \(d(\cdot,c_k)\) measures distance from state centre \(c_k\), \(\Lambda\) 
 
 While both regime specifications rely on the jump-model penalty, they define distinct state spaces. Both teachers are fit causally; thus, the label for month $t$ is derived strictly from observations available at or before that point.
 
-\paragraph{Independant: two independent binary labels.}
+\paragraph{Independent: two independent binary labels.}
 The \Bindep{} teacher estimates separate two-state jump models for the equity and bond legs. For asset \(a\in\{\mathrm{eq},\mathrm{bd}\}\), feature vector \(x^a_i\), and teacher member \(p\), the state sequence solves
 \begin{equation}
     \min_{s^a_1,\dots,s^a_{T_a},\,\{c^a_0,c^a_1\}}
@@ -177,7 +177,7 @@ leg has a benign or adverse bit, and the admissible joint states are
 \[
     \Reg=\{\,\text{calm}=(0,0),\ \ \text{normal}=(1,0),\ \ \text{stressed}=(1,1)\,\},
 \]
-where the pair is the equity bit and the bond bit. Calm means that both legs are benign; normal means that the equity leg is in its high-uncertainty state—positive on average but with the widest dispersion of the three regimes, spanning the disinflationary drawdowns such as the dot-com bust and the global financial crisis—while bonds remain benign and provide the hedge; and stressed means that both legs are genuinely adverse.
+where the pair is the equity bit and the bond bit. Calm means that both legs are benign; normal means that the equity leg is in its high-uncertainty state, positive on average but with the widest dispersion of the three regimes, spanning the disinflationary drawdowns such as the dot-com bust and the global financial crisis, while bonds remain benign and provide the hedge; and stressed means that both legs are genuinely adverse.
 
 For a joint state $j$ with bits $(j_E,j_B)$, the per-month cost combines the two leg-specific
 distances with a coupling term:
@@ -262,7 +262,7 @@ reports coupled vote shares and the coupling-probability path.
 \paragraph{State economics.}
 Table~\ref{tab:state-economics} reports label-conditional return statistics. In the
 \Bindep{} panel, favourable states have positive Sharpe ratios and unfavourable states have
-negative Sharpe ratios for both equity and bonds. In the \Acoup{} panel, calm is the strongest equity state; normal is the high-uncertainty equity state—positive on average but the widest-dispersion regime, and the one containing the disinflationary equity drawdowns—where bonds provide reliable support; and stressed records losses in both risky legs.
+negative Sharpe ratios for both equity and bonds. In the \Acoup{} panel, calm is the strongest equity state; normal is the high-uncertainty equity state, positive on average but the widest-dispersion regime, and the one containing the disinflationary equity drawdowns, where bonds provide reliable support; and stressed records losses in both risky legs.
 
 \begin{table}[H]
     \centering
@@ -278,7 +278,7 @@ negative Sharpe ratios for both equity and bonds. In the \Acoup{} panel, calm is
     \begin{adjustbox}{center,max width=1.22\textwidth}
         \begin{minipage}[t]{0.47\textwidth}
             \centering
-            \textbf{Independant: two binary labels (1988--2024)}\\[-1pt]
+            \textbf{Independent: two binary labels (1988--2024)}\\[-1pt]
             \begin{tabular}{@{}llrrrrr@{}}
                 \toprule
                 Class  & Regime       & Share  & Ret.      & Vol.     & Sh.     & Dur.           \\
@@ -590,9 +590,9 @@ and turnover penalties reduce trading, and higher transaction costs lower net pe
 \label{sec:conclusion}
 
 This paper asked whether regimes estimated from stock and bond return behaviour can be
-forecast one month ahead and used in allocation. The answer is yes, but in a
-benchmark-relative sense. Regime forecasts create useful portfolio choices along different margins: drawdown
-control, Sharpe improvement, turnover reduction, and terminal wealth.
+forecast one month ahead and used in allocation. The evidence is benchmark-relative.
+Regime forecasts improve selected allocation outcomes along different margins: drawdown
+control, Sharpe ratio, turnover, and terminal wealth.
 
 The first contribution is the construction of economically meaningful teacher labels. The
 \Bindep{} labels separate favourable and unfavourable environments for each asset class:
@@ -617,7 +617,8 @@ stage then asks whether those states are predictable from lagged macro-financial
 regime-context variables. The out-of-sample diagnostics show that this step is feasible:
 the \Bindep{} equity and bond labels are forecast with strong binary performance, and the
 \Acoup{} labels retain useful information despite the harder three-class joint-regime task.
-This makes the exercise more demanding than an ex-post regime interpretation.
+The student results show that the realised labels contain information that is partly
+predictable from lagged variables.
 
 The allocation results show where the forecasts have economic value. Defensive rules use
 adverse-regime probabilities to reduce drawdowns relative to 60/40. Low-turnover and balanced
