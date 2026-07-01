@@ -61,9 +61,8 @@ Team RLMM\\
 \begin{abstract}
     \noindent We study whether forecasted equity and bond return regimes improve monthly allocation across equities, bonds, and cash after transaction costs. The empirical design estimates realised regimes, forecasts next-month regimes, and maps forecast probabilities into portfolio weights. Unsupervised jump-model teachers estimate equity and bond return environments from realised return-based features. Student models are supervised only by these teacher labels and forecast next-month regimes from lagged macro-financial predictors; the \Acoup{} student also uses current-regime indicators and regime run length. The resulting forecast probabilities are converted into regime-conditional mean--variance allocations.
 
-    \noindent We compare two regime representations. The \Bindep{} specification estimates separate two-state favourable and unfavourable labels for equities and bonds. The \Acoup{} specification estimates a three-state joint stock--bond label with calm, normal, and stressed regimes. Both representations distinguish the central portfolio mechanism: bonds support equity drawdowns in disinflationary episodes such as the dot-com bust and the global financial crisis, while inflation-driven sell-offs such as 1994 and 2022 weaken the bond hedge. In the student stage, regularised logistic regression and random forests produce informative next-month regime probabilities. In the allocation stage, selected dynamic strategies improve on the 60/40 benchmark along distinct margins, including lower drawdowns, higher Sharpe ratios, and higher terminal wealth, depending on risk aversion and turnover control.
+    \noindent We compare two regime representations. The \Bindep{} specification estimates separate two-state favourable and unfavourable labels for equities and bonds. The \Acoup{} specification estimates a three-state joint stock--bond label with calm, normal, and stressed regimes. Both representations distinguish the central portfolio mechanism: bonds support equity drawdowns in disinflationary episodes such as the dot-com bust and the global financial crisis, while inflation-driven sell-offs such as 1994 and 2022 weaken the bond hedge. In the student stage, regularised logistic regression and random forests produce informative next-month regime probabilities. In the allocation stage, selected dynamic strategies improve on the 60/40 benchmark along distinct margins, including lower drawdowns, higher Sharpe ratios, or higher terminal wealth, depending on risk aversion and turnover control.
 \end{abstract}
-
 
 \section{Introduction}
 
@@ -171,7 +170,7 @@ After each fit, hidden states are ranked by their realized in-sample Sharpe rati
 \end{equation}
 Thus, the monthly equity target is a majority vote of its daily states, whereas the bond target is simply that month's state.
 
-\paragraph{\Acoup{}: three joint regimes with a coupling probability.}
+\paragraph{Coupled: three joint regimes with a coupling probability.}
 The \Acoup{} approach represents the equity--bond environment with three joint regimes. Each
 leg has a benign or adverse bit, and the admissible joint states are
 \[
@@ -181,7 +180,7 @@ where the pair is the equity bit and the bond bit. Calm means that both legs are
 
 For a joint state $j$ with bits $(j_E,j_B)$, the per-month cost combines the two leg-specific
 distances with a coupling term:
-\begin{equation}
+\begin{equation}{}
     e_t(j)=d\!\left(\zeq,\mu^{\mathrm{eq}}_{j_E}\right)+d\!\left(\zbd,\mu^{\mathrm{bd}}_{j_B}\right)
     +\eta\Big[\,\kappa_t\,\mathbf{1}\{j\in D\}+(1-\kappa_t)\,\mathbf{1}\{j\in A\}\,\Big],
     \label{eq:emission}
@@ -278,7 +277,7 @@ negative Sharpe ratios for both equity and bonds. In the \Acoup{} panel, calm is
     \begin{adjustbox}{center,max width=1.22\textwidth}
         \begin{minipage}[t]{0.47\textwidth}
             \centering
-             \textbf{Independent: two binary labels (1988--2024)}\\[-1pt]
+             \textbf{Independent: two binary labels (1989-01 to 2024-11)}\\[-1pt]
             \begin{tabular}{@{}llrrrrr@{}}
                 \toprule
                 Class  & Regime       & Share  & Ret.      & Vol.     & Sh.     & Dur.           \\
@@ -305,7 +304,7 @@ negative Sharpe ratios for both equity and bonds. In the \Acoup{} panel, calm is
                 Bond   & Normal   & 76.6\%           & $+4.1\%$  & $3.9\%$  & $+1.06$ & 11.8           \\
                 Bond   & Stressed & \phantom{0}9.3\% & $-8.4\%$  & $5.0\%$  & $-1.69$ & \phantom{0}2.2 \\
                 \bottomrule
-            \end{tabular}
+            \end{tabular}{}
         \end{minipage}
     \end{adjustbox}
 \end{table}
@@ -324,26 +323,26 @@ fall together.
 
 \begin{table}[H]
     \centering
-    \caption{Crisis-window behaviour under both labelings. The \Bindep{} columns report the bond
-        label's favourable share and Sharpe ratio. The \Acoup{} columns report the joint regime mix
+    \caption{Crisis-window behaviour under both labelings. The \Bindep{} columns report the equity
+        and bond labels' favourable shares and Sharpe ratios. The \Acoup{} columns report the joint regime mix
         within each window and the equity and bond Sharpe ratios. Sharpe ratios use same-month
         annualised excess returns over each window.}
     \label{tab:crisis}
     \small
-    \begin{adjustbox}{center,max width=\textwidth}
-        \begin{tabular}{lrrrrrrr}
+    \begin{adjustbox}{center,max width=1.18\textwidth}
+        \begin{tabular}{lrrrrrrrrr}
             \toprule
-                                    & \multicolumn{2}{c}{\Bindep{} bond} & \multicolumn{3}{c}{\Acoup{} regime share} & \multicolumn{2}{c}{\Acoup{} Sharpe}                                               \\
-            \cmidrule(lr){2-3}\cmidrule(lr){4-6}\cmidrule(lr){7-8}
-            Window                  & Fav.                               & Sharpe                                    & Calm                                & Normal & Stress.        & Eq.     & Bd.     \\
+                                    & \multicolumn{2}{c}{\Bindep{} equity} & \multicolumn{2}{c}{\Bindep{} bond} & \multicolumn{3}{c}{\Acoup{} regime share} & \multicolumn{2}{c}{\Acoup{} Sharpe}                                               \\
+            \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-8}\cmidrule(lr){9-10}
+            Window                  & Fav.                                 & Sharpe                                  & Fav.                               & Sharpe                                    & Calm                                & Normal & Stress.        & Eq.     & Bd.     \\
             \midrule
-            1990 recession          & 100.0\%                            & $+1.33$                                   & 0\%                                 & 100\%  & \phantom{0}0\% & $+0.05$ & $+1.41$ \\
-            1994 bond shock         & \phantom{0}8.3\%                   & $-1.55$                                   & 8\%                                 & 33\%   & 58\%           & $-0.48$ & $-1.61$ \\
-            Dot-com bust            & 87.5\%                             & $+1.81$                                   & 0\%                                 & 97\%   & \phantom{0}3\% & $-1.07$ & $+1.97$ \\
-            Global financial crisis & 72.2\%                             & $+0.74$                                   & 0\%                                 & 94\%   & \phantom{0}6\% & $-1.58$ & $+0.74$ \\
-            Euro sovereign 2011     & 100.0\%                            & $+3.46$                                   & 12\%                                & 88\%   & \phantom{0}0\% & $-0.61$ & $+3.69$ \\
-            Covid crash             & 100.0\%                            & $+2.25$                                   & 0\%                                 & 100\%  & \phantom{0}0\% & $-0.88$ & $+2.76$ \\
-            Inflation 2022          & \phantom{0}0.0\%                   & $-1.82$                                   & 0\%                                 & 33\%   & 67\%           & $-0.93$ & $-1.90$ \\
+            1990 recession          & \phantom{0}33.3\%                    & $+0.05$                                 & 100.0\%                            & $+1.33$                                   & 0\%                                 & 100\%  & \phantom{0}0\% & $+0.05$ & $+1.41$ \\
+            1994 bond shock         & \phantom{0}50.0\%                    & $-0.46$                                 & \phantom{0}8.3\%                   & $-1.55$                                   & 8\%                                 & 33\%   & 58\%           & $-0.48$ & $-1.61$ \\
+            Dot-com bust            & \phantom{0}0.0\%                     & $-1.05$                                 & 87.5\%                             & $+1.81$                                   & 0\%                                 & 97\%   & \phantom{0}3\% & $-1.07$ & $+1.97$ \\
+            Global financial crisis & \phantom{0}0.0\%                     & $-1.20$                                 & 72.2\%                             & $+0.74$                                   & 0\%                                 & 94\%   & \phantom{0}6\% & $-1.58$ & $+0.74$ \\
+            Euro sovereign 2011     & \phantom{0}75.0\%                    & $-0.57$                                 & 100.0\%                            & $+3.46$                                   & 12\%                                & 88\%   & \phantom{0}0\% & $-0.61$ & $+3.69$ \\
+            Covid crash             & \phantom{0}33.3\%                    & $-0.72$                                 & 100.0\%                            & $+2.25$                                   & 0\%                                 & 100\%  & \phantom{0}0\% & $-0.88$ & $+2.76$ \\
+            Inflation 2022          & \phantom{0}41.7\%                    & $-0.89$                                 & \phantom{0}0.0\%                   & $-1.82$                                   & 0\%                                 & 33\%   & 67\%           & $-0.93$ & $-1.90$ \\
             \bottomrule
         \end{tabular}
     \end{adjustbox}
@@ -519,9 +518,9 @@ allocations, are reported in Appendix~\ref{app:independent-dynamic-benchmarks}.
             \toprule
             Approach  & Role         & Strategy                              & Ann.\ exc. & Vol.   & Sharpe & Max DD    & Final \\
             \midrule
-            \Bindep{} & Defensive    & Random forest, smoothed predictors    & $+4.4\%$   & 5.8\%  & 0.76   & $-13.0\%$ & 636.6 \\
-            \Bindep{} & Low-turnover & Logistic, z-score + smoothed z-score  & $+4.8\%$   & 7.2\%  & 0.67   & $-11.5\%$ & 720.0 \\
-            \Bindep{} & High-return  & Logistic, smoothed predictors         & $+7.6\%$   & 10.6\%  & 0.71   & $-18.9\%$ & 1513.6 \\
+            \Bindep{} & Defensive    & Random forest, smoothed predictors ($\gamma{=}3$)    & $+4.4\%$   & 5.8\%  & 0.76   & $-13.0\%$ & 636.6 \\
+            \Bindep{} & Low-turnover & Logistic, z-score + smoothed z-score ($\gamma{=}3$)  & $+4.8\%$   & 7.2\%  & 0.67   & $-11.5\%$ & 720.0 \\
+            \Bindep{} & High-return  & Logistic, smoothed predictors ($\gamma{=}0.5$)         & $+7.6\%$   & 10.6\%  & 0.71   & $-18.9\%$ & 1513.6 \\
             \Bindep{} & Benchmark    & 60/40                                 & $+4.5\%$   & 9.6\%  & 0.47   & $-36.2\%$ & 359.4 \\
             \midrule
             \Acoup{}  & Defensive    & Random forest, prob.\ mixture ($\gamma{=}5$)  & $+3.2\%$ & 4.3\%  & 0.73   & $-14.3\%$ & 240.2 \\
@@ -568,12 +567,17 @@ Conversely, the defensive and low-turnover configurations exhibit highly continu
 
 \begin{figure}[H]
     \centering
-    \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth,height=0.20\textheight,keepaspectratio]{allocation_mechanics_focused.jpg}
-    \end{minipage}\hfill
-    \begin{minipage}{0.50\textwidth}
-        \includegraphics[width=\linewidth,height=0.20\textheight,keepaspectratio]{COUPLED__alloc_mechanics.pdf}
-    \end{minipage}
+    \makebox[\textwidth][c]{%
+        \begin{minipage}[t]{0.64\textwidth}
+            \vspace{0pt}
+            \centering
+            \includegraphics[width=\linewidth,height=0.16\textheight]{allocation_mechanics_focused.jpg}
+        \end{minipage}\hspace{0.025\textwidth}%
+        \begin{minipage}[t]{0.64\textwidth}
+            \vspace{0pt}
+            \centering
+            \includegraphics[width=\linewidth,height=0.16\textheight]{COUPLED__alloc_mechanics.pdf}
+        \end{minipage}}
     \caption{Portfolio weights and turnover, out of sample. The panels report equity, bond, and
         cash weights and turnover for the selected dynamic allocations.}
     \label{fig:alloc-mech}
@@ -630,6 +634,8 @@ signals.
 \renewcommand{\thefigure}{\thesection.\arabic{figure}}
 \renewcommand{\thetable}{\thesection.\arabic{table}}
 
+
+\clearpage
 \input{regime_aware_tactical_asset_allocation_appendix}
 
 \clearpage
